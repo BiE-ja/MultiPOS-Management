@@ -1,0 +1,37 @@
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: eloge
+      POSTGRES_PASSWORD: sm&p899
+      POSTGRES_DB: smanagementdb
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  backend:
+    build: 
+      context: ./backend
+    container_name: smanagement_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://eloge:sm&p899@db/smanagementdb
+
+  frontend:
+    build:
+      context: ./frontend/app
+    container_name: smanagement_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+      
+
+volumes:
+    postgres_data:

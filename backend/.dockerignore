@@ -1,0 +1,25 @@
+# Environnements virtuels
+env/
+.venv/
+
+# Fichiers de config utilisateur
+*.env
+*.env.*
+
+# Caches et fichiers temporaires
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+
+# Dossiers inutiles
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
