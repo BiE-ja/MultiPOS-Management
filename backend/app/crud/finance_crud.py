@@ -1,7 +1,8 @@
 from datetime import datetime
 from sqlalchemy import func
-from backend.app.models.finance import CashTransaction, TransactionDirection, TransactionState
 from sqlalchemy.orm import Session
+
+from backend.app.models.finance.cash import CashTransaction, TransactionDirection, TransactionState
 
 """Management of cash register"""
 # Get all transactions for a specific cash register on a given date

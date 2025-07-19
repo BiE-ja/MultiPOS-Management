@@ -4,8 +4,8 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import ValidationError
 from app.core.config import settings
 from sqlalchemy.orm import Session
-from backend.app.schemas.utils_schema import TokenPayload
-from backend.app.schemas.people_schema import UserRead
+from backend.app.schemas.deps.utils_schema import TokenPayload
+from backend.app.schemas.deps.people_schema import UserRead
 from backend.app.core import security
 from backend.app.database import get_db
 from jwt.exceptions import InvalidTokenError # type: ignore

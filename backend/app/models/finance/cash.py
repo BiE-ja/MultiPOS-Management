@@ -1,29 +1,12 @@
 from datetime import datetime, timezone
 from enum import Enum as pyEnum
 from typing import List, Optional
-from sqlalchemy import Column, DateTime, Enum as sqlEnum, ForeignKey, Integer, Numeric, String
+from sqlalchemy import DateTime, Enum as sqlEnum, ForeignKey, Integer, Numeric, String
 from sqlalchemy.orm import relationship, Mapped, mapped_column, validates
 from app.database import Base
-from backend.app.models.area import Area
-from backend.app.models.people import User
-from backend.app.models.sale import Sale
+from backend.app.models.deps import Area, User
+from backend.app.models.finance.payment import Payment
 
-# Represent a payment made for a sale (can be cash, card, etc.)
-class Payment(Base):
-    __tablename__="payments"
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    reference : Mapped[str | None]= mapped_column()
-    amount: Mapped[float] = mapped_column(Numeric(18, 2))  # Amount of the payment
-    date: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-    method : Mapped[str] = mapped_column(String(50)) # ex : cash, card, etc.
-    sale_id : Mapped[int] = mapped_column(ForeignKey("sale.id"), nullable=False)
-    # Optional FK if the payment is linked to a cash transaction
-    # If the payment is not linked to a cash transaction, this can be None
-    cash_transac_id: Mapped[int | None] = mapped_column(ForeignKey("cash_transaction.id"), nullable=True)
-
-    cash_transaction: Mapped["CashTransaction"] = relationship(back_populates="payment", uselist=False, lazy="joined", cascade="all, delete-orphan")
-    # Reverse relation from sale
-    sale : Mapped["Sale"]= relationship(back_populates="payment", uselist=False, lazy="joined")
 
 # This is used to indicate the direction of the transaction
 class TransactionDirection(str, pyEnum):
@@ -34,10 +17,11 @@ class TransactionDirection(str, pyEnum):
 class TransactionPurpose(str, pyEnum):
     SALE_PAYMENT = "sale_payment" # IN
     SUPPLY = "supply" # OUT
-    CORRECTION = "correction" # IN or OUT
+    CORRECTION_IN = "correction_in" # IN or OUT # may be retour de fonds (versement reliquat : achat urgent)
+    CORRECTION_OUT = "correction_out"
     BANK_TRANSFERT = "bank_transfert" # OUT
-    MISC_EXPENSE = "misc_expense" # OUT
-
+    MISC_EXPENSE_IN = "misc_expense_in" # IN or OUT
+    MISC_EXPENSE_OUT = "misc_expense_out"
 # This is used to indicate the status of the transaction
 # It can be used to track if the transaction is pending, completed, or failed
 class TransactionState(str, pyEnum):
@@ -46,7 +30,7 @@ class TransactionState(str, pyEnum):
     FAILED = "failed"
     CANCELED = "canceled"
 
-# Represent an actual movement of money in or out of the cash register
+# Represent an actual movement of money "in" or "out" of the cash register
 # This can be a payment for a sale, a cash deposit, or a cash withdrawal"""
 class CashTransaction(Base):
     """Represent an actual movement of money in or out of the cash register\n
@@ -57,7 +41,7 @@ class CashTransaction(Base):
     direction : Mapped[TransactionDirection] = mapped_column(sqlEnum(TransactionDirection), nullable=False)
     operation : Mapped[TransactionPurpose] = mapped_column(sqlEnum(TransactionPurpose), nullable=False)
     status : Mapped[TransactionState] = mapped_column(sqlEnum(TransactionState), default=TransactionState.PENDING, nullable=False)
-    created_by_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+    created_by_id : Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
     
     # info of annulation
     cancellation_reason : Mapped[str | None] = mapped_column(String(255))  # Reason for cancellation or correction
@@ -71,11 +55,11 @@ class CashTransaction(Base):
     
     # Relationships
     register : Mapped["CashAccount"] = relationship(back_populates="CashAccount", lazy="joined", uselist=False)
-    details  : Mapped[List["CashTransactionLine"]] = relationship(back_populates = "cash_transac", cascade = "all, delete-orphan")
+    details  : Mapped[List["CashTransactionDetailsLine"]] = relationship(back_populates = "cash_transac", cascade = "all, delete-orphan")
     # relationship to the user who created the transaction
     created_by : Mapped["User"] = relationship(back_populates="transaction_created", foreign_keys="CashTransaction.created_by_id", lazy="joined")
     # relationship to the user who canceled the transaction 
-    cancelled_by : Mapped["User"] = relationship(back_populates="transaction_cancelled", foreign_keys="CashTransaction.cancelled_by_id", lazy="joined")
+    cancelled_by : Mapped[Optional["User"]] = relationship(back_populates="transaction_cancelled", foreign_keys="CashTransaction.cancelled_by_id", lazy="joined")
     # relationship to the payment if it exists
     payment : Mapped[Optional["Payment"]] = relationship(back_populates="cash_transaction", uselist=False, lazy="joined")
    
@@ -97,7 +81,7 @@ class CashTransaction(Base):
     def total_amount(self):
         """ get the amount of transaction"""
         """Amount of the transaction (can be positive or negative depending on the direction)"""
-        amount = sum(details.value for details in self.details) 
+        amount = sum(detail.value for detail in self.details) 
         if self.direction == TransactionDirection.OUT:
             amount = amount * (-1)
         return amount
@@ -110,9 +94,9 @@ class CashTransaction(Base):
 
         # Only validate if both are already set
         if operation and direction:
-            in_operations = {TransactionPurpose.SALE_PAYMENT, TransactionPurpose.SUPPLY} 
-            out_operations = {TransactionPurpose.BANK_TRANSFERT, TransactionPurpose.MISC_EXPENSE}
-            # Correction is flexible
+            in_operations = {TransactionPurpose.SALE_PAYMENT, TransactionPurpose.SUPPLY, TransactionPurpose.CORRECTION_IN, TransactionPurpose.MISC_EXPENSE_IN} 
+            out_operations = {TransactionPurpose.BANK_TRANSFERT, TransactionPurpose.CORRECTION_OUT, TransactionPurpose.MISC_EXPENSE_OUT}
+            # Correction is flexible,misc expens is flexible (cas versement reliquat)
             
             if direction == TransactionDirection.IN and operation in out_operations:
                 raise ValueError(f"Operation ' {operation} ' cannot be used with IN direction.")
@@ -121,15 +105,15 @@ class CashTransaction(Base):
         return value # type: ignore
 
 # e.g : 20.000 * 5
-class CashTransactionLine(Base):
-    __tablename__="transaction_details"
+class CashTransactionDetailsLine(Base):
+    __tablename__="transaction_details_line"
     id : Mapped[int] =mapped_column(primary_key=True, index = True)
     transac_id : Mapped[int] =mapped_column(ForeignKey("cash_transaction.id"), nullable = False, unique= True)
     denomination_id : Mapped[int] =mapped_column(ForeignKey("denomination.id", nullable = False))
     quantity: Mapped[int] = mapped_column()
 
-    cash_transac : Mapped[CashTransaction]= relationship(back_populates="details", uselist=False)
-    denomination : Mapped["Denomination"] = relationship(back_populates="transaction_details", uselist=False)
+    cash_transac : Mapped[CashTransaction]= relationship(back_populates="transaction_details_line", uselist=False)
+    denomination : Mapped["Denomination"] = relationship(back_populates="transaction_details_line", uselist=False)
     @property
     def value (self):
         return (self.quantity * self.denomination.value)
@@ -143,7 +127,7 @@ class Denomination(Base):
     currency : Mapped[str] = mapped_column(String(10))
     
     adjustement : Mapped["CashAdjustementLine"] = relationship(back_populates="denomination")
-    transaction : Mapped["CashTransactionLine"] = relationship(back_populates="denomination")
+    transaction : Mapped["CashTransactionDetailsLine"] = relationship(back_populates="denomination")
     def __repr__(self):
         return f"<Denomination(name={self.name}, value={self.value})>"
 
@@ -193,18 +177,18 @@ class CashAdjustement(Base):
     
     @property
     def total_amount(self) -> float:
-        return sum(details.value for details in self.details) 
+        return sum(detail.value for detail in self.details) 
 
  # e.g : 20.000 * 5
 class CashAdjustementLine(Base):
-    __tablename__ = "cash_details"
+    __tablename__ = "cash_adjustement_line"
     id : Mapped[int] = mapped_column(primary_key=True, index=True)
     adjustement_id : Mapped[int] = mapped_column(ForeignKey("cash_adjustement.id"), nullable=False)
     denomination_id : Mapped[int] = mapped_column(ForeignKey("denomination.id"), nullable=False)
     quantity : Mapped[int] = mapped_column()
 
-    denomination : Mapped[Denomination] = relationship(back_populates="cash_details", uselist=False)
-    adjustement : Mapped["CashAdjustement"] = relationship(back_populates="details")
+    denomination : Mapped[Denomination] = relationship(back_populates="adjustement_line", uselist=False)
+    adjustement : Mapped["CashAdjustement"] = relationship(back_populates="adjustement_line")
     @property
     def value (self):
         return (self.quantity * self.denomination.value)

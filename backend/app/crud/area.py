@@ -1,8 +1,6 @@
 from sqlalchemy.orm import Session
-
-from backend.app.models.area import Area
-from backend.app.models.product import Product, ProductCategory
-from backend.app.schemas.area_schema import AreaCreate, AreaUpdate
+from backend.app.models.deps import Area
+from backend.app.schemas.deps.area_schema import AreaCreate, AreaUpdate
 
 def create_area(db:Session, area: AreaCreate):
     db_area= Area(**area.model_dump())
@@ -39,25 +37,5 @@ def list_managed_area(db:Session, owner_id:int, skip:int=0, limit:int=10):
         .limit(limit)
         .all()
     )
-# return a list of all product for area passed in parameter
-def get_area_products(db: Session, area_id:int, skip:int=0, limit:int=10):
-    return (
-        db.query(Product)
-        .filter(Product.area_id == area_id)
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
 
-# return a list of all product categories for area passed in parameter
-def get_area_product_categories(db: Session, area_id : int, skip: int=0, limit: int = 10):
-    return (
-        db.query(ProductCategory)
-        .filter(Product.area_id == area_id)
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
-
-#def area_inventory (db : Session, area_id:int, skip:int=0, limit:int=10):
     
