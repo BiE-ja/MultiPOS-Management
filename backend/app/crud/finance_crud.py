@@ -29,7 +29,7 @@ def calculate_theoretical_amount(db : Session, cash_register_id: int, dateof : d
 
 
 # This function counts the number of transactions for a specific cash register on a given date.
-# It filters the transactions based on the cash register ID, transaction validity, and transaction 
+# It filters the transactions based on the cash register ID, transaction validity, and transaction direction
 # This funtion return a objet contain the number of valid in, out and annuled transactions.
 # The date is expected to be in the format of datetime.
 def count_transactions(db : Session, cash_register_id:int, dateof: datetime):

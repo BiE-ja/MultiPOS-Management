@@ -12,7 +12,7 @@ class StockMovement(Base):
     area_id = Column(Integer, ForeignKey("area.id"), nullable=False)
     quantity = Column(Integer, default=0)
     move_date = Column(DateTime(timezone=True), default=lambda:datetime.now(timezone.utc))
-    comment= Column(String) # optional. use for ajustement : reason of ajustement (error of tape, cause of return supplier, cause of return customer, vol, produit périmé, ....)
+    comment= Column(String) # optional. use for ajustement : reason of adjustement (error of tape, cause of return supplier, cause of return customer, vol, produit périmé, ....)
 
     area= relationship("Area", back_populates="stock")
     product = relationship("Product", back_populate = "stock")
@@ -21,7 +21,7 @@ class StockMovement(Base):
 class MovementType(Base):
     __tablename__="movement"
     id=Column(Integer, primary_key=True, index=True)
-    name= Column(String, unique = True, nullable=False) # in, out, inventory, ajustement,return_supplier, return_customer
+    # name= Column(String, unique = True, nullable=False) # in, out, inventory, adjustement,return_supplier, return_customer
 
     stock = relationship("StockMovement", back_populates="movementType")
     

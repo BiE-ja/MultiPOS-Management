@@ -4,7 +4,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from backend.app.database import Base
 
-
+# Represente a point of sale
 class Area (Base):
     __tablename__="area"
     id = Column(Integer, primary_key=True, index=True)
