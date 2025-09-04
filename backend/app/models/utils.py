@@ -1,17 +1,21 @@
-from backend.app.database import Base
+from datetime import timedelta
+from pydantic import BaseModel
 
-class Message (Base):
+
+class Message(BaseModel):
     message: str
 
-class Token(Base):
+
+class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    expires_at: timedelta
 
-class TokenPayload(Base):
+
+class TokenPayload(BaseModel):
     sub: str | None = None
 
-class NewPassword(Base):
+
+class NewPassword(BaseModel):
     token: str
     new_password: str
-
-        
