@@ -14,8 +14,8 @@ import {
  * @summary Read
  */
 export const employeeReadParams = zod.object({
-  "area_id": zod.number(),
-  "employee_id": zod.number()
+  "area_id": zod.uuid(),
+  "employee_id": zod.uuid()
 })
 
 export const employeeReadResponse = zod.object({
@@ -23,24 +23,24 @@ export const employeeReadResponse = zod.object({
   "last_name": zod.union([zod.string(),zod.null()]),
   "phone": zod.string(),
   "adress": zod.string(),
-  "id": zod.number(),
-  "area_id": zod.number(),
-  "user_id": zod.union([zod.number(),zod.null()])
+  "id": zod.uuid(),
+  "area_id": zod.uuid(),
+  "user_id": zod.union([zod.uuid(),zod.null()])
 })
 
 /**
  * @summary Update
  */
 export const employeeUpdateParams = zod.object({
-  "area_id": zod.number(),
-  "employee_id": zod.number()
+  "area_id": zod.uuid(),
+  "employee_id": zod.uuid()
 })
 
 export const employeeUpdateBody = zod.object({
-  "first_name": zod.union([zod.string(),zod.null()]),
-  "last_name": zod.union([zod.string(),zod.null()]),
-  "phone": zod.union([zod.string(),zod.null()]),
-  "adress": zod.union([zod.string(),zod.null()])
+  "first_name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.union([zod.string(),zod.null()]).optional(),
+  "phone": zod.union([zod.string(),zod.null()]).optional(),
+  "adress": zod.union([zod.string(),zod.null()]).optional()
 })
 
 export const employeeUpdateResponse = zod.object({
@@ -48,17 +48,17 @@ export const employeeUpdateResponse = zod.object({
   "last_name": zod.union([zod.string(),zod.null()]),
   "phone": zod.string(),
   "adress": zod.string(),
-  "id": zod.number(),
-  "area_id": zod.number(),
-  "user_id": zod.union([zod.number(),zod.null()])
+  "id": zod.uuid(),
+  "area_id": zod.uuid(),
+  "user_id": zod.union([zod.uuid(),zod.null()])
 })
 
 /**
  * @summary Delete
  */
 export const employeeDeleteParams = zod.object({
-  "area_id": zod.number(),
-  "employee_id": zod.number()
+  "area_id": zod.uuid(),
+  "employee_id": zod.uuid()
 })
 
 export const employeeDeleteResponse = zod.object({
@@ -69,7 +69,7 @@ export const employeeDeleteResponse = zod.object({
  * @summary Create
  */
 export const employeeCreateParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 export const employeeCreateBody = zod.object({
@@ -77,6 +77,6 @@ export const employeeCreateBody = zod.object({
   "last_name": zod.union([zod.string(),zod.null()]),
   "phone": zod.string(),
   "adress": zod.string(),
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 

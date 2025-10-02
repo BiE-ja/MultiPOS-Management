@@ -4,7 +4,11 @@
  * Tantana - Boutik
  * OpenAPI spec version: 0.1.0
  */
-import {z as zod} from "zod";
+import {
+  z as zod
+} from 'zod';
+
+
 
 /**
  * Get all users from area id
@@ -12,139 +16,119 @@ List of all user for the area
  * @summary Fetchall
  */
 export const usersFetchAllParams = zod.object({
-    area_id: zod.number(),
-});
+  "area_id": zod.uuid()
+})
 
-export const usersFetchAllQuerySkipDefault = 0;
-export const usersFetchAllQueryLimitDefault = 10;
+export const usersFetchAllQuerySkipDefault = 0;export const usersFetchAllQueryLimitDefault = 10;
 
 export const usersFetchAllQueryParams = zod.object({
-    skip: zod.number().optional(),
-    limit: zod.number().default(usersFetchAllQueryLimitDefault),
-});
+  "skip": zod.number().optional(),
+  "limit": zod.number().default(usersFetchAllQueryLimitDefault)
+})
 
 export const usersFetchAllResponse = zod.object({
-    data: zod.array(
-        zod.object({
-            email: zod.email(),
-            is_active: zod.boolean(),
-            is_superuser: zod.boolean(),
-            is_owner: zod.boolean(),
-            name: zod.union([zod.string(), zod.null()]).optional(),
-            last_name: zod.string(),
-            phone: zod.union([zod.string(), zod.null()]),
-            created_at: zod
-                .union([zod.iso.datetime({}), zod.null()])
-                .optional(),
-            id: zod.number(),
-        })
-    ),
-    count: zod.number(),
-});
+  "data": zod.array(zod.object({
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})),
+  "count": zod.number()
+})
 
 /**
  * Get all users
 "List of all user for the area
  * @summary Fetchallbyadmin
  */
-export const usersFetchAllByAdminQuerySkipDefault = 0;
-export const usersFetchAllByAdminQueryLimitDefault = 10;
+export const usersFetchAllByAdminQuerySkipDefault = 0;export const usersFetchAllByAdminQueryLimitDefault = 10;
 
 export const usersFetchAllByAdminQueryParams = zod.object({
-    skip: zod.number().optional(),
-    limit: zod.number().default(usersFetchAllByAdminQueryLimitDefault),
-});
+  "skip": zod.number().optional(),
+  "limit": zod.number().default(usersFetchAllByAdminQueryLimitDefault)
+})
 
 export const usersFetchAllByAdminResponse = zod.object({
-    data: zod.array(
-        zod.object({
-            email: zod.email(),
-            is_active: zod.boolean(),
-            is_superuser: zod.boolean(),
-            is_owner: zod.boolean(),
-            name: zod.union([zod.string(), zod.null()]).optional(),
-            last_name: zod.string(),
-            phone: zod.union([zod.string(), zod.null()]),
-            created_at: zod
-                .union([zod.iso.datetime({}), zod.null()])
-                .optional(),
-            id: zod.number(),
-        })
-    ),
-    count: zod.number(),
-});
+  "data": zod.array(zod.object({
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})),
+  "count": zod.number()
+})
 
 /**
  * @summary Read
  */
 export const usersReadParams = zod.object({
-    area_id: zod.number(),
-    user_id: zod.number(),
-});
+  "area_id": zod.uuid(),
+  "user_id": zod.uuid()
+})
 
 export const usersReadResponse = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    id: zod.number(),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})
 
 /**
  * @summary Update
  */
 export const usersUpdateParams = zod.object({
-    area_id: zod.number(),
-    user_id: zod.number(),
-});
+  "area_id": zod.uuid(),
+  "user_id": zod.uuid()
+})
 
 export const usersUpdateBody = zod.object({
-    name: zod.union([zod.string(), zod.null()]),
-    last_name: zod.union([zod.string(), zod.null()]).optional(),
-    email: zod.union([zod.email(), zod.null()]),
-    password: zod.union([zod.string(), zod.null()]),
-    is_password_reinitialized: zod.union([zod.boolean(), zod.null()]),
-    is_active: zod.union([zod.boolean(), zod.null()]),
-    is_superuser: zod.union([zod.boolean(), zod.null()]),
-    is_owner: zod.union([zod.boolean(), zod.null()]),
-    phone: zod.union([zod.string(), zod.null()]),
-    owned_ares: zod.union([
-        zod.array(
-            zod.object({
-                name: zod.union([zod.string(), zod.null()]),
-                location: zod.union([zod.string(), zod.null()]),
-            })
-        ),
-        zod.null(),
-    ]),
-    roles: zod.union([
-        zod.array(
-            zod.object({
-                name: zod.string(),
-                description: zod.union([zod.string(), zod.null()]),
-                permission: zod.union([zod.array(zod.string()), zod.null()]),
-                id: zod.number(),
-            })
-        ),
-        zod.null(),
-    ]),
-});
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.union([zod.string(),zod.null()]).optional(),
+  "email": zod.union([zod.email(),zod.null()]).optional(),
+  "password": zod.union([zod.string(),zod.null()]).optional(),
+  "is_password_reinitialized": zod.union([zod.boolean(),zod.null()]).optional(),
+  "is_active": zod.union([zod.boolean(),zod.null()]).optional(),
+  "is_superuser": zod.union([zod.boolean(),zod.null()]).optional(),
+  "is_owner": zod.union([zod.boolean(),zod.null()]).optional(),
+  "phone": zod.union([zod.string(),zod.null()]).optional(),
+  "owned_ares": zod.union([zod.array(zod.object({
+  "name": zod.union([zod.string(),zod.null()]),
+  "location": zod.union([zod.string(),zod.null()])
+})),zod.null()]).optional(),
+  "roles": zod.union([zod.array(zod.object({
+  "name": zod.string(),
+  "description": zod.union([zod.string(),zod.null()]),
+  "permission": zod.union([zod.array(zod.string()),zod.null()]),
+  "id": zod.uuid()
+})),zod.null()]).optional()
+})
 
 export const usersUpdateResponse = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    id: zod.number(),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})
 
 /**
  * Delete user
@@ -153,229 +137,257 @@ user owner can delete only user in his area scope
  * @summary Delete
  */
 export const usersDeleteParams = zod.object({
-    area_id: zod.number(),
-    user_id: zod.number(),
-});
+  "area_id": zod.uuid(),
+  "user_id": zod.uuid()
+})
 
 export const usersDeleteResponse = zod.object({
-    message: zod.string(),
-});
+  "message": zod.string()
+})
 
 /**
  * @summary Auth
  */
 export const usersAuthResponse = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    id: zod.number(),
-    roles: zod.array(
-        zod.object({
-            name: zod.string(),
-            description: zod.union([zod.string(), zod.null()]),
-            permission: zod.union([zod.array(zod.string()), zod.null()]),
-            id: zod.number(),
-        })
-    ),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid(),
+  "roles": zod.array(zod.object({
+  "name": zod.string(),
+  "description": zod.union([zod.string(),zod.null()]),
+  "permission": zod.union([zod.array(zod.string()),zod.null()]),
+  "id": zod.uuid()
+}))
+})
 
 /**
  * @summary Readme
  */
 export const usersReadMeResponse = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    id: zod.number(),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})
 
 /**
  * @summary Create
  */
 export const usersCreateParams = zod.object({
-    area_id: zod.number(),
-});
+  "area_id": zod.uuid()
+})
 
 export const usersCreateBody = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    password: zod.string(),
-    employee_id: zod.union([zod.number(), zod.null()]).optional(),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "password": zod.string(),
+  "employee_id": zod.union([zod.uuid(),zod.null()]).optional()
+})
 
 /**
  * Update do himself
  * @summary Update Me
  */
 export const usersUpdateMeBody = zod.object({
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.union([zod.string(), zod.null()]).optional(),
-    email: zod.union([zod.email(), zod.null()]).optional(),
-});
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.union([zod.string(),zod.null()]).optional(),
+  "email": zod.union([zod.email(),zod.null()]).optional()
+})
 
 export const usersUpdateMeResponse = zod.object({
-    message: zod.string(),
-});
+  "message": zod.string()
+})
 
 /**
  * @summary Update Password Me
  */
 export const usersUpdatePasswordMeQueryParams = zod.object({
-    user_id: zod.number(),
-});
+  "user_id": zod.uuid()
+})
 
 export const usersUpdatePasswordMeBody = zod.object({
-    current_password: zod.string(),
-    new_password: zod.string(),
-});
+  "current_password": zod.string(),
+  "new_password": zod.string()
+})
 
 export const usersUpdatePasswordMeResponse = zod.object({
-    message: zod.string(),
-});
+  "message": zod.string()
+})
 
 /**
  * delete by himself
  * @summary Delete Me
  */
 export const usersDeleteMeResponse = zod.object({
-    message: zod.string(),
-});
+  "message": zod.string()
+})
 
 /**
  * @summary Read By Email
  */
 export const usersReadByEmailParams = zod.object({
-    area_id: zod.number(),
-    email: zod.string(),
-});
+  "area_id": zod.uuid(),
+  "email": zod.string()
+})
 
 export const usersReadByEmailResponse = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    id: zod.number(),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})
 
 /**
  * Create new user without the need to be logged in.
  * @summary Register
  */
 export const usersRegisterBody = zod.object({
-    email: zod.email(),
-    password: zod.string(),
-    full_name: zod.union([zod.string(), zod.null()]).optional(),
-});
+  "email": zod.email(),
+  "password": zod.string(),
+  "full_name": zod.union([zod.string(),zod.null()]).optional()
+})
 
 export const usersRegisterResponse = zod.object({
-    email: zod.email(),
-    is_active: zod.boolean(),
-    is_superuser: zod.boolean(),
-    is_owner: zod.boolean(),
-    name: zod.union([zod.string(), zod.null()]).optional(),
-    last_name: zod.string(),
-    phone: zod.union([zod.string(), zod.null()]),
-    created_at: zod.union([zod.iso.datetime({}), zod.null()]).optional(),
-    id: zod.number(),
-});
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})
 
 /**
  * Get all owners
 List of all owner
  * @summary Ownerslist
  */
-export const usersOwnersListQuerySortByDefault = "id";
-export const usersOwnersListQueryOrderDefault = "asc";
-export const usersOwnersListQuerySkipDefault = 0;
-export const usersOwnersListQueryLimitDefault = 10;
+export const usersOwnersListQuerySortByDefault = "id";export const usersOwnersListQueryOrderDefault = "asc";export const usersOwnersListQuerySkipDefault = 0;export const usersOwnersListQueryLimitDefault = 10;
 
 export const usersOwnersListQueryParams = zod.object({
-    sort_by: zod
-        .enum(["id", "last_name", "created_at"])
-        .default(usersOwnersListQuerySortByDefault),
-    order: zod.enum(["asc", "desc"]).default(usersOwnersListQueryOrderDefault),
-    skip: zod.number().optional(),
-    limit: zod.number().default(usersOwnersListQueryLimitDefault),
-});
+  "sort_by": zod.enum(['id', 'last_name', 'created_at']).default(usersOwnersListQuerySortByDefault),
+  "order": zod.enum(['asc', 'desc']).default(usersOwnersListQueryOrderDefault),
+  "skip": zod.number().optional(),
+  "limit": zod.number().default(usersOwnersListQueryLimitDefault)
+})
 
 export const usersOwnersListResponse = zod.object({
-    data: zod.array(
-        zod.object({
-            email: zod.email(),
-            is_active: zod.boolean(),
-            is_superuser: zod.boolean(),
-            is_owner: zod.boolean(),
-            name: zod.union([zod.string(), zod.null()]).optional(),
-            last_name: zod.string(),
-            phone: zod.union([zod.string(), zod.null()]),
-            created_at: zod
-                .union([zod.iso.datetime({}), zod.null()])
-                .optional(),
-            id: zod.number(),
-            is_password_reinitialized: zod.boolean(),
-            owned_areas: zod
-                .union([
-                    zod.array(
-                        zod.object({
-                            name: zod.string(),
-                            location: zod
-                                .union([zod.string(), zod.null()])
-                                .optional(),
-                            owner_id: zod
-                                .union([zod.number(), zod.null()])
-                                .optional(),
-                            id: zod.number(),
-                        })
-                    ),
-                    zod.null(),
-                ])
-                .optional(),
-            employee: zod.union([
-                zod.object({
-                    first_name: zod.string(),
-                    last_name: zod.union([zod.string(), zod.null()]),
-                    phone: zod.string(),
-                    adress: zod.string(),
-                    id: zod.number(),
-                    area_id: zod.number(),
-                    user_id: zod.union([zod.number(), zod.null()]),
-                }),
-                zod.null(),
-            ]),
-            roles: zod.array(
-                zod.object({
-                    name: zod.string(),
-                    description: zod.union([zod.string(), zod.null()]),
-                    permission: zod.union([
-                        zod.array(zod.string()),
-                        zod.null(),
-                    ]),
-                    id: zod.number(),
-                })
-            ),
-        })
-    ),
-    total: zod.number(),
-    total_active: zod.number(),
-    total_pos: zod.number(),
-});
+  "data": zod.array(zod.object({
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid(),
+  "is_password_reinitialized": zod.boolean(),
+  "owned_areas": zod.union([zod.array(zod.object({
+  "name": zod.string(),
+  "location": zod.union([zod.string(),zod.null()]).optional(),
+  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+  "id": zod.uuid()
+})),zod.null()]).optional(),
+  "employee": zod.union([zod.object({
+  "first_name": zod.string(),
+  "last_name": zod.union([zod.string(),zod.null()]),
+  "phone": zod.string(),
+  "adress": zod.string(),
+  "id": zod.uuid(),
+  "area_id": zod.uuid(),
+  "user_id": zod.union([zod.uuid(),zod.null()])
+}),zod.null()]),
+  "roles": zod.array(zod.object({
+  "name": zod.string(),
+  "description": zod.union([zod.string(),zod.null()]),
+  "permission": zod.union([zod.array(zod.string()),zod.null()]),
+  "id": zod.uuid()
+}))
+})),
+  "total": zod.number(),
+  "total_active": zod.number(),
+  "total_pos": zod.number()
+})
+
+/**
+ * @summary Createuserbysuperuser
+ */
+export const usersCreateUserBySuperUserBody = zod.object({
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "password": zod.string(),
+  "employee_id": zod.union([zod.uuid(),zod.null()]).optional()
+})
+
+/**
+ * @summary Updatedbyadmin
+ */
+export const usersUpdatedByAdminParams = zod.object({
+  "user_id": zod.uuid()
+})
+
+export const usersUpdatedByAdminBody = zod.object({
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.union([zod.string(),zod.null()]).optional(),
+  "email": zod.union([zod.email(),zod.null()]).optional(),
+  "password": zod.union([zod.string(),zod.null()]).optional(),
+  "is_password_reinitialized": zod.union([zod.boolean(),zod.null()]).optional(),
+  "is_active": zod.union([zod.boolean(),zod.null()]).optional(),
+  "is_superuser": zod.union([zod.boolean(),zod.null()]).optional(),
+  "is_owner": zod.union([zod.boolean(),zod.null()]).optional(),
+  "phone": zod.union([zod.string(),zod.null()]).optional(),
+  "owned_ares": zod.union([zod.array(zod.object({
+  "name": zod.union([zod.string(),zod.null()]),
+  "location": zod.union([zod.string(),zod.null()])
+})),zod.null()]).optional(),
+  "roles": zod.union([zod.array(zod.object({
+  "name": zod.string(),
+  "description": zod.union([zod.string(),zod.null()]),
+  "permission": zod.union([zod.array(zod.string()),zod.null()]),
+  "id": zod.uuid()
+})),zod.null()]).optional()
+})
+
+export const usersUpdatedByAdminResponse = zod.object({
+  "email": zod.email(),
+  "is_active": zod.boolean(),
+  "is_superuser": zod.boolean(),
+  "is_owner": zod.boolean(),
+  "name": zod.union([zod.string(),zod.null()]).optional(),
+  "last_name": zod.string(),
+  "phone": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "id": zod.uuid()
+})
+

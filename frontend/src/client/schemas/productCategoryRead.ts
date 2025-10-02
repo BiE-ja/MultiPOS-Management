@@ -7,6 +7,6 @@
 
 export interface ProductCategoryRead {
   cat_name: string;
-  area_id: number;
-  id: number;
+  area_id: string;
+  id: string;
 }

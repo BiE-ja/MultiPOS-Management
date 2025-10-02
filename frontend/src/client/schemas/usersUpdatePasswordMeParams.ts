@@ -6,5 +6,5 @@
  */
 
 export type UsersUpdatePasswordMeParams = {
-user_id: number;
+user_id: string;
 };

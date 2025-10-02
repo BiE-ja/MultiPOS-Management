@@ -18,6 +18,6 @@ export interface UserAuth {
   last_name: string;
   phone: UserAuthPhone;
   created_at?: UserAuthCreatedAt;
-  id: number;
+  id: string;
   roles: RoleRead[];
 }

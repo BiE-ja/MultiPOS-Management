@@ -14,34 +14,36 @@ import {
  * @summary Create
  */
 export const movementCreateBody = zod.object({
-  "area_id": zod.number(),
-  "product_id": zod.number(),
+  "area_id": zod.uuid(),
+  "product_id": zod.uuid(),
+  "product_lot_id": zod.union([zod.uuid(),zod.null()]).optional(),
   "direction": zod.string(),
   "operation": zod.string(),
   "dateof": zod.union([zod.iso.datetime({}),zod.null()]),
   "quantity": zod.union([zod.number(),zod.null()]).optional(),
   "comment": zod.union([zod.string(),zod.null()]).optional(),
-  "created_by": zod.number(),
-  "initiated_by": zod.number(),
-  "operation_id": zod.number()
+  "created_by": zod.uuid(),
+  "initiated_by": zod.uuid(),
+  "operation_id": zod.uuid()
 })
 
 /**
  * @summary Read
  */
 export const movementReadParams = zod.object({
-  "movement_id": zod.number()
+  "movement_id": zod.uuid()
 })
 
 export const movementReadResponse = zod.object({
-  "area_id": zod.number(),
-  "product_id": zod.number(),
+  "area_id": zod.uuid(),
+  "product_id": zod.uuid(),
+  "product_lot_id": zod.union([zod.uuid(),zod.null()]).optional(),
   "direction": zod.string(),
   "operation": zod.string(),
   "dateof": zod.union([zod.iso.datetime({}),zod.null()]),
   "quantity": zod.union([zod.number(),zod.null()]).optional(),
   "comment": zod.union([zod.string(),zod.null()]).optional(),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "dateOf": zod.iso.datetime({})
 })
 
@@ -49,20 +51,20 @@ export const movementReadResponse = zod.object({
  * @summary Cancel
  */
 export const movementCancelParams = zod.object({
-  "movement_id": zod.number()
+  "movement_id": zod.uuid()
 })
 
 /**
  * @summary Product Track
  */
 export const movementProductTrackParams = zod.object({
-  "product_id": zod.number()
+  "product_id": zod.uuid()
 })
 
 export const movementProductTrackQuerySkipDefault = 0;export const movementProductTrackQueryLimitDefault = 10;
 
 export const movementProductTrackQueryParams = zod.object({
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "date_begin": zod.iso.datetime({}),
   "date_end": zod.iso.datetime({}),
   "skip": zod.number().optional(),
@@ -70,14 +72,15 @@ export const movementProductTrackQueryParams = zod.object({
 })
 
 export const movementProductTrackResponseItem = zod.object({
-  "area_id": zod.number(),
-  "product_id": zod.number(),
+  "area_id": zod.uuid(),
+  "product_id": zod.uuid(),
+  "product_lot_id": zod.union([zod.uuid(),zod.null()]).optional(),
   "direction": zod.string(),
   "operation": zod.string(),
   "dateof": zod.union([zod.iso.datetime({}),zod.null()]),
   "quantity": zod.union([zod.number(),zod.null()]).optional(),
   "comment": zod.union([zod.string(),zod.null()]).optional(),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "dateOf": zod.iso.datetime({})
 })
 export const movementProductTrackResponse = zod.array(movementProductTrackResponseItem)

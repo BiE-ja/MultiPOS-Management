@@ -9,11 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardUnhautorizedRouteImport } from './routes/dashboard/unhautorized'
+import { Route as DashboardHomeRouteImport } from './routes/dashboard/home'
+import { Route as Dashboard404RouteImport } from './routes/dashboard/404'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as DashboardAdminRouteRouteImport } from './routes/dashboard/admin/route'
+import { Route as DashboardAdminManageOwnersRouteImport } from './routes/dashboard/admin/manage-owners'
+import { Route as DashboardAdminManagementOwnersPosUsersRouteImport } from './routes/dashboard/admin/management/owners-pos-users'
+import { Route as DashboardAdminManagementOwnersPosRouteImport } from './routes/dashboard/admin/management/owners-pos'
+import { Route as DashboardAdminManagementOwnersListRouteImport } from './routes/dashboard/admin/management/owners-list'
 
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -24,52 +37,159 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
+const DashboardUnhautorizedRoute = DashboardUnhautorizedRouteImport.update({
+  id: '/unhautorized',
+  path: '/unhautorized',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardHomeRoute = DashboardHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const Dashboard404Route = Dashboard404RouteImport.update({
+  id: '/404',
+  path: '/404',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const DashboardAdminRouteRoute = DashboardAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAdminManageOwnersRoute =
+  DashboardAdminManageOwnersRouteImport.update({
+    id: '/manage-owners',
+    path: '/manage-owners',
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any)
+const DashboardAdminManagementOwnersPosUsersRoute =
+  DashboardAdminManagementOwnersPosUsersRouteImport.update({
+    id: '/management/owners-pos-users',
+    path: '/management/owners-pos-users',
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any)
+const DashboardAdminManagementOwnersPosRoute =
+  DashboardAdminManagementOwnersPosRouteImport.update({
+    id: '/management/owners-pos',
+    path: '/management/owners-pos',
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any)
+const DashboardAdminManagementOwnersListRoute =
+  DashboardAdminManagementOwnersListRouteImport.update({
+    id: '/management/owners-list',
+    path: '/management/owners-list',
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/admin': typeof DashboardAdminRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/404': typeof Dashboard404Route
+  '/dashboard/home': typeof DashboardHomeRoute
+  '/dashboard/unhautorized': typeof DashboardUnhautorizedRoute
+  '/dashboard/admin/manage-owners': typeof DashboardAdminManageOwnersRoute
+  '/dashboard/admin/management/owners-list': typeof DashboardAdminManagementOwnersListRoute
+  '/dashboard/admin/management/owners-pos': typeof DashboardAdminManagementOwnersPosRoute
+  '/dashboard/admin/management/owners-pos-users': typeof DashboardAdminManagementOwnersPosUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/admin': typeof DashboardAdminRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/404': typeof Dashboard404Route
+  '/dashboard/home': typeof DashboardHomeRoute
+  '/dashboard/unhautorized': typeof DashboardUnhautorizedRoute
+  '/dashboard/admin/manage-owners': typeof DashboardAdminManageOwnersRoute
+  '/dashboard/admin/management/owners-list': typeof DashboardAdminManagementOwnersListRoute
+  '/dashboard/admin/management/owners-pos': typeof DashboardAdminManagementOwnersPosRoute
+  '/dashboard/admin/management/owners-pos-users': typeof DashboardAdminManagementOwnersPosUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/admin': typeof DashboardAdminRouteRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/404': typeof Dashboard404Route
+  '/dashboard/home': typeof DashboardHomeRoute
+  '/dashboard/unhautorized': typeof DashboardUnhautorizedRoute
+  '/dashboard/admin/manage-owners': typeof DashboardAdminManageOwnersRoute
+  '/dashboard/admin/management/owners-list': typeof DashboardAdminManagementOwnersListRoute
+  '/dashboard/admin/management/owners-pos': typeof DashboardAdminManagementOwnersPosRoute
+  '/dashboard/admin/management/owners-pos-users': typeof DashboardAdminManagementOwnersPosUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/auth/login' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/dashboard/admin'
+    | '/auth/login'
+    | '/dashboard/404'
+    | '/dashboard/home'
+    | '/dashboard/unhautorized'
+    | '/dashboard/admin/manage-owners'
+    | '/dashboard/admin/management/owners-list'
+    | '/dashboard/admin/management/owners-pos'
+    | '/dashboard/admin/management/owners-pos-users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/login' | '/dashboard'
-  id: '__root__' | '/' | '/auth' | '/auth/login' | '/dashboard/'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/dashboard/admin'
+    | '/auth/login'
+    | '/dashboard/404'
+    | '/dashboard/home'
+    | '/dashboard/unhautorized'
+    | '/dashboard/admin/manage-owners'
+    | '/dashboard/admin/management/owners-list'
+    | '/dashboard/admin/management/owners-pos'
+    | '/dashboard/admin/management/owners-pos-users'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/dashboard/admin'
+    | '/auth/login'
+    | '/dashboard/404'
+    | '/dashboard/home'
+    | '/dashboard/unhautorized'
+    | '/dashboard/admin/manage-owners'
+    | '/dashboard/admin/management/owners-list'
+    | '/dashboard/admin/management/owners-pos'
+    | '/dashboard/admin/management/owners-pos-users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -84,12 +204,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/dashboard/unhautorized': {
+      id: '/dashboard/unhautorized'
+      path: '/unhautorized'
+      fullPath: '/dashboard/unhautorized'
+      preLoaderRoute: typeof DashboardUnhautorizedRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/home': {
+      id: '/dashboard/home'
+      path: '/home'
+      fullPath: '/dashboard/home'
+      preLoaderRoute: typeof DashboardHomeRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/404': {
+      id: '/dashboard/404'
+      path: '/404'
+      fullPath: '/dashboard/404'
+      preLoaderRoute: typeof Dashboard404RouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/auth/login': {
       id: '/auth/login'
@@ -97,6 +231,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
+    }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/admin/manage-owners': {
+      id: '/dashboard/admin/manage-owners'
+      path: '/manage-owners'
+      fullPath: '/dashboard/admin/manage-owners'
+      preLoaderRoute: typeof DashboardAdminManageOwnersRouteImport
+      parentRoute: typeof DashboardAdminRouteRoute
+    }
+    '/dashboard/admin/management/owners-pos-users': {
+      id: '/dashboard/admin/management/owners-pos-users'
+      path: '/management/owners-pos-users'
+      fullPath: '/dashboard/admin/management/owners-pos-users'
+      preLoaderRoute: typeof DashboardAdminManagementOwnersPosUsersRouteImport
+      parentRoute: typeof DashboardAdminRouteRoute
+    }
+    '/dashboard/admin/management/owners-pos': {
+      id: '/dashboard/admin/management/owners-pos'
+      path: '/management/owners-pos'
+      fullPath: '/dashboard/admin/management/owners-pos'
+      preLoaderRoute: typeof DashboardAdminManagementOwnersPosRouteImport
+      parentRoute: typeof DashboardAdminRouteRoute
+    }
+    '/dashboard/admin/management/owners-list': {
+      id: '/dashboard/admin/management/owners-list'
+      path: '/management/owners-list'
+      fullPath: '/dashboard/admin/management/owners-list'
+      preLoaderRoute: typeof DashboardAdminManagementOwnersListRouteImport
+      parentRoute: typeof DashboardAdminRouteRoute
     }
   }
 }
@@ -113,10 +282,48 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface DashboardAdminRouteRouteChildren {
+  DashboardAdminManageOwnersRoute: typeof DashboardAdminManageOwnersRoute
+  DashboardAdminManagementOwnersListRoute: typeof DashboardAdminManagementOwnersListRoute
+  DashboardAdminManagementOwnersPosRoute: typeof DashboardAdminManagementOwnersPosRoute
+  DashboardAdminManagementOwnersPosUsersRoute: typeof DashboardAdminManagementOwnersPosUsersRoute
+}
+
+const DashboardAdminRouteRouteChildren: DashboardAdminRouteRouteChildren = {
+  DashboardAdminManageOwnersRoute: DashboardAdminManageOwnersRoute,
+  DashboardAdminManagementOwnersListRoute:
+    DashboardAdminManagementOwnersListRoute,
+  DashboardAdminManagementOwnersPosRoute:
+    DashboardAdminManagementOwnersPosRoute,
+  DashboardAdminManagementOwnersPosUsersRoute:
+    DashboardAdminManagementOwnersPosUsersRoute,
+}
+
+const DashboardAdminRouteRouteWithChildren =
+  DashboardAdminRouteRoute._addFileChildren(DashboardAdminRouteRouteChildren)
+
+interface DashboardRouteRouteChildren {
+  DashboardAdminRouteRoute: typeof DashboardAdminRouteRouteWithChildren
+  Dashboard404Route: typeof Dashboard404Route
+  DashboardHomeRoute: typeof DashboardHomeRoute
+  DashboardUnhautorizedRoute: typeof DashboardUnhautorizedRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAdminRouteRoute: DashboardAdminRouteRouteWithChildren,
+  Dashboard404Route: Dashboard404Route,
+  DashboardHomeRoute: DashboardHomeRoute,
+  DashboardUnhautorizedRoute: DashboardUnhautorizedRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

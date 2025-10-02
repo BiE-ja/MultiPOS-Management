@@ -5,4 +5,4 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type UserCreateEmployeeId = number | null;
+export type UserCreateEmployeeId = string | null;

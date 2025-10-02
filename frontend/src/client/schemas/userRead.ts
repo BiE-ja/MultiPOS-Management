@@ -20,7 +20,7 @@ export interface UserRead {
   last_name: string;
   phone: UserReadPhone;
   created_at?: UserReadCreatedAt;
-  id: number;
+  id: string;
   is_password_reinitialized: boolean;
   owned_areas?: UserReadOwnedAreas;
   employee: UserReadEmployee;

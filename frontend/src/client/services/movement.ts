@@ -109,7 +109,7 @@ export const useMovementCreate = <TError = HTTPValidationError,
  * @summary Read
  */
 export const movementRead = (
-    movementId: number,
+    movementId: string,
  signal?: AbortSignal
 ) => {
       
@@ -121,12 +121,12 @@ export const movementRead = (
     }
   
 
-export const getMovementReadQueryKey = (movementId?: number,) => {
+export const getMovementReadQueryKey = (movementId?: string,) => {
     return [`/api/v0.1/stock/${movementId}`] as const;
     }
 
     
-export const getMovementReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof movementRead>>>, TError = HTTPValidationError>(movementId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
+export const getMovementReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof movementRead>>>, TError = HTTPValidationError>(movementId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -149,7 +149,7 @@ export type MovementReadInfiniteQueryError = HTTPValidationError
 
 
 export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementRead>>>, TError = HTTPValidationError>(
- movementId: number, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
+ movementId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementRead>>,
           TError,
@@ -159,7 +159,7 @@ export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementRead>>>, TError = HTTPValidationError>(
- movementId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
+ movementId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementRead>>,
           TError,
@@ -169,7 +169,7 @@ export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementRead>>>, TError = HTTPValidationError>(
- movementId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
+ movementId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -177,7 +177,7 @@ export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<
  */
 
 export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementRead>>>, TError = HTTPValidationError>(
- movementId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
+ movementId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -192,7 +192,7 @@ export function useMovementReadInfinite<TData = InfiniteData<Awaited<ReturnType<
 
 
 
-export const getMovementReadQueryOptions = <TData = Awaited<ReturnType<typeof movementRead>>, TError = HTTPValidationError>(movementId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
+export const getMovementReadQueryOptions = <TData = Awaited<ReturnType<typeof movementRead>>, TError = HTTPValidationError>(movementId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -215,7 +215,7 @@ export type MovementReadQueryError = HTTPValidationError
 
 
 export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>, TError = HTTPValidationError>(
- movementId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
+ movementId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementRead>>,
           TError,
@@ -225,7 +225,7 @@ export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>, TError = HTTPValidationError>(
- movementId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
+ movementId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementRead>>,
           TError,
@@ -235,7 +235,7 @@ export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>, TError = HTTPValidationError>(
- movementId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
+ movementId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -243,7 +243,7 @@ export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>
  */
 
 export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>, TError = HTTPValidationError>(
- movementId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
+ movementId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -262,7 +262,7 @@ export function useMovementRead<TData = Awaited<ReturnType<typeof movementRead>>
  * @summary Cancel
  */
 export const movementCancel = (
-    movementId: number,
+    movementId: string,
  ) => {
       
       
@@ -275,8 +275,8 @@ export const movementCancel = (
 
 
 export const getMovementCancelMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof movementCancel>>, TError,{movementId: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof movementCancel>>, TError,{movementId: number}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof movementCancel>>, TError,{movementId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof movementCancel>>, TError,{movementId: string}, TContext> => {
 
 const mutationKey = ['movementCancel'];
 const {mutation: mutationOptions} = options ?
@@ -288,7 +288,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof movementCancel>>, {movementId: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof movementCancel>>, {movementId: string}> = (props) => {
           const {movementId} = props ?? {};
 
           return  movementCancel(movementId,)
@@ -307,11 +307,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Cancel
  */
 export const useMovementCancel = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof movementCancel>>, TError,{movementId: number}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof movementCancel>>, TError,{movementId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof movementCancel>>,
         TError,
-        {movementId: number},
+        {movementId: string},
         TContext
       > => {
 
@@ -323,7 +323,7 @@ export const useMovementCancel = <TError = HTTPValidationError,
  * @summary Product Track
  */
 export const movementProductTrack = (
-    productId: number,
+    productId: string,
     params: MovementProductTrackParams,
  signal?: AbortSignal
 ) => {
@@ -337,13 +337,13 @@ export const movementProductTrack = (
     }
   
 
-export const getMovementProductTrackQueryKey = (productId?: number,
+export const getMovementProductTrackQueryKey = (productId?: string,
     params?: MovementProductTrackParams,) => {
     return [`/api/v0.1/stock/product/${productId}/history`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getMovementProductTrackInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof movementProductTrack>>>, TError = HTTPValidationError>(productId: number,
+export const getMovementProductTrackInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof movementProductTrack>>>, TError = HTTPValidationError>(productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>>, }
 ) => {
 
@@ -367,7 +367,7 @@ export type MovementProductTrackInfiniteQueryError = HTTPValidationError
 
 
 export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementProductTrack>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementProductTrack>>,
@@ -378,7 +378,7 @@ export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<Ret
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementProductTrack>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementProductTrack>>,
@@ -389,7 +389,7 @@ export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<Ret
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementProductTrack>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -398,7 +398,7 @@ export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<Ret
  */
 
 export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<ReturnType<typeof movementProductTrack>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -414,7 +414,7 @@ export function useMovementProductTrackInfinite<TData = InfiniteData<Awaited<Ret
 
 
 
-export const getMovementProductTrackQueryOptions = <TData = Awaited<ReturnType<typeof movementProductTrack>>, TError = HTTPValidationError>(productId: number,
+export const getMovementProductTrackQueryOptions = <TData = Awaited<ReturnType<typeof movementProductTrack>>, TError = HTTPValidationError>(productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>>, }
 ) => {
 
@@ -438,7 +438,7 @@ export type MovementProductTrackQueryError = HTTPValidationError
 
 
 export function useMovementProductTrack<TData = Awaited<ReturnType<typeof movementProductTrack>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementProductTrack>>,
@@ -449,7 +449,7 @@ export function useMovementProductTrack<TData = Awaited<ReturnType<typeof moveme
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementProductTrack<TData = Awaited<ReturnType<typeof movementProductTrack>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof movementProductTrack>>,
@@ -460,7 +460,7 @@ export function useMovementProductTrack<TData = Awaited<ReturnType<typeof moveme
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useMovementProductTrack<TData = Awaited<ReturnType<typeof movementProductTrack>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -469,7 +469,7 @@ export function useMovementProductTrack<TData = Awaited<ReturnType<typeof moveme
  */
 
 export function useMovementProductTrack<TData = Awaited<ReturnType<typeof movementProductTrack>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: MovementProductTrackParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof movementProductTrack>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

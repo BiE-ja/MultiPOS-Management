@@ -6,7 +6,7 @@
  */
 
 export type ProductDashboardParams = {
-area_id: number;
+area_id: string;
 skip?: number;
 limit?: number;
 };

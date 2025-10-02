@@ -1,7 +1,7 @@
 import {NavLink, Stack, Title} from "@mantine/core";
 import {menu} from "./menu-sections";
 import classes from "./sidebar.module.css";
-import {useLocation} from "@tanstack/react-router";
+import {Link, useLocation} from "@tanstack/react-router";
 
 export function Sidebar() {
     const {pathname} = useLocation();
@@ -27,7 +27,7 @@ export function Sidebar() {
                                 {subItem.dropdownItems?.map((dropdownItem) => (
                                     <NavLink
                                         variant="subtle"
-                                        component={RouterLink}
+                                        component={Link}
                                         to={dropdownItem.href}
                                         key={dropdownItem.name}
                                         label={dropdownItem.name}
@@ -44,7 +44,7 @@ export function Sidebar() {
                         ) : (
                             <NavLink
                                 variant="subtle"
-                                component={RouterLink}
+                                component={Link}
                                 to={subItem.href}
                                 key={subItem.name}
                                 label={subItem.name}

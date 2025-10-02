@@ -1,25 +1,24 @@
+import uuid
 from fastapi import APIRouter, HTTPException, status
 from typing import List
 from datetime import datetime
 
 from app.api.dependencies import (
-    SessionDep, CurrentUserDep, verify_area_access, 
+    SessionDep,
+    CurrentUserDep,
+    verify_area_access,
 )
-from app.schemas.operation.stock_schema import (
+from app.dto.schemas.operation.stock_schema import (
     StockMovementCreate,
     StockMovementRead,
 )
-from app.crud.operation_crud import StockManager
+from app.dto.crud.operation_crud import StockManager
 
 router = APIRouter(prefix="/stock", tags=["movement"])
 
 
 @router.post("/", response_model=StockMovementRead, status_code=status.HTTP_201_CREATED)
-async def create(
-    data: StockMovementCreate,
-    session: SessionDep,
-    user: CurrentUserDep
-    ):  
+async def create(data: StockMovementCreate, session: SessionDep, user: CurrentUserDep):
     verify_area_access(data.area_id, user)
     manager = StockManager(session)
     try:
@@ -30,11 +29,7 @@ async def create(
 
 
 @router.get("/{movement_id}", response_model=StockMovementRead)
-async def read(
-    movement_id: int,
-    session: SessionDep,
-    user: CurrentUserDep
-):
+async def read(movement_id: uuid.UUID, session: SessionDep, user: CurrentUserDep):
     manager = StockManager(session)
     movement = await manager.get_stock_movement(movement_id)
     if not movement:
@@ -44,11 +39,7 @@ async def read(
 
 
 @router.delete("/{movement_id}", status_code=204)
-async def cancel(
-    movement_id: int,
-    session: SessionDep,
-    user: CurrentUserDep
-):
+async def cancel(movement_id: uuid.UUID, session: SessionDep, user: CurrentUserDep):
     manager = StockManager(session)
     movement_db = await manager.get_stock_movement(movement_id)
     verify_area_access(movement_db.area_id, user)
@@ -61,10 +52,10 @@ async def cancel(
 
 @router.get("/product/{product_id}/history", response_model=List[StockMovementRead])
 async def product_track(
-    product_id: int ,
-    area_id:int ,
-    date_begin: datetime ,
-    date_end: datetime ,
+    product_id: uuid.UUID,
+    area_id: uuid.UUID,
+    date_begin: datetime,
+    date_end: datetime,
     session: SessionDep,
     current_user: CurrentUserDep,
     skip: int = 0,

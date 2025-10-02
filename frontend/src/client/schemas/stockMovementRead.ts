@@ -4,18 +4,20 @@
  * Tantana - Boutik
  * OpenAPI spec version: 0.1.0
  */
+import type { StockMovementReadProductLotId } from './stockMovementReadProductLotId';
 import type { StockMovementReadDateof } from './stockMovementReadDateof';
 import type { StockMovementReadQuantity } from './stockMovementReadQuantity';
 import type { StockMovementReadComment } from './stockMovementReadComment';
 
 export interface StockMovementRead {
-  area_id: number;
-  product_id: number;
+  area_id: string;
+  product_id: string;
+  product_lot_id?: StockMovementReadProductLotId;
   direction: string;
   operation: string;
   dateof: StockMovementReadDateof;
   quantity?: StockMovementReadQuantity;
   comment?: StockMovementReadComment;
-  id: number;
+  id: string;
   dateOf: Date;
 }

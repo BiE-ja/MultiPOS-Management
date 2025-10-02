@@ -46,8 +46,8 @@ import { customAxios } from '../custom-client';
  * @summary Read
  */
 export const employeeRead = (
-    areaId: number,
-    employeeId: number,
+    areaId: string,
+    employeeId: string,
  signal?: AbortSignal
 ) => {
       
@@ -59,14 +59,14 @@ export const employeeRead = (
     }
   
 
-export const getEmployeeReadQueryKey = (areaId?: number,
-    employeeId?: number,) => {
+export const getEmployeeReadQueryKey = (areaId?: string,
+    employeeId?: string,) => {
     return [`/api/v0.1/unit/employee/${areaId}/${employeeId}`] as const;
     }
 
     
-export const getEmployeeReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof employeeRead>>>, TError = HTTPValidationError>(areaId: number,
-    employeeId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
+export const getEmployeeReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof employeeRead>>>, TError = HTTPValidationError>(areaId: string,
+    employeeId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -89,8 +89,8 @@ export type EmployeeReadInfiniteQueryError = HTTPValidationError
 
 
 export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof employeeRead>>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
+ areaId: string,
+    employeeId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof employeeRead>>,
           TError,
@@ -100,8 +100,8 @@ export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof employeeRead>>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
+ areaId: string,
+    employeeId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof employeeRead>>,
           TError,
@@ -111,8 +111,8 @@ export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof employeeRead>>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
+ areaId: string,
+    employeeId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -120,8 +120,8 @@ export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<
  */
 
 export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof employeeRead>>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
+ areaId: string,
+    employeeId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -136,8 +136,8 @@ export function useEmployeeReadInfinite<TData = InfiniteData<Awaited<ReturnType<
 
 
 
-export const getEmployeeReadQueryOptions = <TData = Awaited<ReturnType<typeof employeeRead>>, TError = HTTPValidationError>(areaId: number,
-    employeeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
+export const getEmployeeReadQueryOptions = <TData = Awaited<ReturnType<typeof employeeRead>>, TError = HTTPValidationError>(areaId: string,
+    employeeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -160,8 +160,8 @@ export type EmployeeReadQueryError = HTTPValidationError
 
 
 export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
+ areaId: string,
+    employeeId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof employeeRead>>,
           TError,
@@ -171,8 +171,8 @@ export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
+ areaId: string,
+    employeeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof employeeRead>>,
           TError,
@@ -182,8 +182,8 @@ export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
+ areaId: string,
+    employeeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -191,8 +191,8 @@ export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>
  */
 
 export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>, TError = HTTPValidationError>(
- areaId: number,
-    employeeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
+ areaId: string,
+    employeeId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof employeeRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -211,8 +211,8 @@ export function useEmployeeRead<TData = Awaited<ReturnType<typeof employeeRead>>
  * @summary Update
  */
 export const employeeUpdate = (
-    areaId: number,
-    employeeId: number,
+    areaId: string,
+    employeeId: string,
     employeeUpdate: EmployeeUpdate,
  ) => {
       
@@ -228,8 +228,8 @@ export const employeeUpdate = (
 
 
 export const getEmployeeUpdateMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeUpdate>>, TError,{areaId: number;employeeId: number;data: EmployeeUpdate}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof employeeUpdate>>, TError,{areaId: number;employeeId: number;data: EmployeeUpdate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeUpdate>>, TError,{areaId: string;employeeId: string;data: EmployeeUpdate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof employeeUpdate>>, TError,{areaId: string;employeeId: string;data: EmployeeUpdate}, TContext> => {
 
 const mutationKey = ['employeeUpdate'];
 const {mutation: mutationOptions} = options ?
@@ -241,7 +241,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeUpdate>>, {areaId: number;employeeId: number;data: EmployeeUpdate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeUpdate>>, {areaId: string;employeeId: string;data: EmployeeUpdate}> = (props) => {
           const {areaId,employeeId,data} = props ?? {};
 
           return  employeeUpdate(areaId,employeeId,data,)
@@ -260,11 +260,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Update
  */
 export const useEmployeeUpdate = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeUpdate>>, TError,{areaId: number;employeeId: number;data: EmployeeUpdate}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeUpdate>>, TError,{areaId: string;employeeId: string;data: EmployeeUpdate}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof employeeUpdate>>,
         TError,
-        {areaId: number;employeeId: number;data: EmployeeUpdate},
+        {areaId: string;employeeId: string;data: EmployeeUpdate},
         TContext
       > => {
 
@@ -276,8 +276,8 @@ export const useEmployeeUpdate = <TError = HTTPValidationError,
  * @summary Delete
  */
 export const employeeDelete = (
-    areaId: number,
-    employeeId: number,
+    areaId: string,
+    employeeId: string,
  ) => {
       
       
@@ -290,8 +290,8 @@ export const employeeDelete = (
 
 
 export const getEmployeeDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeDelete>>, TError,{areaId: number;employeeId: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof employeeDelete>>, TError,{areaId: number;employeeId: number}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeDelete>>, TError,{areaId: string;employeeId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof employeeDelete>>, TError,{areaId: string;employeeId: string}, TContext> => {
 
 const mutationKey = ['employeeDelete'];
 const {mutation: mutationOptions} = options ?
@@ -303,7 +303,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeDelete>>, {areaId: number;employeeId: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeDelete>>, {areaId: string;employeeId: string}> = (props) => {
           const {areaId,employeeId} = props ?? {};
 
           return  employeeDelete(areaId,employeeId,)
@@ -322,11 +322,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Delete
  */
 export const useEmployeeDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeDelete>>, TError,{areaId: number;employeeId: number}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeDelete>>, TError,{areaId: string;employeeId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof employeeDelete>>,
         TError,
-        {areaId: number;employeeId: number},
+        {areaId: string;employeeId: string},
         TContext
       > => {
 
@@ -338,7 +338,7 @@ export const useEmployeeDelete = <TError = HTTPValidationError,
  * @summary Create
  */
 export const employeeCreate = (
-    areaId: number,
+    areaId: string,
     employeeCreate: EmployeeCreate,
  signal?: AbortSignal
 ) => {
@@ -355,8 +355,8 @@ export const employeeCreate = (
 
 
 export const getEmployeeCreateMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeCreate>>, TError,{areaId: number;data: EmployeeCreate}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof employeeCreate>>, TError,{areaId: number;data: EmployeeCreate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeCreate>>, TError,{areaId: string;data: EmployeeCreate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof employeeCreate>>, TError,{areaId: string;data: EmployeeCreate}, TContext> => {
 
 const mutationKey = ['employeeCreate'];
 const {mutation: mutationOptions} = options ?
@@ -368,7 +368,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeCreate>>, {areaId: number;data: EmployeeCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeCreate>>, {areaId: string;data: EmployeeCreate}> = (props) => {
           const {areaId,data} = props ?? {};
 
           return  employeeCreate(areaId,data,)
@@ -387,11 +387,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Create
  */
 export const useEmployeeCreate = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeCreate>>, TError,{areaId: number;data: EmployeeCreate}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof employeeCreate>>, TError,{areaId: string;data: EmployeeCreate}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof employeeCreate>>,
         TError,
-        {areaId: number;data: EmployeeCreate},
+        {areaId: string;data: EmployeeCreate},
         TContext
       > => {
 

@@ -31,6 +31,6 @@ export const privateCreateUserResponse = zod.object({
   "last_name": zod.string(),
   "phone": zod.union([zod.string(),zod.null()]),
   "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
-  "id": zod.number()
+  "id": zod.uuid()
 })
 

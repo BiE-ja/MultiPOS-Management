@@ -13,7 +13,6 @@ import {HandleError} from "utilities/handleError";
 import {CustomNotifications} from "@components/customNotification";
 import {useAuthContext} from "./useAuthContext";
 import {paths} from "config/paths";
-import {userHome} from "utilities/utils";
 
 const isLoggedIn = () => {
     return localStorage.getItem("access_token") !== null;
@@ -55,11 +54,12 @@ const useAuth = () => {
             // enregistrement du token
             localStorage.setItem("access_token", token.access_token);
             // synchronisation avec le contexte
-            const me = await usersAuth();
+            let me = user;
+            if (me == null || me == undefined) me = await usersAuth();
             setUser(me);
             setIsAuthenticated(true);
             // redirection vers l'acceuil correspondant
-            navigate({to: userHome(me)});
+            navigate({to: paths.dashboard.home});
             // Affichage d'une notification
             CustomNotifications.show({
                 type: "success",

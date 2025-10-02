@@ -4,7 +4,7 @@ set -e
 set -x
 
 # Active ton venv si nécessaire (ex: .venv)
-source backend/venv/Scripts/activate
+source backend/.venv/Scripts/activate
 
 cd backend
 PYTHONPATH=.. python -c "import app.main; import json; print(json.dumps(app.main.app.openapi()))" > ../openapi.json

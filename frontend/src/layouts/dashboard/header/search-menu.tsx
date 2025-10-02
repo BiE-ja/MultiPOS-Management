@@ -5,6 +5,7 @@ import {
     PiFileDuotone,
     PiMagnifyingGlassBold as SearchIcon,
 } from "react-icons/pi";
+import {firstStore} from "../spotlightstore";
 
 const actions: SpotlightActionData[] = [
     {
@@ -33,6 +34,7 @@ const actions: SpotlightActionData[] = [
 export function SearchMenu() {
     return (
         <Spotlight
+            store={firstStore}
             actions={actions}
             nothingFound="Nothing found..."
             highlightQuery

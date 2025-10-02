@@ -51,7 +51,10 @@ export const confirmPasswordRules = (
 // to redirect user to the dashbord
 export function userHome(user: UserAuth) {
     const redirect = paths.dashboard.home;
-    if (user.roles.length < 1) getDashboardPathForRole(user.roles[0].name);
+    if (user.is_superuser)
+        if (user.roles.length < 1)
+            //redirect = paths.dashboard.admin.management.users.list;
+            getDashboardPathForRole(user.roles[0].name);
 
     return redirect;
 }

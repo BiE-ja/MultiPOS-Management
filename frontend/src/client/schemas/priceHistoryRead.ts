@@ -7,9 +7,9 @@
 import type { PriceType } from './priceType';
 
 export interface PriceHistoryRead {
-  product_id: number;
+  product_id: string;
   type: PriceType;
   value: number;
-  id: number;
+  id: string;
   date: Date;
 }

@@ -3,7 +3,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 
 def getSortableFields() -> dict[str, InstrumentedAttribute[object]]:
-    from models.management.unit import User
+    from app.dto.models.models import User
 
     return {
         "id": User.id,

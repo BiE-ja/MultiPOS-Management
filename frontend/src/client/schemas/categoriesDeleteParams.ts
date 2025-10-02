@@ -6,5 +6,5 @@
  */
 
 export type CategoriesDeleteParams = {
-area_id: number;
+area_id: string;
 };

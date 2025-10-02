@@ -5,4 +5,4 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type AreaReadOwnerId = number | null;
+export type AreaReadOwnerId = string | null;

@@ -11,5 +11,5 @@ export interface RoleRead {
   name: string;
   description: RoleReadDescription;
   permission: RoleReadPermission;
-  id: number;
+  id: string;
 }

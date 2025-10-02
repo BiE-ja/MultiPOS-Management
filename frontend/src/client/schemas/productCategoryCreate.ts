@@ -7,5 +7,5 @@
 
 export interface ProductCategoryCreate {
   cat_name: string;
-  area_id: number;
+  area_id: string;
 }

@@ -60,13 +60,17 @@ export const menu: MenuItem[] = [
         header: "Management",
         section: [
             {
-                name: "Customers",
+                name: "Owners",
                 icon: PiUsersDuotone,
-                href: paths.dashboard.management.customers.root,
+                href: paths.dashboard.admin.management.owners.root,
                 dropdownItems: [
                     {
                         name: "List",
-                        href: paths.dashboard.management.customers.list,
+                        href: paths.dashboard.admin.management.owners.list,
+                    },
+                    {
+                        name: "Point of sale",
+                        href: paths.dashboard.admin.management.owners.pos.root,
                     },
                 ],
             },

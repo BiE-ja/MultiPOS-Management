@@ -1,10 +1,17 @@
 from typing import List
+import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.schemas.management.unit_schema import AreaCreate, AreaRead, UsersPublic
-from app.api.dependencies import SessionDep, CurrentUserDep, require_superuser_or_owner, verify_area_access
-from app.crud.management_crud import POS_Manager
-from app.models.utils import Message
+from app.dto.schemas.management.unit_schema import AreaCreate, AreaDetails, AreaRead, AreaUpdate, UsersPublic
+from app.api.dependencies import (
+    SessionDep,
+    CurrentUserDep,
+    require_superuser,
+    require_superuser_or_owner,
+    verify_area_access,
+)
+from app.dto.crud.management_crud import POS_Manager
+from app.dto.models.utils import Message
 
 router = APIRouter(prefix="/unit", tags=["Zone"])
 
@@ -23,7 +30,7 @@ async def create(data: AreaCreate, user: CurrentUserDep, session: SessionDep):
 
 
 @router.get("/{area_id}", response_model=AreaRead)
-async def read(area_id: int, session: SessionDep, current_user: CurrentUserDep):
+async def read(area_id: uuid.UUID, session: SessionDep, current_user: CurrentUserDep):
     verify_area_access(area_id, current_user)
     area = await POS_Manager(session).get_Area(area_id)
     if not area:
@@ -32,7 +39,7 @@ async def read(area_id: int, session: SessionDep, current_user: CurrentUserDep):
 
 
 @router.delete("/{area_id}", response_model=Message)
-async def delete(area_id: int, session: SessionDep, user: CurrentUserDep):
+async def delete(area_id: uuid.UUID, session: SessionDep, user: CurrentUserDep):
     verify_area_access(area_id, user)
     try:
         await POS_Manager(session).delete_area(area_id)
@@ -42,16 +49,16 @@ async def delete(area_id: int, session: SessionDep, user: CurrentUserDep):
 
 
 @router.put("/{area_id}", dependencies=[Depends(require_superuser_or_owner)], response_model=UsersPublic)
-async def update(area_id: int, session: SessionDep, owner: CurrentUserDep):
+async def update(area_id: uuid.UUID, area: AreaUpdate, session: SessionDep, owner: CurrentUserDep):
     verify_area_access(area_id, owner)
     manager = POS_Manager(session)
     try:
-        return await manager.delete_area(area_id)
+        return await manager.update_Area(area_id, area)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.get("/list", dependencies=[Depends(require_superuser_or_owner)], response_model=List[AreaRead])
+@router.get("/list", dependencies=[Depends(require_superuser_or_owner)], response_model=List[AreaDetails])
 async def list_all(session: SessionDep, user: CurrentUserDep):
     if user.is_superuser:
         raise HTTPException(
@@ -59,3 +66,9 @@ async def list_all(session: SessionDep, user: CurrentUserDep):
         )
     data = await POS_Manager(session).list_managed_area(user.id)
     return list(map(AreaRead.model_validate, data))
+
+
+@router.get("/admin/list-pos-of/{user_id}", dependencies=[Depends(require_superuser)], response_model=List[AreaDetails])
+async def list_all_by_admin(session: SessionDep, user_id: uuid.UUID):
+    data = await POS_Manager(session).list_managed_area(user_id)
+    return list(map(AreaDetails.model_validate, data))

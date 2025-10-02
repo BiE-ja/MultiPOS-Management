@@ -15,55 +15,55 @@ import {
  */
 export const categoriesCreateBody = zod.object({
   "cat_name": zod.string(),
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 export const categoriesCreateResponse = zod.object({
   "cat_name": zod.string(),
-  "area_id": zod.number(),
-  "id": zod.number()
+  "area_id": zod.uuid(),
+  "id": zod.uuid()
 })
 
 /**
  * @summary Read
  */
 export const categoriesReadParams = zod.object({
-  "category_id": zod.number()
+  "category_id": zod.uuid()
 })
 
 export const categoriesReadResponse = zod.object({
   "cat_name": zod.string(),
-  "area_id": zod.number(),
-  "id": zod.number()
+  "area_id": zod.uuid(),
+  "id": zod.uuid()
 })
 
 /**
  * @summary Update
  */
 export const categoriesUpdateParams = zod.object({
-  "category_id": zod.number()
+  "category_id": zod.uuid()
 })
 
 export const categoriesUpdateBody = zod.object({
-  "area_id": zod.union([zod.number(),zod.null()]),
+  "area_id": zod.union([zod.uuid(),zod.null()]),
   "cat_name": zod.union([zod.string(),zod.null()])
 })
 
 export const categoriesUpdateResponse = zod.object({
   "cat_name": zod.string(),
-  "area_id": zod.number(),
-  "id": zod.number()
+  "area_id": zod.uuid(),
+  "id": zod.uuid()
 })
 
 /**
  * @summary Delete
  */
 export const categoriesDeleteParams = zod.object({
-  "category_id": zod.number()
+  "category_id": zod.uuid()
 })
 
 export const categoriesDeleteQueryParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 /**
@@ -82,8 +82,8 @@ export const categoriesFetchAllQueryParams = zod.object({
 
 export const categoriesFetchAllResponseItem = zod.object({
   "cat_name": zod.string(),
-  "area_id": zod.number(),
-  "id": zod.number()
+  "area_id": zod.uuid(),
+  "id": zod.uuid()
 })
 export const categoriesFetchAllResponse = zod.array(categoriesFetchAllResponseItem)
 

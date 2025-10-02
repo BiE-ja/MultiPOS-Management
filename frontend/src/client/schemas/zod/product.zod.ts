@@ -18,7 +18,7 @@ export const productCreateBody = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
@@ -30,12 +30,12 @@ export const productCreateResponse = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
   "actual_stock": zod.union([zod.number(),zod.null()]),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "state": zod.enum(['pending', 'valided', 'rejected'])
 })
 
@@ -43,7 +43,7 @@ export const productCreateResponse = zod.object({
  * @summary Read
  */
 export const productReadParams = zod.object({
-  "product_id": zod.number()
+  "product_id": zod.uuid()
 })
 
 export const productReadResponse = zod.object({
@@ -51,12 +51,12 @@ export const productReadResponse = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
   "actual_stock": zod.union([zod.number(),zod.null()]),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "state": zod.enum(['pending', 'valided', 'rejected'])
 })
 
@@ -64,7 +64,7 @@ export const productReadResponse = zod.object({
  * @summary Update
  */
 export const productUpdateParams = zod.object({
-  "product_id": zod.number()
+  "product_id": zod.uuid()
 })
 
 export const productUpdateBody = zod.object({
@@ -72,14 +72,14 @@ export const productUpdateBody = zod.object({
   "name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]).optional(),
   "category_name": zod.union([zod.string(),zod.null()]).optional(),
-  "area_id": zod.union([zod.number(),zod.null()]).optional(),
+  "area_id": zod.union([zod.uuid(),zod.null()]).optional(),
   "state": zod.union([zod.enum(['pending', 'valided', 'rejected']),zod.null()]).optional(),
   "sale_price": zod.union([zod.number(),zod.null()]).optional(),
   "purchase_price": zod.union([zod.number(),zod.null()]).optional(),
   "init_stock": zod.union([zod.number(),zod.null()]).optional(),
   "actual_stock": zod.union([zod.number(),zod.null()]).optional(),
   "comment": zod.union([zod.string(),zod.null()]).optional(),
-  "updated_by_id": zod.union([zod.number(),zod.null()]).optional()
+  "updated_by_id": zod.union([zod.uuid(),zod.null()]).optional()
 })
 
 export const productUpdateResponse = zod.object({
@@ -87,12 +87,12 @@ export const productUpdateResponse = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
   "actual_stock": zod.union([zod.number(),zod.null()]),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "state": zod.enum(['pending', 'valided', 'rejected'])
 })
 
@@ -100,11 +100,11 @@ export const productUpdateResponse = zod.object({
  * @summary Delete
  */
 export const productDeleteParams = zod.object({
-  "product_id": zod.number()
+  "product_id": zod.uuid()
 })
 
 export const productDeleteQueryParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 /**
@@ -112,7 +112,7 @@ export const productDeleteQueryParams = zod.object({
  * @summary Fetch All
  */
 export const productFetchAllParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 export const productFetchAllQuerySkipDefault = 0;export const productFetchAllQueryLimitDefault = 10;
@@ -127,12 +127,12 @@ export const productFetchAllResponseItem = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
   "actual_stock": zod.union([zod.number(),zod.null()]),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "state": zod.enum(['pending', 'valided', 'rejected'])
 })
 export const productFetchAllResponse = zod.array(productFetchAllResponseItem)
@@ -142,7 +142,7 @@ export const productFetchAllResponse = zod.array(productFetchAllResponseItem)
  * @summary Fetch All For Superuser
  */
 export const productFetchAllForSuperuserParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 export const productFetchAllForSuperuserQuerySkipDefault = 0;export const productFetchAllForSuperuserQueryLimitDefault = 10;
@@ -161,28 +161,28 @@ export const productFetchAllForSuperuserBody = zod.object({
   "last_name": zod.string(),
   "phone": zod.union([zod.string(),zod.null()]),
   "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "is_password_reinitialized": zod.boolean(),
   "owned_areas": zod.union([zod.array(zod.object({
   "name": zod.string(),
   "location": zod.union([zod.string(),zod.null()]).optional(),
-  "owner_id": zod.union([zod.number(),zod.null()]).optional(),
-  "id": zod.number()
+  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+  "id": zod.uuid()
 })),zod.null()]).optional(),
   "employee": zod.union([zod.object({
   "first_name": zod.string(),
   "last_name": zod.union([zod.string(),zod.null()]),
   "phone": zod.string(),
   "adress": zod.string(),
-  "id": zod.number(),
-  "area_id": zod.number(),
-  "user_id": zod.union([zod.number(),zod.null()])
+  "id": zod.uuid(),
+  "area_id": zod.uuid(),
+  "user_id": zod.union([zod.uuid(),zod.null()])
 }),zod.null()]),
   "roles": zod.array(zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "permission": zod.union([zod.array(zod.string()),zod.null()]),
-  "id": zod.number()
+  "id": zod.uuid()
 }))
 })
 
@@ -191,12 +191,12 @@ export const productFetchAllForSuperuserResponseItem = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
   "actual_stock": zod.union([zod.number(),zod.null()]),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "state": zod.enum(['pending', 'valided', 'rejected'])
 })
 export const productFetchAllForSuperuserResponse = zod.array(productFetchAllForSuperuserResponseItem)
@@ -207,7 +207,7 @@ export const productFetchAllForSuperuserResponse = zod.array(productFetchAllForS
 export const productDashboardQuerySkipDefault = 0;export const productDashboardQueryLimitDefault = 10;
 
 export const productDashboardQueryParams = zod.object({
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "skip": zod.number().optional(),
   "limit": zod.number().default(productDashboardQueryLimitDefault)
 })
@@ -217,12 +217,12 @@ export const productDashboardResponseItem = zod.object({
   "name": zod.string(),
   "description": zod.union([zod.string(),zod.null()]),
   "category_name": zod.union([zod.string(),zod.null()]),
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "price": zod.number(),
   "purchase_price": zod.union([zod.number(),zod.null()]),
   "init_stock": zod.union([zod.number(),zod.null()]),
   "actual_stock": zod.union([zod.number(),zod.null()]),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "state": zod.enum(['pending', 'valided', 'rejected']),
   "incoming_quantity": zod.union([zod.number(),zod.null()]).optional(),
   "outgoing_quantity": zod.union([zod.number(),zod.null()]).optional()
@@ -233,23 +233,23 @@ export const productDashboardResponse = zod.array(productDashboardResponseItem)
  * @summary Price History
  */
 export const productPriceHistoryParams = zod.object({
-  "product_id": zod.number()
+  "product_id": zod.uuid()
 })
 
 export const productPriceHistoryQuerySkipDefault = 0;export const productPriceHistoryQueryLimitDefault = 10;
 
 export const productPriceHistoryQueryParams = zod.object({
-  "area_id": zod.number(),
+  "area_id": zod.uuid(),
   "type": zod.enum(['sale', 'purchase']),
   "skip": zod.number().optional(),
   "limit": zod.number().default(productPriceHistoryQueryLimitDefault)
 })
 
 export const productPriceHistoryResponseItem = zod.object({
-  "product_id": zod.number(),
+  "product_id": zod.uuid(),
   "type": zod.enum(['sale', 'purchase']),
   "value": zod.number(),
-  "id": zod.number(),
+  "id": zod.uuid(),
   "date": zod.iso.datetime({})
 })
 export const productPriceHistoryResponse = zod.array(productPriceHistoryResponseItem)

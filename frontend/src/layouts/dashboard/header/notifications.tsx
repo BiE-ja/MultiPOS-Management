@@ -5,13 +5,13 @@ import {
     Avatar,
     Button,
     Drawer,
-    ElementProps,
+    type ElementProps,
     Indicator,
     Tooltip,
 } from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
-import {useGetNotifications} from "@/hooks/api";
-import {Notification} from "./notification";
+//import {useGetNotifications} from "@/hooks/api";
+//import {Notification} from "./notification";
 
 type NotificationsProps = Omit<
     ActionIconProps,
@@ -21,7 +21,7 @@ type NotificationsProps = Omit<
 
 export function Notifications(props: NotificationsProps) {
     const [opened, {open, close}] = useDisclosure(false);
-    const {data: notifications} = useGetNotifications();
+    //const {data: notifications} = useGetNotifications();
 
     const hasNewNotifications = true;
 
@@ -61,7 +61,7 @@ export function Notifications(props: NotificationsProps) {
                     </Drawer.Header>
 
                     <Drawer.Body p="0">
-                        {notifications?.map((notification) => (
+                        {/*notifications?.map((notification) => (
                             <Notification
                                 key={notification.id}
                                 title={notification.title}
@@ -74,7 +74,7 @@ export function Notifications(props: NotificationsProps) {
                                     />
                                 }
                             />
-                        ))}
+                        ))*/}
                     </Drawer.Body>
                 </Drawer.Content>
             </Drawer.Root>

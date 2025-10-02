@@ -117,7 +117,7 @@ export const useProductCreate = <TError = HTTPValidationError,
  * @summary Read
  */
 export const productRead = (
-    productId: number,
+    productId: string,
  signal?: AbortSignal
 ) => {
       
@@ -129,12 +129,12 @@ export const productRead = (
     }
   
 
-export const getProductReadQueryKey = (productId?: number,) => {
+export const getProductReadQueryKey = (productId?: string,) => {
     return [`/api/v0.1/product/${productId}`] as const;
     }
 
     
-export const getProductReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productRead>>>, TError = HTTPValidationError>(productId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
+export const getProductReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productRead>>>, TError = HTTPValidationError>(productId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -157,7 +157,7 @@ export type ProductReadInfiniteQueryError = HTTPValidationError
 
 
 export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productRead>>>, TError = HTTPValidationError>(
- productId: number, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
+ productId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productRead>>,
           TError,
@@ -167,7 +167,7 @@ export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<t
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productRead>>>, TError = HTTPValidationError>(
- productId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
+ productId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productRead>>,
           TError,
@@ -177,7 +177,7 @@ export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<t
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productRead>>>, TError = HTTPValidationError>(
- productId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
+ productId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -185,7 +185,7 @@ export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<t
  */
 
 export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productRead>>>, TError = HTTPValidationError>(
- productId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
+ productId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -200,7 +200,7 @@ export function useProductReadInfinite<TData = InfiniteData<Awaited<ReturnType<t
 
 
 
-export const getProductReadQueryOptions = <TData = Awaited<ReturnType<typeof productRead>>, TError = HTTPValidationError>(productId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
+export const getProductReadQueryOptions = <TData = Awaited<ReturnType<typeof productRead>>, TError = HTTPValidationError>(productId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -223,7 +223,7 @@ export type ProductReadQueryError = HTTPValidationError
 
 
 export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, TError = HTTPValidationError>(
- productId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
+ productId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productRead>>,
           TError,
@@ -233,7 +233,7 @@ export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, 
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, TError = HTTPValidationError>(
- productId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
+ productId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productRead>>,
           TError,
@@ -243,7 +243,7 @@ export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, 
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, TError = HTTPValidationError>(
- productId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
+ productId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -251,7 +251,7 @@ export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, 
  */
 
 export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, TError = HTTPValidationError>(
- productId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
+ productId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -270,7 +270,7 @@ export function useProductRead<TData = Awaited<ReturnType<typeof productRead>>, 
  * @summary Update
  */
 export const productUpdate = (
-    productId: number,
+    productId: string,
     productUpdate: ProductUpdate,
  ) => {
       
@@ -286,8 +286,8 @@ export const productUpdate = (
 
 
 export const getProductUpdateMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productUpdate>>, TError,{productId: number;data: ProductUpdate}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof productUpdate>>, TError,{productId: number;data: ProductUpdate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productUpdate>>, TError,{productId: string;data: ProductUpdate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof productUpdate>>, TError,{productId: string;data: ProductUpdate}, TContext> => {
 
 const mutationKey = ['productUpdate'];
 const {mutation: mutationOptions} = options ?
@@ -299,7 +299,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productUpdate>>, {productId: number;data: ProductUpdate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productUpdate>>, {productId: string;data: ProductUpdate}> = (props) => {
           const {productId,data} = props ?? {};
 
           return  productUpdate(productId,data,)
@@ -318,11 +318,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Update
  */
 export const useProductUpdate = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productUpdate>>, TError,{productId: number;data: ProductUpdate}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productUpdate>>, TError,{productId: string;data: ProductUpdate}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof productUpdate>>,
         TError,
-        {productId: number;data: ProductUpdate},
+        {productId: string;data: ProductUpdate},
         TContext
       > => {
 
@@ -334,7 +334,7 @@ export const useProductUpdate = <TError = HTTPValidationError,
  * @summary Delete
  */
 export const productDelete = (
-    productId: number,
+    productId: string,
     params: ProductDeleteParams,
  ) => {
       
@@ -349,8 +349,8 @@ export const productDelete = (
 
 
 export const getProductDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productDelete>>, TError,{productId: number;params: ProductDeleteParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof productDelete>>, TError,{productId: number;params: ProductDeleteParams}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productDelete>>, TError,{productId: string;params: ProductDeleteParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof productDelete>>, TError,{productId: string;params: ProductDeleteParams}, TContext> => {
 
 const mutationKey = ['productDelete'];
 const {mutation: mutationOptions} = options ?
@@ -362,7 +362,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productDelete>>, {productId: number;params: ProductDeleteParams}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof productDelete>>, {productId: string;params: ProductDeleteParams}> = (props) => {
           const {productId,params} = props ?? {};
 
           return  productDelete(productId,params,)
@@ -381,11 +381,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Delete
  */
 export const useProductDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productDelete>>, TError,{productId: number;params: ProductDeleteParams}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof productDelete>>, TError,{productId: string;params: ProductDeleteParams}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof productDelete>>,
         TError,
-        {productId: number;params: ProductDeleteParams},
+        {productId: string;params: ProductDeleteParams},
         TContext
       > => {
 
@@ -398,7 +398,7 @@ export const useProductDelete = <TError = HTTPValidationError,
  * @summary Fetch All
  */
 export const productFetchAll = (
-    areaId: number,
+    areaId: string,
     params?: ProductFetchAllParams,
  signal?: AbortSignal
 ) => {
@@ -412,13 +412,13 @@ export const productFetchAll = (
     }
   
 
-export const getProductFetchAllQueryKey = (areaId?: number,
+export const getProductFetchAllQueryKey = (areaId?: string,
     params?: ProductFetchAllParams,) => {
     return [`/api/v0.1/product/list/${areaId}`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getProductFetchAllInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productFetchAll>>>, TError = HTTPValidationError>(areaId: number,
+export const getProductFetchAllInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productFetchAll>>>, TError = HTTPValidationError>(areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>>, }
 ) => {
 
@@ -442,7 +442,7 @@ export type ProductFetchAllInfiniteQueryError = HTTPValidationError
 
 
 export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAll>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params: undefined |  ProductFetchAllParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productFetchAll>>,
@@ -453,7 +453,7 @@ export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnTy
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAll>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productFetchAll>>,
@@ -464,7 +464,7 @@ export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnTy
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAll>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -473,7 +473,7 @@ export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnTy
  */
 
 export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAll>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -489,7 +489,7 @@ export function useProductFetchAllInfinite<TData = InfiniteData<Awaited<ReturnTy
 
 
 
-export const getProductFetchAllQueryOptions = <TData = Awaited<ReturnType<typeof productFetchAll>>, TError = HTTPValidationError>(areaId: number,
+export const getProductFetchAllQueryOptions = <TData = Awaited<ReturnType<typeof productFetchAll>>, TError = HTTPValidationError>(areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>>, }
 ) => {
 
@@ -513,7 +513,7 @@ export type ProductFetchAllQueryError = HTTPValidationError
 
 
 export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetchAll>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params: undefined |  ProductFetchAllParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productFetchAll>>,
@@ -524,7 +524,7 @@ export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetc
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetchAll>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productFetchAll>>,
@@ -535,7 +535,7 @@ export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetc
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetchAll>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -544,7 +544,7 @@ export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetc
  */
 
 export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetchAll>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     params?: ProductFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAll>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -565,7 +565,7 @@ export function useProductFetchAll<TData = Awaited<ReturnType<typeof productFetc
  * @summary Fetch All For Superuser
  */
 export const productFetchAllForSuperuser = (
-    areaId: number,
+    areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams,
  signal?: AbortSignal
@@ -581,14 +581,14 @@ export const productFetchAllForSuperuser = (
     }
   
 
-export const getProductFetchAllForSuperuserQueryKey = (areaId?: number,
+export const getProductFetchAllForSuperuserQueryKey = (areaId?: string,
     userRead?: UserRead,
     params?: ProductFetchAllForSuperuserParams,) => {
     return [`/api/v0.1/product/superuser/list/${areaId}`, ...(params ? [params]: []), userRead] as const;
     }
 
     
-export const getProductFetchAllForSuperuserInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productFetchAllForSuperuser>>>, TError = HTTPValidationError>(areaId: number,
+export const getProductFetchAllForSuperuserInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productFetchAllForSuperuser>>>, TError = HTTPValidationError>(areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>>, }
 ) => {
@@ -613,7 +613,7 @@ export type ProductFetchAllForSuperuserInfiniteQueryError = HTTPValidationError
 
 
 export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAllForSuperuser>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params: undefined |  ProductFetchAllForSuperuserParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -625,7 +625,7 @@ export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awai
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAllForSuperuser>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -637,7 +637,7 @@ export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awai
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAllForSuperuser>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>>, }
  , queryClient?: QueryClient
@@ -647,7 +647,7 @@ export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awai
  */
 
 export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productFetchAllForSuperuser>>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>>, }
  , queryClient?: QueryClient 
@@ -664,7 +664,7 @@ export function useProductFetchAllForSuperuserInfinite<TData = InfiniteData<Awai
 
 
 
-export const getProductFetchAllForSuperuserQueryOptions = <TData = Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError = HTTPValidationError>(areaId: number,
+export const getProductFetchAllForSuperuserQueryOptions = <TData = Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError = HTTPValidationError>(areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>>, }
 ) => {
@@ -689,7 +689,7 @@ export type ProductFetchAllForSuperuserQueryError = HTTPValidationError
 
 
 export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params: undefined |  ProductFetchAllForSuperuserParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -701,7 +701,7 @@ export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -713,7 +713,7 @@ export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>>, }
  , queryClient?: QueryClient
@@ -723,7 +723,7 @@ export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof
  */
 
 export function useProductFetchAllForSuperuser<TData = Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError = HTTPValidationError>(
- areaId: number,
+ areaId: string,
     userRead: UserRead,
     params?: ProductFetchAllForSuperuserParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productFetchAllForSuperuser>>, TError, TData>>, }
  , queryClient?: QueryClient 
@@ -898,7 +898,7 @@ export function useProductDashboard<TData = Awaited<ReturnType<typeof productDas
  * @summary Price History
  */
 export const productPriceHistory = (
-    productId: number,
+    productId: string,
     params: ProductPriceHistoryParams,
  signal?: AbortSignal
 ) => {
@@ -912,13 +912,13 @@ export const productPriceHistory = (
     }
   
 
-export const getProductPriceHistoryQueryKey = (productId?: number,
+export const getProductPriceHistoryQueryKey = (productId?: string,
     params?: ProductPriceHistoryParams,) => {
     return [`/api/v0.1/product/price-history/${productId}`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getProductPriceHistoryInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productPriceHistory>>>, TError = HTTPValidationError>(productId: number,
+export const getProductPriceHistoryInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof productPriceHistory>>>, TError = HTTPValidationError>(productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>>, }
 ) => {
 
@@ -942,7 +942,7 @@ export type ProductPriceHistoryInfiniteQueryError = HTTPValidationError
 
 
 export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productPriceHistory>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productPriceHistory>>,
@@ -953,7 +953,7 @@ export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<Retu
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productPriceHistory>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productPriceHistory>>,
@@ -964,7 +964,7 @@ export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<Retu
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productPriceHistory>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -973,7 +973,7 @@ export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<Retu
  */
 
 export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<ReturnType<typeof productPriceHistory>>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -989,7 +989,7 @@ export function useProductPriceHistoryInfinite<TData = InfiniteData<Awaited<Retu
 
 
 
-export const getProductPriceHistoryQueryOptions = <TData = Awaited<ReturnType<typeof productPriceHistory>>, TError = HTTPValidationError>(productId: number,
+export const getProductPriceHistoryQueryOptions = <TData = Awaited<ReturnType<typeof productPriceHistory>>, TError = HTTPValidationError>(productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>>, }
 ) => {
 
@@ -1013,7 +1013,7 @@ export type ProductPriceHistoryQueryError = HTTPValidationError
 
 
 export function useProductPriceHistory<TData = Awaited<ReturnType<typeof productPriceHistory>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof productPriceHistory>>,
@@ -1024,7 +1024,7 @@ export function useProductPriceHistory<TData = Awaited<ReturnType<typeof product
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductPriceHistory<TData = Awaited<ReturnType<typeof productPriceHistory>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof productPriceHistory>>,
@@ -1035,7 +1035,7 @@ export function useProductPriceHistory<TData = Awaited<ReturnType<typeof product
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useProductPriceHistory<TData = Awaited<ReturnType<typeof productPriceHistory>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -1044,7 +1044,7 @@ export function useProductPriceHistory<TData = Awaited<ReturnType<typeof product
  */
 
 export function useProductPriceHistory<TData = Awaited<ReturnType<typeof productPriceHistory>>, TError = HTTPValidationError>(
- productId: number,
+ productId: string,
     params: ProductPriceHistoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof productPriceHistory>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

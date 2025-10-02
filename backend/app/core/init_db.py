@@ -1,4 +1,3 @@
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -8,24 +7,23 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 async def init_db(session: AsyncSession):
     # local import to avoid circular dependencies
-    from core.config import settings
-    from app.crud.deps import UserManager
-    from backend.app.models.management.unit import User
-    from backend.app.schemas.management.unit_schema import UserCreate
+    from app.core.config import settings
+    from app.dto.crud.management_crud import POS_Manager
+    from app.dto.schemas.management.unit_schema import UserCreate
 
     # Tables should be created with Alembic migrations
     # add info of superuser in db
-    resultat = await session.execute(select(User).where(User.email == settings.FIRST_SUPERUSER))
-    user = resultat.scalar_one_or_none()
+    user = await POS_Manager(session).get_user_by_email(email=settings.FIRST_SUPERUSER)
     if not user:
         user_in = UserCreate(
             email=settings.FIRST_SUPERUSER,
             is_superuser=True,
-            is_active=False,
+            is_active=True,
             is_owner=False,
-            password=settings.FIRST_SUPERUSER,
+            password=settings.FIRST_SUPERUSER_PASSWORD,
             last_name="Admin",
             phone="XXX-XX-XXX-XX",
         )
-        user = await UserManager(session).createUser(user_in)
+        user = await POS_Manager(session).createUser(user_in)
+
     return user

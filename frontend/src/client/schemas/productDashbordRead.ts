@@ -18,12 +18,12 @@ export interface ProductDashbordRead {
   name: string;
   description: ProductDashbordReadDescription;
   category_name: ProductDashbordReadCategoryName;
-  area_id: number;
+  area_id: string;
   price: number;
   purchase_price: ProductDashbordReadPurchasePrice;
   init_stock: ProductDashbordReadInitStock;
   actual_stock: ProductDashbordReadActualStock;
-  id: number;
+  id: string;
   state: ProductCreationState;
   incoming_quantity?: ProductDashbordReadIncomingQuantity;
   outgoing_quantity?: ProductDashbordReadOutgoingQuantity;

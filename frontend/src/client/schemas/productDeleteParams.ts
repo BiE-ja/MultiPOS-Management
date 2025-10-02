@@ -6,5 +6,5 @@
  */
 
 export type ProductDeleteParams = {
-area_id: number;
+area_id: string;
 };

@@ -12,7 +12,7 @@ export interface EmployeeRead {
   last_name: EmployeeReadLastName;
   phone: string;
   adress: string;
-  id: number;
-  area_id: number;
+  id: string;
+  area_id: string;
   user_id: EmployeeReadUserId;
 }

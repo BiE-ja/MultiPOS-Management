@@ -15,7 +15,7 @@ export interface ProductCreate {
   name: string;
   description: ProductCreateDescription;
   category_name: ProductCreateCategoryName;
-  area_id: number;
+  area_id: string;
   price: number;
   purchase_price: ProductCreatePurchasePrice;
   init_stock: ProductCreateInitStock;

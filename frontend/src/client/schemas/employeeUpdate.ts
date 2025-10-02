@@ -10,8 +10,8 @@ import type { EmployeeUpdatePhone } from './employeeUpdatePhone';
 import type { EmployeeUpdateAdress } from './employeeUpdateAdress';
 
 export interface EmployeeUpdate {
-  first_name: EmployeeUpdateFirstName;
-  last_name: EmployeeUpdateLastName;
-  phone: EmployeeUpdatePhone;
-  adress: EmployeeUpdateAdress;
+  first_name?: EmployeeUpdateFirstName;
+  last_name?: EmployeeUpdateLastName;
+  phone?: EmployeeUpdatePhone;
+  adress?: EmployeeUpdateAdress;
 }

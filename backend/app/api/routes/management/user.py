@@ -1,8 +1,9 @@
 from typing import Any, Literal
+import uuid
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 
-from app.schemas.management.unit_schema import (
+from app.dto.schemas.management.unit_schema import (
     OwnersRead,
     UpdatedPassword,
     UserAuth,
@@ -14,17 +15,25 @@ from app.schemas.management.unit_schema import (
     UserUpdateMe,
     UsersPublic,
 )
-from app.api.dependencies import SessionDep, CurrentUserDep, require_superuser_or_owner, verify_area_access
-from app.crud.management_crud import POS_Manager
-from app.models.utils import Message
-from app.models.management.unit import User
+from app.api.dependencies import (
+    SessionDep,
+    CurrentUserDep,
+    require_superuser,
+    require_superuser_or_owner,
+    verify_area_access,
+)
+from app.dto.crud.management_crud import POS_Manager
+from app.dto.models.utils import Message
+from app.dto.models.models import User
 
 
 router = APIRouter(prefix="/unit", tags=["users"])
 
 
 @router.get("/users/list/{area_id}", dependencies=[Depends(require_superuser_or_owner)], response_model=UsersPublic)
-async def fetchAll(area_id: int, session: SessionDep, current_user: CurrentUserDep, skip: int = 0, limit: int = 10):
+async def fetchAll(
+    area_id: uuid.UUID, session: SessionDep, current_user: CurrentUserDep, skip: int = 0, limit: int = 10
+):
     """Get all users from area id
     List of all user for the area
     """
@@ -47,7 +56,7 @@ async def fetchAllByAdmin(session: SessionDep, current_user: CurrentUserDep, ski
 
 
 @router.get("/user/{area_id}/{user_id}", dependencies=[Depends(require_superuser_or_owner)], response_model=UserPublic)
-async def read(area_id: int, user_id: int, session: SessionDep, owner: CurrentUserDep):
+async def read(area_id: uuid.UUID, user_id: uuid.UUID, session: SessionDep, owner: CurrentUserDep):
     if not owner.is_superuser:
         verify_area_access(area_id, owner)
     try:
@@ -72,14 +81,16 @@ async def readMe(session: SessionDep, owner: CurrentUserDep, current_user: Curre
     response_model=UserPublic,
     status_code=status.HTTP_201_CREATED,
 )
-async def create(area_id: int, user_new: UserCreate, session: SessionDep, owner: CurrentUserDep):
+async def create(area_id: uuid.UUID, user_new: UserCreate, session: SessionDep, owner: CurrentUserDep):
     if not owner.is_superuser:
         verify_area_access(area_id, owner)
     return await POS_Manager(session).createUser(user_new)
 
 
 @router.put("/user/{area_id}/{user_id}", dependencies=[Depends(require_superuser_or_owner)], response_model=UserPublic)
-async def update(area_id: int, user_id: int, user_update: UserUpdate, session: SessionDep, user: CurrentUserDep):
+async def update(
+    area_id: uuid.UUID, user_id: uuid.UUID, user_update: UserUpdate, session: SessionDep, user: CurrentUserDep
+):
     if not user.is_superuser:
         verify_area_access(area_id, user)
     try:
@@ -117,7 +128,7 @@ async def update_me(user: UserUpdateMe, session: SessionDep, current_user: Curre
 
 
 @router.patch("/user/me/password", response_model=Message)
-async def update_password_me(pwd: UpdatedPassword, user_id: int, session: SessionDep, user: CurrentUserDep):
+async def update_password_me(pwd: UpdatedPassword, user_id: uuid.UUID, session: SessionDep, user: CurrentUserDep):
     if user_id != user.id:
         raise HTTPException(status_code=400, detail="Access Denied. Not enough privilege to do this action")
     manager = POS_Manager(session)
@@ -127,7 +138,7 @@ async def update_password_me(pwd: UpdatedPassword, user_id: int, session: Sessio
 
 
 @router.delete("/user/{area_id}/{user_id}", dependencies=[Depends(require_superuser_or_owner)], response_model=Message)
-async def delete(area_id: int, user_id: int, session: SessionDep, user: CurrentUserDep):
+async def delete(area_id: uuid.UUID, user_id: uuid.UUID, session: SessionDep, user: CurrentUserDep):
     """Delete user
     the operation is do by the user owner of an area or by the superuser
     user owner can delete only user in his area scope
@@ -153,7 +164,7 @@ async def delete_me(session: SessionDep, current_user: CurrentUserDep):
 
 
 @router.get("/user/{area_id}/{email}", dependencies=[Depends(require_superuser_or_owner)], response_model=UserPublic)
-async def read_by_email(area_id: int, email: str, session: SessionDep, owner: CurrentUserDep):
+async def read_by_email(area_id: uuid.UUID, email: str, session: SessionDep, owner: CurrentUserDep):
     if not owner.is_superuser:
         verify_area_access(area_id, owner)
     user = await POS_Manager(session).get_user_by_email(email)
@@ -179,7 +190,7 @@ async def register(session: SessionDep, user_in: UserRegister) -> Any:
     return user
 
 
-@router.get("/owners-list", response_model=OwnersRead)
+@router.get("/owners/list", response_model=OwnersRead)
 async def ownersList(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -195,12 +206,34 @@ async def ownersList(
         raise HTTPException(status_code=403, detail="Access Denied.")
     try:
         data = await POS_Manager(session).getAllOwners(sort_by, order, skip, limit)
+
         data_list = list(map(UserRead.model_validate, data))
         total_active = sum(owner.is_active for owner in data_list)
         total_pos = 0
         for owner in data_list:
-            owner_count_pos = await POS_Manager(session).count_pos(owner.id)
-            total_pos += owner_count_pos
+            # owner_count_pos = await POS_Manager(session).count_pos(owner.id)
+            if owner.owned_areas:
+                total_pos += len(owner.owned_areas)
         return OwnersRead(data=data_list, total=len(data_list), total_active=total_active, total_pos=total_pos)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # raise HTTPException(status_code=500, detail=str(e))
+        raise Exception(e)
+
+
+@router.post(
+    "/new-user",
+    response_model=UserPublic,
+    status_code=status.HTTP_201_CREATED,
+)
+async def createUserBySuperUser(user_new: UserCreate, session: SessionDep, current_user: CurrentUserDep):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Access Denied.")
+    return await POS_Manager(session).createUser(user_new)
+
+
+@router.put("/user/updated-by-admin/{user_id}", dependencies=[Depends(require_superuser)], response_model=UserPublic)
+async def updatedByAdmin(user_id: uuid.UUID, user_update: UserUpdate, session: SessionDep, user: CurrentUserDep):
+    try:
+        return await POS_Manager(session).updateUser(user_id, user_update)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))

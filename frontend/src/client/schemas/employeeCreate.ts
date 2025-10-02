@@ -11,5 +11,5 @@ export interface EmployeeCreate {
   last_name: EmployeeCreateLastName;
   phone: string;
   adress: string;
-  area_id: number;
+  area_id: string;
 }

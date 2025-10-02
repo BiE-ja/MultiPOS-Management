@@ -1,7 +1,7 @@
 # 🛒 Multi-Point-of-Sale Management System – Fullstack App
 
 > A modern and scalable fullstack application for managing one or multiple points of sale.  
-> Built with FastAPI on the backend and React (Vite + Chakra UI + TypeScript) on the frontend.
+> Built with FastAPI on the backend and React (Vite + Mantine UI + TypeScript) on the frontend.
 
 ---
 
@@ -10,42 +10,47 @@
 This project is currently under **active development**.
 
 ### ✅ Already implemented
-- Some Data modeling (SQLAlchemy)
-- Pydantic schemas
-- Initial CRUD logic
-- Some FastAPI routes
+
+-   Some Data modeling (SQLAlchemy)
+-   Pydantic schemas
+-   Initial CRUD logic
+-   JWT authentication
+-   Some FastAPI routes
+-   Frontend user management with React + Vite + Mantine
 
 ### 🔜 In Progress / Upcoming
-- JWT authentication & user roles
-- Full API endpoints
-- Frontend implementation (React + Vite + Chakra UI)
-- Multi-store support
-- Real-time sales tracking
-- Analytics with Recharts
-- OpenAI integration for smart features (TBD)
+
+-   User roles
+-   Full API endpoints
+-   Frontend implementation (React + Vite + Mantine UI)
+-   Multi-store support
+-   Real-time sales tracking
+-   Analytics with Recharts
 
 ---
 
 ## 🧱 Tech Stack
 
 ### 🖥️ Backend
-- Python 3.11
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- PostgreSQL
-- Alembic (planned)
-- Uvicorn
-- Docker
 
-### 💻 Frontend *(planned)*
-- React + Vite
-- TypeScript
-- Chakra UI
-- TanStack Router
-- TanStack Query
-- Recharts
-- OpenAI SDK
+-   Python 3.11
+-   FastAPI
+-   SQLAlchemy
+-   Pydantic
+-   PostgreSQL
+-   Alembic (planned)
+-   Uvicorn
+-   Docker
+
+### 💻 Frontend _(planned)_
+
+-   React + Vite
+-   TypeScript
+-   Mantine UI
+-   TanStack Router
+-   TanStack Query
+-   Recharts
+-   OpenAI SDK
 
 ---
 
@@ -77,7 +82,7 @@ pos-management/
 ├── backend/           # (Python app - FastAPI)
 │───app/
 │   ├── core/          # Configuration, settings
-│   ├── models/        # SQLAlchemy models
+│   ├── dto/           # SQLAlchemy models
 │   ├── schemas/       # Pydantic schemas
 │   ├── crud/          # Business logic
 │   ├── api/           # FastAPI routes
@@ -116,3 +121,4 @@ GitHub: @BiE-ja
 
 📝 License
 To be defined.
+```

@@ -17,15 +17,15 @@ import type { UserUpdateOwnedAres } from './userUpdateOwnedAres';
 import type { UserUpdateRoles } from './userUpdateRoles';
 
 export interface UserUpdate {
-  name: UserUpdateName;
+  name?: UserUpdateName;
   last_name?: UserUpdateLastName;
-  email: UserUpdateEmail;
-  password: UserUpdatePassword;
-  is_password_reinitialized: UserUpdateIsPasswordReinitialized;
-  is_active: UserUpdateIsActive;
-  is_superuser: UserUpdateIsSuperuser;
-  is_owner: UserUpdateIsOwner;
-  phone: UserUpdatePhone;
-  owned_ares: UserUpdateOwnedAres;
-  roles: UserUpdateRoles;
+  email?: UserUpdateEmail;
+  password?: UserUpdatePassword;
+  is_password_reinitialized?: UserUpdateIsPasswordReinitialized;
+  is_active?: UserUpdateIsActive;
+  is_superuser?: UserUpdateIsSuperuser;
+  is_owner?: UserUpdateIsOwner;
+  phone?: UserUpdatePhone;
+  owned_ares?: UserUpdateOwnedAres;
+  roles?: UserUpdateRoles;
 }

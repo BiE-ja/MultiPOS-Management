@@ -1,9 +1,16 @@
+# This script is executed before the main application starts.
+# It ensures that the database is ready to accept connections.
+import asyncio
 import logging
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
-from app.core.database import engine
+
+import sys
+
+if sys.platform.startswith("win"):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -29,10 +36,12 @@ async def init(db_engine: AsyncEngine):
 
 
 async def main():
+    from app.core.database import engine
+
     logger.info("Initializing service")
     await init(engine)
     logger.info("Service finished initializing")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

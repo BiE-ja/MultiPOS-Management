@@ -111,7 +111,7 @@ export const useCategoriesCreate = <TError = HTTPValidationError,
  * @summary Read
  */
 export const categoriesRead = (
-    categoryId: number,
+    categoryId: string,
  signal?: AbortSignal
 ) => {
       
@@ -123,12 +123,12 @@ export const categoriesRead = (
     }
   
 
-export const getCategoriesReadQueryKey = (categoryId?: number,) => {
+export const getCategoriesReadQueryKey = (categoryId?: string,) => {
     return [`/api/v0.1/product/category/${categoryId}`] as const;
     }
 
     
-export const getCategoriesReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof categoriesRead>>>, TError = HTTPValidationError>(categoryId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
+export const getCategoriesReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof categoriesRead>>>, TError = HTTPValidationError>(categoryId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -151,7 +151,7 @@ export type CategoriesReadInfiniteQueryError = HTTPValidationError
 
 
 export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof categoriesRead>>>, TError = HTTPValidationError>(
- categoryId: number, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
+ categoryId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoriesRead>>,
           TError,
@@ -161,7 +161,7 @@ export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnTyp
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof categoriesRead>>>, TError = HTTPValidationError>(
- categoryId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
+ categoryId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoriesRead>>,
           TError,
@@ -171,7 +171,7 @@ export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnTyp
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof categoriesRead>>>, TError = HTTPValidationError>(
- categoryId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
+ categoryId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -179,7 +179,7 @@ export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnTyp
  */
 
 export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof categoriesRead>>>, TError = HTTPValidationError>(
- categoryId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
+ categoryId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -194,7 +194,7 @@ export function useCategoriesReadInfinite<TData = InfiniteData<Awaited<ReturnTyp
 
 
 
-export const getCategoriesReadQueryOptions = <TData = Awaited<ReturnType<typeof categoriesRead>>, TError = HTTPValidationError>(categoryId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
+export const getCategoriesReadQueryOptions = <TData = Awaited<ReturnType<typeof categoriesRead>>, TError = HTTPValidationError>(categoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -217,7 +217,7 @@ export type CategoriesReadQueryError = HTTPValidationError
 
 
 export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRead>>, TError = HTTPValidationError>(
- categoryId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
+ categoryId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoriesRead>>,
           TError,
@@ -227,7 +227,7 @@ export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRe
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRead>>, TError = HTTPValidationError>(
- categoryId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
+ categoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof categoriesRead>>,
           TError,
@@ -237,7 +237,7 @@ export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRe
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRead>>, TError = HTTPValidationError>(
- categoryId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
+ categoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -245,7 +245,7 @@ export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRe
  */
 
 export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRead>>, TError = HTTPValidationError>(
- categoryId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
+ categoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof categoriesRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -264,7 +264,7 @@ export function useCategoriesRead<TData = Awaited<ReturnType<typeof categoriesRe
  * @summary Update
  */
 export const categoriesUpdate = (
-    categoryId: number,
+    categoryId: string,
     productCategoryUpdate: ProductCategoryUpdate,
  ) => {
       
@@ -280,8 +280,8 @@ export const categoriesUpdate = (
 
 
 export const getCategoriesUpdateMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesUpdate>>, TError,{categoryId: number;data: ProductCategoryUpdate}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof categoriesUpdate>>, TError,{categoryId: number;data: ProductCategoryUpdate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesUpdate>>, TError,{categoryId: string;data: ProductCategoryUpdate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof categoriesUpdate>>, TError,{categoryId: string;data: ProductCategoryUpdate}, TContext> => {
 
 const mutationKey = ['categoriesUpdate'];
 const {mutation: mutationOptions} = options ?
@@ -293,7 +293,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoriesUpdate>>, {categoryId: number;data: ProductCategoryUpdate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoriesUpdate>>, {categoryId: string;data: ProductCategoryUpdate}> = (props) => {
           const {categoryId,data} = props ?? {};
 
           return  categoriesUpdate(categoryId,data,)
@@ -312,11 +312,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Update
  */
 export const useCategoriesUpdate = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesUpdate>>, TError,{categoryId: number;data: ProductCategoryUpdate}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesUpdate>>, TError,{categoryId: string;data: ProductCategoryUpdate}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof categoriesUpdate>>,
         TError,
-        {categoryId: number;data: ProductCategoryUpdate},
+        {categoryId: string;data: ProductCategoryUpdate},
         TContext
       > => {
 
@@ -328,7 +328,7 @@ export const useCategoriesUpdate = <TError = HTTPValidationError,
  * @summary Delete
  */
 export const categoriesDelete = (
-    categoryId: number,
+    categoryId: string,
     params: CategoriesDeleteParams,
  ) => {
       
@@ -343,8 +343,8 @@ export const categoriesDelete = (
 
 
 export const getCategoriesDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesDelete>>, TError,{categoryId: number;params: CategoriesDeleteParams}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof categoriesDelete>>, TError,{categoryId: number;params: CategoriesDeleteParams}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesDelete>>, TError,{categoryId: string;params: CategoriesDeleteParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof categoriesDelete>>, TError,{categoryId: string;params: CategoriesDeleteParams}, TContext> => {
 
 const mutationKey = ['categoriesDelete'];
 const {mutation: mutationOptions} = options ?
@@ -356,7 +356,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoriesDelete>>, {categoryId: number;params: CategoriesDeleteParams}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof categoriesDelete>>, {categoryId: string;params: CategoriesDeleteParams}> = (props) => {
           const {categoryId,params} = props ?? {};
 
           return  categoriesDelete(categoryId,params,)
@@ -375,11 +375,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Delete
  */
 export const useCategoriesDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesDelete>>, TError,{categoryId: number;params: CategoriesDeleteParams}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof categoriesDelete>>, TError,{categoryId: string;params: CategoriesDeleteParams}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof categoriesDelete>>,
         TError,
-        {categoryId: number;params: CategoriesDeleteParams},
+        {categoryId: string;params: CategoriesDeleteParams},
         TContext
       > => {
 

@@ -11,5 +11,5 @@ export interface AreaRead {
   name: string;
   location?: AreaReadLocation;
   owner_id?: AreaReadOwnerId;
-  id: number;
+  id: string;
 }

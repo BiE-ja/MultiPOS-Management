@@ -1,6 +1,6 @@
 import {createFileRoute, redirect} from "@tanstack/react-router";
 import {paths} from "config/paths";
-import {LazyPage} from "routes/lazy-page";
+import {LazyPage} from "layouts/lazy-page";
 import {isLoggedIn} from "utilities/utils";
 
 const home = LazyPage(() => import("pages/dashboard/home"));

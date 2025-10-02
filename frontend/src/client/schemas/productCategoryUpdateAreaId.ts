@@ -5,4 +5,4 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ProductCategoryUpdateAreaId = number | null;
+export type ProductCategoryUpdateAreaId = string | null;

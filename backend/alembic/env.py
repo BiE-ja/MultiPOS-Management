@@ -4,18 +4,21 @@ from sqlalchemy.orm import DeclarativeBase, class_mapper
 from sqlalchemy.orm.exc import UnmappedClassError
 import importlib
 from types import ModuleType
-#from sqlalchemy import engine_from_config
+
+# from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
 from app.core.config import settings
 from app.core.database import Base
-from app import models
+from app.dto import models
+
 
 # delete the "+psycopg" for forced psycog to classical mode synchrone
 def getUrl():
     url = str(settings.SQLALCHEMY_DATABASE_URI)
     return url.replace("postgresql+psycopg://", "postgresql://")
+
 
 # this function recursively make sure all models are imported
 # so that Alembic can detect them for migrations.
@@ -32,7 +35,9 @@ def recursive_import_models(package: ModuleType):
         if is_pkg:
             recursive_import_models(imported)
 
+
 recursive_import_models(models)
+
 
 # this function validates that all relationships are correctly defined
 # it checks that each relationship has a corresponding back_populates in the target model.
@@ -95,7 +100,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    
+
     context.configure(
         url=getUrl(),
         target_metadata=target_metadata,
@@ -120,13 +125,12 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
     """
-    
+
     from sqlalchemy import create_engine
+
     connectable = create_engine(getUrl(), poolclass=pool.NullPool)
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

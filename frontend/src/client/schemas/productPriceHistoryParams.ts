@@ -7,7 +7,7 @@
 import type { PriceType } from './priceType';
 
 export type ProductPriceHistoryParams = {
-area_id: number;
+area_id: string;
 type: PriceType;
 skip?: number;
 limit?: number;

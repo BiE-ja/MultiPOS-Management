@@ -2,7 +2,7 @@
 
 import {createFileRoute, redirect} from "@tanstack/react-router";
 import {isLoggedIn} from "hooks/useAuth";
-import {LazyPage} from "routes/lazy-page";
+import {LazyPage} from "layouts/lazy-page";
 import {paths} from "config/paths";
 
 const LoginPage = LazyPage(() => import("pages/auth"));

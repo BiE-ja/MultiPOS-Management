@@ -17,5 +17,5 @@ export interface UserPublic {
   last_name: string;
   phone: UserPublicPhone;
   created_at?: UserPublicCreatedAt;
-  id: number;
+  id: string;
 }

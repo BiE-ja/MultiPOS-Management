@@ -16,11 +16,11 @@ export interface ProductRead {
   name: string;
   description: ProductReadDescription;
   category_name: ProductReadCategoryName;
-  area_id: number;
+  area_id: string;
   price: number;
   purchase_price: ProductReadPurchasePrice;
   init_stock: ProductReadInitStock;
   actual_stock: ProductReadActualStock;
-  id: number;
+  id: string;
   state: ProductCreationState;
 }

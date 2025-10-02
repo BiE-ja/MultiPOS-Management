@@ -30,7 +30,9 @@ import type {
 
 import type {
   AreaCreate,
+  AreaDetails,
   AreaRead,
+  AreaUpdate,
   HTTPValidationError,
   Message,
   UsersPublic
@@ -110,7 +112,7 @@ export const useZoneCreate = <TError = HTTPValidationError,
  * @summary Read
  */
 export const zoneRead = (
-    areaId: number,
+    areaId: string,
  signal?: AbortSignal
 ) => {
       
@@ -122,12 +124,12 @@ export const zoneRead = (
     }
   
 
-export const getZoneReadQueryKey = (areaId?: number,) => {
+export const getZoneReadQueryKey = (areaId?: string,) => {
     return [`/api/v0.1/unit/${areaId}`] as const;
     }
 
     
-export const getZoneReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof zoneRead>>>, TError = HTTPValidationError>(areaId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
+export const getZoneReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof zoneRead>>>, TError = HTTPValidationError>(areaId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -150,7 +152,7 @@ export type ZoneReadInfiniteQueryError = HTTPValidationError
 
 
 export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneRead>>>, TError = HTTPValidationError>(
- areaId: number, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
+ areaId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof zoneRead>>,
           TError,
@@ -160,7 +162,7 @@ export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<type
  , queryClient?: QueryClient
   ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneRead>>>, TError = HTTPValidationError>(
- areaId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
+ areaId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof zoneRead>>,
           TError,
@@ -170,7 +172,7 @@ export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<type
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneRead>>>, TError = HTTPValidationError>(
- areaId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
+ areaId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -178,7 +180,7 @@ export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<type
  */
 
 export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneRead>>>, TError = HTTPValidationError>(
- areaId: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
+ areaId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -193,7 +195,7 @@ export function useZoneReadInfinite<TData = InfiniteData<Awaited<ReturnType<type
 
 
 
-export const getZoneReadQueryOptions = <TData = Awaited<ReturnType<typeof zoneRead>>, TError = HTTPValidationError>(areaId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
+export const getZoneReadQueryOptions = <TData = Awaited<ReturnType<typeof zoneRead>>, TError = HTTPValidationError>(areaId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -216,7 +218,7 @@ export type ZoneReadQueryError = HTTPValidationError
 
 
 export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError = HTTPValidationError>(
- areaId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
+ areaId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof zoneRead>>,
           TError,
@@ -226,7 +228,7 @@ export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError = HTTPValidationError>(
- areaId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
+ areaId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof zoneRead>>,
           TError,
@@ -236,7 +238,7 @@ export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError = HTTPValidationError>(
- areaId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
+ areaId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -244,7 +246,7 @@ export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError
  */
 
 export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError = HTTPValidationError>(
- areaId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
+ areaId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneRead>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -263,7 +265,7 @@ export function useZoneRead<TData = Awaited<ReturnType<typeof zoneRead>>, TError
  * @summary Delete
  */
 export const zoneDelete = (
-    areaId: number,
+    areaId: string,
  ) => {
       
       
@@ -276,8 +278,8 @@ export const zoneDelete = (
 
 
 export const getZoneDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneDelete>>, TError,{areaId: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof zoneDelete>>, TError,{areaId: number}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneDelete>>, TError,{areaId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof zoneDelete>>, TError,{areaId: string}, TContext> => {
 
 const mutationKey = ['zoneDelete'];
 const {mutation: mutationOptions} = options ?
@@ -289,7 +291,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof zoneDelete>>, {areaId: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof zoneDelete>>, {areaId: string}> = (props) => {
           const {areaId} = props ?? {};
 
           return  zoneDelete(areaId,)
@@ -308,11 +310,11 @@ const {mutation: mutationOptions} = options ?
  * @summary Delete
  */
 export const useZoneDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneDelete>>, TError,{areaId: number}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneDelete>>, TError,{areaId: string}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof zoneDelete>>,
         TError,
-        {areaId: number},
+        {areaId: string},
         TContext
       > => {
 
@@ -324,12 +326,15 @@ export const useZoneDelete = <TError = HTTPValidationError,
  * @summary Update
  */
 export const zoneUpdate = (
-    areaId: number,
+    areaId: string,
+    areaUpdate: AreaUpdate,
  ) => {
       
       
       return customAxios<UsersPublic>(
-      {url: `/api/v0.1/unit/${areaId}`, method: 'PUT'
+      {url: `/api/v0.1/unit/${areaId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: areaUpdate
     },
       );
     }
@@ -337,8 +342,8 @@ export const zoneUpdate = (
 
 
 export const getZoneUpdateMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneUpdate>>, TError,{areaId: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof zoneUpdate>>, TError,{areaId: number}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneUpdate>>, TError,{areaId: string;data: AreaUpdate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof zoneUpdate>>, TError,{areaId: string;data: AreaUpdate}, TContext> => {
 
 const mutationKey = ['zoneUpdate'];
 const {mutation: mutationOptions} = options ?
@@ -350,10 +355,10 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof zoneUpdate>>, {areaId: number}> = (props) => {
-          const {areaId} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof zoneUpdate>>, {areaId: string;data: AreaUpdate}> = (props) => {
+          const {areaId,data} = props ?? {};
 
-          return  zoneUpdate(areaId,)
+          return  zoneUpdate(areaId,data,)
         }
 
         
@@ -362,18 +367,18 @@ const {mutation: mutationOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ZoneUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof zoneUpdate>>>
-    
+    export type ZoneUpdateMutationBody = AreaUpdate
     export type ZoneUpdateMutationError = HTTPValidationError
 
     /**
  * @summary Update
  */
 export const useZoneUpdate = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneUpdate>>, TError,{areaId: number}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof zoneUpdate>>, TError,{areaId: string;data: AreaUpdate}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof zoneUpdate>>,
         TError,
-        {areaId: number},
+        {areaId: string;data: AreaUpdate},
         TContext
       > => {
 
@@ -390,7 +395,7 @@ export const zoneListAll = (
 ) => {
       
       
-      return customAxios<AreaRead[]>(
+      return customAxios<AreaDetails[]>(
       {url: `/api/v0.1/unit/list`, method: 'GET', signal
     },
       );
@@ -524,6 +529,159 @@ export function useZoneListAll<TData = Awaited<ReturnType<typeof zoneListAll>>, 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getZoneListAllQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * @summary List All By Admin
+ */
+export const zoneListAllByAdmin = (
+    userId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<AreaDetails[]>(
+      {url: `/api/v0.1/unit/admin/list-pos-of/${userId}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getZoneListAllByAdminQueryKey = (userId?: string,) => {
+    return [`/api/v0.1/unit/admin/list-pos-of/${userId}`] as const;
+    }
+
+    
+export const getZoneListAllByAdminInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof zoneListAllByAdmin>>>, TError = HTTPValidationError>(userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getZoneListAllByAdminQueryKey(userId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof zoneListAllByAdmin>>> = ({ signal }) => zoneListAllByAdmin(userId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ZoneListAllByAdminInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof zoneListAllByAdmin>>>
+export type ZoneListAllByAdminInfiniteQueryError = HTTPValidationError
+
+
+export function useZoneListAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneListAllByAdmin>>>, TError = HTTPValidationError>(
+ userId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useZoneListAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneListAllByAdmin>>>, TError = HTTPValidationError>(
+ userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useZoneListAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneListAllByAdmin>>>, TError = HTTPValidationError>(
+ userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary List All By Admin
+ */
+
+export function useZoneListAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof zoneListAllByAdmin>>>, TError = HTTPValidationError>(
+ userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getZoneListAllByAdminInfiniteQueryOptions(userId,options)
+
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getZoneListAllByAdminQueryOptions = <TData = Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError = HTTPValidationError>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getZoneListAllByAdminQueryKey(userId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof zoneListAllByAdmin>>> = ({ signal }) => zoneListAllByAdmin(userId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ZoneListAllByAdminQueryResult = NonNullable<Awaited<ReturnType<typeof zoneListAllByAdmin>>>
+export type ZoneListAllByAdminQueryError = HTTPValidationError
+
+
+export function useZoneListAllByAdmin<TData = Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError = HTTPValidationError>(
+ userId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useZoneListAllByAdmin<TData = Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError = HTTPValidationError>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof zoneListAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useZoneListAllByAdmin<TData = Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError = HTTPValidationError>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary List All By Admin
+ */
+
+export function useZoneListAllByAdmin<TData = Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError = HTTPValidationError>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof zoneListAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getZoneListAllByAdminQueryOptions(userId,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

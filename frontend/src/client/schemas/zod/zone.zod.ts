@@ -16,28 +16,28 @@ import {
 export const zoneCreateBody = zod.object({
   "name": zod.string(),
   "location": zod.union([zod.string(),zod.null()]).optional(),
-  "owner_id": zod.union([zod.number(),zod.null()]).optional()
+  "owner_id": zod.union([zod.uuid(),zod.null()]).optional()
 })
 
 /**
  * @summary Read
  */
 export const zoneReadParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 export const zoneReadResponse = zod.object({
   "name": zod.string(),
   "location": zod.union([zod.string(),zod.null()]).optional(),
-  "owner_id": zod.union([zod.number(),zod.null()]).optional(),
-  "id": zod.number()
+  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+  "id": zod.uuid()
 })
 
 /**
  * @summary Delete
  */
 export const zoneDeleteParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
 })
 
 export const zoneDeleteResponse = zod.object({
@@ -48,7 +48,12 @@ export const zoneDeleteResponse = zod.object({
  * @summary Update
  */
 export const zoneUpdateParams = zod.object({
-  "area_id": zod.number()
+  "area_id": zod.uuid()
+})
+
+export const zoneUpdateBody = zod.object({
+  "name": zod.union([zod.string(),zod.null()]),
+  "location": zod.union([zod.string(),zod.null()])
 })
 
 export const zoneUpdateResponse = zod.object({
@@ -61,7 +66,7 @@ export const zoneUpdateResponse = zod.object({
   "last_name": zod.string(),
   "phone": zod.union([zod.string(),zod.null()]),
   "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
-  "id": zod.number()
+  "id": zod.uuid()
 })),
   "count": zod.number()
 })
@@ -69,11 +74,36 @@ export const zoneUpdateResponse = zod.object({
 /**
  * @summary List All
  */
+export const zoneListAllResponseEmployeeCountDefault = 0;export const zoneListAllResponseUserCountDefault = 0;
+
 export const zoneListAllResponseItem = zod.object({
   "name": zod.string(),
   "location": zod.union([zod.string(),zod.null()]).optional(),
-  "owner_id": zod.union([zod.number(),zod.null()]).optional(),
-  "id": zod.number()
+  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+  "id": zod.uuid(),
+  "employee_count": zod.number().optional(),
+  "user_count": zod.number().optional(),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional()
 })
 export const zoneListAllResponse = zod.array(zoneListAllResponseItem)
+
+/**
+ * @summary List All By Admin
+ */
+export const zoneListAllByAdminParams = zod.object({
+  "user_id": zod.uuid()
+})
+
+export const zoneListAllByAdminResponseEmployeeCountDefault = 0;export const zoneListAllByAdminResponseUserCountDefault = 0;
+
+export const zoneListAllByAdminResponseItem = zod.object({
+  "name": zod.string(),
+  "location": zod.union([zod.string(),zod.null()]).optional(),
+  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+  "id": zod.uuid(),
+  "employee_count": zod.number().optional(),
+  "user_count": zod.number().optional(),
+  "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional()
+})
+export const zoneListAllByAdminResponse = zod.array(zoneListAllByAdminResponseItem)
 

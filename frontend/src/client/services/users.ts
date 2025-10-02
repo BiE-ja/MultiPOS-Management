@@ -4,45 +4,53 @@
  * Tantana - Boutik
  * OpenAPI spec version: 0.1.0
  */
-import {useInfiniteQuery, useMutation, useQuery} from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
-    DataTag,
-    DefinedInitialDataOptions,
-    DefinedUseInfiniteQueryResult,
-    DefinedUseQueryResult,
-    InfiniteData,
-    MutationFunction,
-    QueryClient,
-    QueryFunction,
-    QueryKey,
-    UndefinedInitialDataOptions,
-    UseInfiniteQueryOptions,
-    UseInfiniteQueryResult,
-    UseMutationOptions,
-    UseMutationResult,
-    UseQueryOptions,
-    UseQueryResult,
-} from "@tanstack/react-query";
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
+  DefinedUseQueryResult,
+  InfiniteData,
+  MutationFunction,
+  QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
+  UseMutationOptions,
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
+} from '@tanstack/react-query';
 
 import type {
-    HTTPValidationError,
-    Message,
-    OwnersRead,
-    UpdatedPassword,
-    UserAuth,
-    UserCreate,
-    UserPublic,
-    UserRegister,
-    UserUpdate,
-    UserUpdateMe,
-    UsersFetchAllByAdminParams,
-    UsersFetchAllParams,
-    UsersOwnersListParams,
-    UsersPublic,
-    UsersUpdatePasswordMeParams,
-} from "../schemas";
+  HTTPValidationError,
+  Message,
+  OwnersRead,
+  UpdatedPassword,
+  UserAuth,
+  UserCreate,
+  UserPublic,
+  UserRegister,
+  UserUpdate,
+  UserUpdateMe,
+  UsersFetchAllByAdminParams,
+  UsersFetchAllParams,
+  UsersOwnersListParams,
+  UsersPublic,
+  UsersUpdatePasswordMeParams
+} from '../schemas';
 
-import {customAxios} from "../custom-client";
+import { customAxios } from '../custom-client';
+
+
+
+
 
 /**
  * Get all users from area id
@@ -50,329 +58,167 @@ List of all user for the area
  * @summary Fetchall
  */
 export const usersFetchAll = (
-    areaId: number,
+    areaId: string,
     params?: UsersFetchAllParams,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
-    return customAxios<UsersPublic>({
-        url: `/api/v0.1/unit/users/list/${areaId}`,
-        method: "GET",
-        params,
-        signal,
-    });
-};
-
-export const getUsersFetchAllQueryKey = (
-    areaId?: number,
-    params?: UsersFetchAllParams
-) => {
-    return [
-        `/api/v0.1/unit/users/list/${areaId}`,
-        ...(params ? [params] : []),
-    ] as const;
-};
-
-export const getUsersFetchAllInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        >;
+      
+      
+      return customAxios<UsersPublic>(
+      {url: `/api/v0.1/unit/users/list/${areaId}`, method: 'GET',
+        params, signal
+    },
+      );
     }
+  
+
+export const getUsersFetchAllQueryKey = (areaId?: string,
+    params?: UsersFetchAllParams,) => {
+    return [`/api/v0.1/unit/users/list/${areaId}`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getUsersFetchAllInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>, TError = HTTPValidationError>(areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersFetchAllQueryKey(areaId, params);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersFetchAll>>> = ({
-        signal,
-    }) => usersFetchAll(areaId, params, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersFetchAllQueryKey(areaId,params);
 
-    return {
-        queryKey,
-        queryFn,
-        enabled: !!areaId,
-        ...queryOptions,
-    } as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersFetchAll>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersFetchAllInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersFetchAll>>
->;
-export type UsersFetchAllInfiniteQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersFetchAll>>> = ({ signal }) => usersFetchAll(areaId,params, signal);
 
-export function useUsersFetchAllInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params: undefined | UsersFetchAllParams,
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAll>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAll>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersFetchAllInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAll>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAll>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersFetchAllInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(areaId), ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersFetchAllInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersFetchAll>>>
+export type UsersFetchAllInfiniteQueryError = HTTPValidationError
+
+
+export function useUsersFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>, TError = HTTPValidationError>(
+ areaId: string,
+    params: undefined |  UsersFetchAllParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAll>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAll>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>, TError = HTTPValidationError>(
+ areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAll>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAll>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>, TError = HTTPValidationError>(
+ areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Fetchall
  */
 
-export function useUsersFetchAllInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersFetchAllInfiniteQueryOptions(
-        areaId,
-        params,
-        options
-    );
+export function useUsersFetchAllInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAll>>>, TError = HTTPValidationError>(
+ areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersFetchAllInfiniteQueryOptions(areaId,params,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersFetchAllQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersFetchAll>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        >;
-    }
+
+
+export const getUsersFetchAllQueryOptions = <TData = Awaited<ReturnType<typeof usersFetchAll>>, TError = HTTPValidationError>(areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersFetchAllQueryKey(areaId, params);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersFetchAll>>> = ({
-        signal,
-    }) => usersFetchAll(areaId, params, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersFetchAllQueryKey(areaId,params);
 
-    return {
-        queryKey,
-        queryFn,
-        enabled: !!areaId,
-        ...queryOptions,
-    } as UseQueryOptions<
-        Awaited<ReturnType<typeof usersFetchAll>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersFetchAllQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersFetchAll>>
->;
-export type UsersFetchAllQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersFetchAll>>> = ({ signal }) => usersFetchAll(areaId,params, signal);
 
-export function useUsersFetchAll<
-    TData = Awaited<ReturnType<typeof usersFetchAll>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params: undefined | UsersFetchAllParams,
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAll>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAll>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersFetchAll<
-    TData = Awaited<ReturnType<typeof usersFetchAll>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAll>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAll>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersFetchAll<
-    TData = Awaited<ReturnType<typeof usersFetchAll>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(areaId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersFetchAllQueryResult = NonNullable<Awaited<ReturnType<typeof usersFetchAll>>>
+export type UsersFetchAllQueryError = HTTPValidationError
+
+
+export function useUsersFetchAll<TData = Awaited<ReturnType<typeof usersFetchAll>>, TError = HTTPValidationError>(
+ areaId: string,
+    params: undefined |  UsersFetchAllParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAll>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAll>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAll<TData = Awaited<ReturnType<typeof usersFetchAll>>, TError = HTTPValidationError>(
+ areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAll>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAll>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAll<TData = Awaited<ReturnType<typeof usersFetchAll>>, TError = HTTPValidationError>(
+ areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Fetchall
  */
 
-export function useUsersFetchAll<
-    TData = Awaited<ReturnType<typeof usersFetchAll>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    params?: UsersFetchAllParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAll>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersFetchAllQueryOptions(areaId, params, options);
+export function useUsersFetchAll<TData = Awaited<ReturnType<typeof usersFetchAll>>, TError = HTTPValidationError>(
+ areaId: string,
+    params?: UsersFetchAllParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAll>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersFetchAllQueryOptions(areaId,params,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
 
 /**
  * Get all users
@@ -381,1995 +227,1176 @@ export function useUsersFetchAll<
  */
 export const usersFetchAllByAdmin = (
     params?: UsersFetchAllByAdminParams,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
-    return customAxios<UsersPublic>({
-        url: `/api/v0.1/unit/users/list/admin`,
-        method: "GET",
-        params,
-        signal,
-    });
-};
-
-export const getUsersFetchAllByAdminQueryKey = (
-    params?: UsersFetchAllByAdminParams
-) => {
-    return [
-        `/api/v0.1/unit/users/list/admin`,
-        ...(params ? [params] : []),
-    ] as const;
-};
-
-export const getUsersFetchAllByAdminInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        >;
+      
+      
+      return customAxios<UsersPublic>(
+      {url: `/api/v0.1/unit/users/list/admin`, method: 'GET',
+        params, signal
+    },
+      );
     }
+  
+
+export const getUsersFetchAllByAdminQueryKey = (params?: UsersFetchAllByAdminParams,) => {
+    return [`/api/v0.1/unit/users/list/admin`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getUsersFetchAllByAdminInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>, TError = HTTPValidationError>(params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersFetchAllByAdminQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof usersFetchAllByAdmin>>
-    > = ({signal}) => usersFetchAllByAdmin(params, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersFetchAllByAdminQueryKey(params);
 
-    return {queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersFetchAllByAdminInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersFetchAllByAdmin>>
->;
-export type UsersFetchAllByAdminInfiniteQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersFetchAllByAdmin>>> = ({ signal }) => usersFetchAllByAdmin(params, signal);
 
-export function useUsersFetchAllByAdminInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>,
-    TError = HTTPValidationError,
->(
-    params: undefined | UsersFetchAllByAdminParams,
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersFetchAllByAdminInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersFetchAllByAdminInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersFetchAllByAdminInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>
+export type UsersFetchAllByAdminInfiniteQueryError = HTTPValidationError
+
+
+export function useUsersFetchAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>, TError = HTTPValidationError>(
+ params: undefined |  UsersFetchAllByAdminParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>, TError = HTTPValidationError>(
+ params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>, TError = HTTPValidationError>(
+ params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Fetchallbyadmin
  */
 
-export function useUsersFetchAllByAdminInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersFetchAllByAdminInfiniteQueryOptions(
-        params,
-        options
-    );
+export function useUsersFetchAllByAdminInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>, TError = HTTPValidationError>(
+ params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersFetchAllByAdminInfiniteQueryOptions(params,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersFetchAllByAdminQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        >;
-    }
+
+
+export const getUsersFetchAllByAdminQueryOptions = <TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError = HTTPValidationError>(params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersFetchAllByAdminQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof usersFetchAllByAdmin>>
-    > = ({signal}) => usersFetchAllByAdmin(params, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersFetchAllByAdminQueryKey(params);
 
-    return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-        Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersFetchAllByAdminQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersFetchAllByAdmin>>
->;
-export type UsersFetchAllByAdminQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersFetchAllByAdmin>>> = ({ signal }) => usersFetchAllByAdmin(params, signal);
 
-export function useUsersFetchAllByAdmin<
-    TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-    TError = HTTPValidationError,
->(
-    params: undefined | UsersFetchAllByAdminParams,
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersFetchAllByAdmin<
-    TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersFetchAllByAdmin>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersFetchAllByAdmin<
-    TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersFetchAllByAdminQueryResult = NonNullable<Awaited<ReturnType<typeof usersFetchAllByAdmin>>>
+export type UsersFetchAllByAdminQueryError = HTTPValidationError
+
+
+export function useUsersFetchAllByAdmin<TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError = HTTPValidationError>(
+ params: undefined |  UsersFetchAllByAdminParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAllByAdmin<TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError = HTTPValidationError>(
+ params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
+          TError,
+          Awaited<ReturnType<typeof usersFetchAllByAdmin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersFetchAllByAdmin<TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError = HTTPValidationError>(
+ params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Fetchallbyadmin
  */
 
-export function useUsersFetchAllByAdmin<
-    TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersFetchAllByAdminParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersFetchAllByAdmin>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersFetchAllByAdminQueryOptions(params, options);
+export function useUsersFetchAllByAdmin<TData = Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError = HTTPValidationError>(
+ params?: UsersFetchAllByAdminParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersFetchAllByAdmin>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersFetchAllByAdminQueryOptions(params,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
 
 /**
  * @summary Read
  */
 export const usersRead = (
-    areaId: number,
-    userId: number,
-    signal?: AbortSignal
+    areaId: string,
+    userId: string,
+ signal?: AbortSignal
 ) => {
-    return customAxios<UserPublic>({
-        url: `/api/v0.1/unit/user/${areaId}/${userId}`,
-        method: "GET",
-        signal,
-    });
-};
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/user/${areaId}/${userId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-export const getUsersReadQueryKey = (areaId?: number, userId?: number) => {
+export const getUsersReadQueryKey = (areaId?: string,
+    userId?: string,) => {
     return [`/api/v0.1/unit/user/${areaId}/${userId}`] as const;
-};
-
-export const getUsersReadInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        >;
     }
+
+    
+export const getUsersReadInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>, TError = HTTPValidationError>(areaId: string,
+    userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersReadQueryKey(areaId, userId);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersRead>>> = ({
-        signal,
-    }) => usersRead(areaId, userId, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersReadQueryKey(areaId,userId);
 
-    return {
-        queryKey,
-        queryFn,
-        enabled: !!(areaId && userId),
-        ...queryOptions,
-    } as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersRead>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersReadInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersRead>>
->;
-export type UsersReadInfiniteQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersRead>>> = ({ signal }) => usersRead(areaId,userId, signal);
 
-export function useUsersReadInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersRead>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersRead>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersRead>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersRead>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(areaId && userId), ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersReadInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersRead>>>
+export type UsersReadInfiniteQueryError = HTTPValidationError
+
+
+export function useUsersReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersRead>>,
+          TError,
+          Awaited<ReturnType<typeof usersRead>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersRead>>,
+          TError,
+          Awaited<ReturnType<typeof usersRead>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Read
  */
 
-export function useUsersReadInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersReadInfiniteQueryOptions(
-        areaId,
-        userId,
-        options
-    );
+export function useUsersReadInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersRead>>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersReadInfiniteQueryOptions(areaId,userId,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersReadQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersRead>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        >;
-    }
+
+
+export const getUsersReadQueryOptions = <TData = Awaited<ReturnType<typeof usersRead>>, TError = HTTPValidationError>(areaId: string,
+    userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersReadQueryKey(areaId, userId);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersRead>>> = ({
-        signal,
-    }) => usersRead(areaId, userId, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersReadQueryKey(areaId,userId);
 
-    return {
-        queryKey,
-        queryFn,
-        enabled: !!(areaId && userId),
-        ...queryOptions,
-    } as UseQueryOptions<
-        Awaited<ReturnType<typeof usersRead>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersReadQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersRead>>
->;
-export type UsersReadQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersRead>>> = ({ signal }) => usersRead(areaId,userId, signal);
 
-export function useUsersRead<
-    TData = Awaited<ReturnType<typeof usersRead>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersRead>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersRead>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersRead<
-    TData = Awaited<ReturnType<typeof usersRead>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersRead>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersRead>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersRead<
-    TData = Awaited<ReturnType<typeof usersRead>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(areaId && userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersReadQueryResult = NonNullable<Awaited<ReturnType<typeof usersRead>>>
+export type UsersReadQueryError = HTTPValidationError
+
+
+export function useUsersRead<TData = Awaited<ReturnType<typeof usersRead>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersRead>>,
+          TError,
+          Awaited<ReturnType<typeof usersRead>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersRead<TData = Awaited<ReturnType<typeof usersRead>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersRead>>,
+          TError,
+          Awaited<ReturnType<typeof usersRead>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersRead<TData = Awaited<ReturnType<typeof usersRead>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Read
  */
 
-export function useUsersRead<
-    TData = Awaited<ReturnType<typeof usersRead>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    userId: number,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersRead>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersReadQueryOptions(areaId, userId, options);
+export function useUsersRead<TData = Awaited<ReturnType<typeof usersRead>>, TError = HTTPValidationError>(
+ areaId: string,
+    userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersRead>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersReadQueryOptions(areaId,userId,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
 
 /**
  * @summary Update
  */
 export const usersUpdate = (
-    areaId: number,
-    userId: number,
-    userUpdate: UserUpdate
-) => {
-    return customAxios<UserPublic>({
-        url: `/api/v0.1/unit/user/${areaId}/${userId}`,
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        data: userUpdate,
-    });
-};
+    areaId: string,
+    userId: string,
+    userUpdate: UserUpdate,
+ ) => {
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/user/${areaId}/${userId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdate
+    },
+      );
+    }
+  
 
-export const getUsersUpdateMutationOptions = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof usersUpdate>>,
-        TError,
-        {areaId: number; userId: number; data: UserUpdate},
-        TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersUpdate>>,
-    TError,
-    {areaId: number; userId: number; data: UserUpdate},
-    TContext
-> => {
-    const mutationKey = ["usersUpdate"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersUpdate>>,
-        {areaId: number; userId: number; data: UserUpdate}
-    > = (props) => {
-        const {areaId, userId, data} = props ?? {};
+export const getUsersUpdateMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdate>>, TError,{areaId: string;userId: string;data: UserUpdate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersUpdate>>, TError,{areaId: string;userId: string;data: UserUpdate}, TContext> => {
 
-        return usersUpdate(areaId, userId, data);
-    };
+const mutationKey = ['usersUpdate'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return {mutationFn, ...mutationOptions};
-};
+      
 
-export type UsersUpdateMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersUpdate>>
->;
-export type UsersUpdateMutationBody = UserUpdate;
-export type UsersUpdateMutationError = HTTPValidationError;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersUpdate>>, {areaId: string;userId: string;data: UserUpdate}> = (props) => {
+          const {areaId,userId,data} = props ?? {};
+
+          return  usersUpdate(areaId,userId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof usersUpdate>>>
+    export type UsersUpdateMutationBody = UserUpdate
+    export type UsersUpdateMutationError = HTTPValidationError
+
+    /**
  * @summary Update
  */
-export const useUsersUpdate = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersUpdate>>,
-            TError,
-            {areaId: number; userId: number; data: UserUpdate},
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersUpdate>>,
-    TError,
-    {areaId: number; userId: number; data: UserUpdate},
-    TContext
-> => {
-    const mutationOptions = getUsersUpdateMutationOptions(options);
+export const useUsersUpdate = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdate>>, TError,{areaId: string;userId: string;data: UserUpdate}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof usersUpdate>>,
+        TError,
+        {areaId: string;userId: string;data: UserUpdate},
+        TContext
+      > => {
 
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUsersUpdateMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * Delete user
 the operation is do by the user owner of an area or by the superuser
 user owner can delete only user in his area scope
  * @summary Delete
  */
-export const usersDelete = (areaId: number, userId: number) => {
-    return customAxios<Message>({
-        url: `/api/v0.1/unit/user/${areaId}/${userId}`,
-        method: "DELETE",
-    });
-};
+export const usersDelete = (
+    areaId: string,
+    userId: string,
+ ) => {
+      
+      
+      return customAxios<Message>(
+      {url: `/api/v0.1/unit/user/${areaId}/${userId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getUsersDeleteMutationOptions = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof usersDelete>>,
-        TError,
-        {areaId: number; userId: number},
-        TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersDelete>>,
-    TError,
-    {areaId: number; userId: number},
-    TContext
-> => {
-    const mutationKey = ["usersDelete"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersDelete>>,
-        {areaId: number; userId: number}
-    > = (props) => {
-        const {areaId, userId} = props ?? {};
+export const getUsersDeleteMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersDelete>>, TError,{areaId: string;userId: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersDelete>>, TError,{areaId: string;userId: string}, TContext> => {
 
-        return usersDelete(areaId, userId);
-    };
+const mutationKey = ['usersDelete'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return {mutationFn, ...mutationOptions};
-};
+      
 
-export type UsersDeleteMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersDelete>>
->;
 
-export type UsersDeleteMutationError = HTTPValidationError;
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersDelete>>, {areaId: string;userId: string}> = (props) => {
+          const {areaId,userId} = props ?? {};
 
-/**
+          return  usersDelete(areaId,userId,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof usersDelete>>>
+    
+    export type UsersDeleteMutationError = HTTPValidationError
+
+    /**
  * @summary Delete
  */
-export const useUsersDelete = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersDelete>>,
-            TError,
-            {areaId: number; userId: number},
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersDelete>>,
-    TError,
-    {areaId: number; userId: number},
-    TContext
-> => {
-    const mutationOptions = getUsersDeleteMutationOptions(options);
+export const useUsersDelete = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersDelete>>, TError,{areaId: string;userId: string}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof usersDelete>>,
+        TError,
+        {areaId: string;userId: string},
+        TContext
+      > => {
 
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUsersDeleteMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * @summary Auth
  */
-export const usersAuth = (signal?: AbortSignal) => {
-    return customAxios<UserAuth>({
-        url: `/api/v0.1/unit/user/auth}`,
-        method: "GET",
-        signal,
-    });
-};
+export const usersAuth = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<UserAuth>(
+      {url: `/api/v0.1/unit/user/auth}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getUsersAuthQueryKey = () => {
     return [`/api/v0.1/unit/user/auth}`] as const;
-};
+    }
 
-export const getUsersAuthInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<
-        UseInfiniteQueryOptions<
-            Awaited<ReturnType<typeof usersAuth>>,
-            TError,
-            TData
-        >
-    >;
-}) => {
-    const {query: queryOptions} = options ?? {};
+    
+export const getUsersAuthInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>, TError = unknown>( options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>>, }
+) => {
 
-    const queryKey = queryOptions?.queryKey ?? getUsersAuthQueryKey();
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersAuth>>> = ({
-        signal,
-    }) => usersAuth(signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersAuthQueryKey();
 
-    return {queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersAuth>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersAuthInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersAuth>>
->;
-export type UsersAuthInfiniteQueryError = unknown;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersAuth>>> = ({ signal }) => usersAuth(signal);
 
-export function useUsersAuthInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>,
-    TError = unknown,
->(
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersAuth>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersAuth>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersAuthInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersAuth>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersAuth>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersAuthInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersAuthInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersAuth>>>
+export type UsersAuthInfiniteQueryError = unknown
+
+
+export function useUsersAuthInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>, TError = unknown>(
+  options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersAuth>>,
+          TError,
+          Awaited<ReturnType<typeof usersAuth>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersAuthInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>, TError = unknown>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersAuth>>,
+          TError,
+          Awaited<ReturnType<typeof usersAuth>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersAuthInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>, TError = unknown>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Auth
  */
 
-export function useUsersAuthInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersAuthInfiniteQueryOptions(options);
+export function useUsersAuthInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersAuth>>>, TError = unknown>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersAuthInfiniteQueryOptions(options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersAuthQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersAuth>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<
-        UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>
-    >;
-}) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey = queryOptions?.queryKey ?? getUsersAuthQueryKey();
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersAuth>>> = ({
-        signal,
-    }) => usersAuth(signal);
+export const getUsersAuthQueryOptions = <TData = Awaited<ReturnType<typeof usersAuth>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>>, }
+) => {
 
-    return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-        Awaited<ReturnType<typeof usersAuth>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+const {query: queryOptions} = options ?? {};
 
-export type UsersAuthQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersAuth>>
->;
-export type UsersAuthQueryError = unknown;
+  const queryKey =  queryOptions?.queryKey ?? getUsersAuthQueryKey();
 
-export function useUsersAuth<
-    TData = Awaited<ReturnType<typeof usersAuth>>,
-    TError = unknown,
->(
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersAuth>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersAuth>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersAuth<
-    TData = Awaited<ReturnType<typeof usersAuth>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersAuth>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersAuth>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersAuth<
-    TData = Awaited<ReturnType<typeof usersAuth>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersAuth>>> = ({ signal }) => usersAuth(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersAuthQueryResult = NonNullable<Awaited<ReturnType<typeof usersAuth>>>
+export type UsersAuthQueryError = unknown
+
+
+export function useUsersAuth<TData = Awaited<ReturnType<typeof usersAuth>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersAuth>>,
+          TError,
+          Awaited<ReturnType<typeof usersAuth>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersAuth<TData = Awaited<ReturnType<typeof usersAuth>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersAuth>>,
+          TError,
+          Awaited<ReturnType<typeof usersAuth>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersAuth<TData = Awaited<ReturnType<typeof usersAuth>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Auth
  */
 
-export function useUsersAuth<
-    TData = Awaited<ReturnType<typeof usersAuth>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersAuth>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersAuthQueryOptions(options);
+export function useUsersAuth<TData = Awaited<ReturnType<typeof usersAuth>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersAuth>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersAuthQueryOptions(options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
 
 /**
  * @summary Readme
  */
-export const usersReadMe = (signal?: AbortSignal) => {
-    return customAxios<UserPublic>({
-        url: `/api/v0.1/unit/user/me}`,
-        method: "GET",
-        signal,
-    });
-};
+export const usersReadMe = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/user/me}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getUsersReadMeQueryKey = () => {
     return [`/api/v0.1/unit/user/me}`] as const;
-};
+    }
 
-export const getUsersReadMeInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<
-        UseInfiniteQueryOptions<
-            Awaited<ReturnType<typeof usersReadMe>>,
-            TError,
-            TData
-        >
-    >;
-}) => {
-    const {query: queryOptions} = options ?? {};
+    
+export const getUsersReadMeInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>, TError = unknown>( options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>>, }
+) => {
 
-    const queryKey = queryOptions?.queryKey ?? getUsersReadMeQueryKey();
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersReadMe>>> = ({
-        signal,
-    }) => usersReadMe(signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersReadMeQueryKey();
 
-    return {queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersReadMe>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersReadMeInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersReadMe>>
->;
-export type UsersReadMeInfiniteQueryError = unknown;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersReadMe>>> = ({ signal }) => usersReadMe(signal);
 
-export function useUsersReadMeInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>,
-    TError = unknown,
->(
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadMe>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadMe>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadMeInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadMe>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadMe>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadMeInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersReadMeInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersReadMe>>>
+export type UsersReadMeInfiniteQueryError = unknown
+
+
+export function useUsersReadMeInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>, TError = unknown>(
+  options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadMe>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadMe>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadMeInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>, TError = unknown>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadMe>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadMe>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadMeInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>, TError = unknown>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Readme
  */
 
-export function useUsersReadMeInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersReadMeInfiniteQueryOptions(options);
+export function useUsersReadMeInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadMe>>>, TError = unknown>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersReadMeInfiniteQueryOptions(options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersReadMeQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersReadMe>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<
-        UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>
-    >;
-}) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey = queryOptions?.queryKey ?? getUsersReadMeQueryKey();
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersReadMe>>> = ({
-        signal,
-    }) => usersReadMe(signal);
+export const getUsersReadMeQueryOptions = <TData = Awaited<ReturnType<typeof usersReadMe>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>>, }
+) => {
 
-    return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-        Awaited<ReturnType<typeof usersReadMe>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+const {query: queryOptions} = options ?? {};
 
-export type UsersReadMeQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersReadMe>>
->;
-export type UsersReadMeQueryError = unknown;
+  const queryKey =  queryOptions?.queryKey ?? getUsersReadMeQueryKey();
 
-export function useUsersReadMe<
-    TData = Awaited<ReturnType<typeof usersReadMe>>,
-    TError = unknown,
->(
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadMe>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadMe>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadMe<
-    TData = Awaited<ReturnType<typeof usersReadMe>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadMe>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadMe>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersReadMe<
-    TData = Awaited<ReturnType<typeof usersReadMe>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersReadMe>>> = ({ signal }) => usersReadMe(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersReadMeQueryResult = NonNullable<Awaited<ReturnType<typeof usersReadMe>>>
+export type UsersReadMeQueryError = unknown
+
+
+export function useUsersReadMe<TData = Awaited<ReturnType<typeof usersReadMe>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadMe>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadMe>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadMe<TData = Awaited<ReturnType<typeof usersReadMe>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadMe>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadMe>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadMe<TData = Awaited<ReturnType<typeof usersReadMe>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Readme
  */
 
-export function useUsersReadMe<
-    TData = Awaited<ReturnType<typeof usersReadMe>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadMe>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersReadMeQueryOptions(options);
+export function useUsersReadMe<TData = Awaited<ReturnType<typeof usersReadMe>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadMe>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersReadMeQueryOptions(options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
 
 /**
  * @summary Create
  */
 export const usersCreate = (
-    areaId: number,
+    areaId: string,
     userCreate: UserCreate,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
-    return customAxios<UserPublic>({
-        url: `/api/v0.1/unit/user/${areaId}`,
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: userCreate,
-        signal,
-    });
-};
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/user/${areaId}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userCreate, signal
+    },
+      );
+    }
+  
 
-export const getUsersCreateMutationOptions = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof usersCreate>>,
-        TError,
-        {areaId: number; data: UserCreate},
-        TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersCreate>>,
-    TError,
-    {areaId: number; data: UserCreate},
-    TContext
-> => {
-    const mutationKey = ["usersCreate"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersCreate>>,
-        {areaId: number; data: UserCreate}
-    > = (props) => {
-        const {areaId, data} = props ?? {};
+export const getUsersCreateMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersCreate>>, TError,{areaId: string;data: UserCreate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersCreate>>, TError,{areaId: string;data: UserCreate}, TContext> => {
 
-        return usersCreate(areaId, data);
-    };
+const mutationKey = ['usersCreate'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return {mutationFn, ...mutationOptions};
-};
+      
 
-export type UsersCreateMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersCreate>>
->;
-export type UsersCreateMutationBody = UserCreate;
-export type UsersCreateMutationError = HTTPValidationError;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersCreate>>, {areaId: string;data: UserCreate}> = (props) => {
+          const {areaId,data} = props ?? {};
+
+          return  usersCreate(areaId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersCreateMutationResult = NonNullable<Awaited<ReturnType<typeof usersCreate>>>
+    export type UsersCreateMutationBody = UserCreate
+    export type UsersCreateMutationError = HTTPValidationError
+
+    /**
  * @summary Create
  */
-export const useUsersCreate = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersCreate>>,
-            TError,
-            {areaId: number; data: UserCreate},
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersCreate>>,
-    TError,
-    {areaId: number; data: UserCreate},
-    TContext
-> => {
-    const mutationOptions = getUsersCreateMutationOptions(options);
+export const useUsersCreate = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersCreate>>, TError,{areaId: string;data: UserCreate}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof usersCreate>>,
+        TError,
+        {areaId: string;data: UserCreate},
+        TContext
+      > => {
 
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUsersCreateMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * Update do himself
  * @summary Update Me
  */
-export const usersUpdateMe = (userUpdateMe: UserUpdateMe) => {
-    return customAxios<Message>({
-        url: `/api/v0.1/unituser/me`,
-        method: "PATCH",
-        headers: {"Content-Type": "application/json"},
-        data: userUpdateMe,
-    });
-};
+export const usersUpdateMe = (
+    userUpdateMe: UserUpdateMe,
+ ) => {
+      
+      
+      return customAxios<Message>(
+      {url: `/api/v0.1/unituser/me`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdateMe
+    },
+      );
+    }
+  
 
-export const getUsersUpdateMeMutationOptions = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
+
+export const getUsersUpdateMeMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdateMe>>, TError,{data: UserUpdateMe}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersUpdateMe>>, TError,{data: UserUpdateMe}, TContext> => {
+
+const mutationKey = ['usersUpdateMe'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersUpdateMe>>, {data: UserUpdateMe}> = (props) => {
+          const {data} = props ?? {};
+
+          return  usersUpdateMe(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersUpdateMeMutationResult = NonNullable<Awaited<ReturnType<typeof usersUpdateMe>>>
+    export type UsersUpdateMeMutationBody = UserUpdateMe
+    export type UsersUpdateMeMutationError = HTTPValidationError
+
+    /**
+ * @summary Update Me
+ */
+export const useUsersUpdateMe = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdateMe>>, TError,{data: UserUpdateMe}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof usersUpdateMe>>,
         TError,
         {data: UserUpdateMe},
         TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersUpdateMe>>,
-    TError,
-    {data: UserUpdateMe},
-    TContext
-> => {
-    const mutationKey = ["usersUpdateMe"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersUpdateMe>>,
-        {data: UserUpdateMe}
-    > = (props) => {
-        const {data} = props ?? {};
+      const mutationOptions = getUsersUpdateMeMutationOptions(options);
 
-        return usersUpdateMe(data);
-    };
-
-    return {mutationFn, ...mutationOptions};
-};
-
-export type UsersUpdateMeMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersUpdateMe>>
->;
-export type UsersUpdateMeMutationBody = UserUpdateMe;
-export type UsersUpdateMeMutationError = HTTPValidationError;
-
-/**
- * @summary Update Me
- */
-export const useUsersUpdateMe = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersUpdateMe>>,
-            TError,
-            {data: UserUpdateMe},
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersUpdateMe>>,
-    TError,
-    {data: UserUpdateMe},
-    TContext
-> => {
-    const mutationOptions = getUsersUpdateMeMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * @summary Update Password Me
  */
 export const usersUpdatePasswordMe = (
     updatedPassword: UpdatedPassword,
-    params: UsersUpdatePasswordMeParams
-) => {
-    return customAxios<Message>({
-        url: `/api/v0.1/unit/user/me/password`,
-        method: "PATCH",
-        headers: {"Content-Type": "application/json"},
-        data: updatedPassword,
-        params,
-    });
-};
+    params: UsersUpdatePasswordMeParams,
+ ) => {
+      
+      
+      return customAxios<Message>(
+      {url: `/api/v0.1/unit/user/me/password`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updatedPassword,
+        params
+    },
+      );
+    }
+  
 
-export const getUsersUpdatePasswordMeMutationOptions = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
-        Awaited<ReturnType<typeof usersUpdatePasswordMe>>,
-        TError,
-        {data: UpdatedPassword; params: UsersUpdatePasswordMeParams},
-        TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersUpdatePasswordMe>>,
-    TError,
-    {data: UpdatedPassword; params: UsersUpdatePasswordMeParams},
-    TContext
-> => {
-    const mutationKey = ["usersUpdatePasswordMe"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersUpdatePasswordMe>>,
-        {data: UpdatedPassword; params: UsersUpdatePasswordMeParams}
-    > = (props) => {
-        const {data, params} = props ?? {};
+export const getUsersUpdatePasswordMeMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdatePasswordMe>>, TError,{data: UpdatedPassword;params: UsersUpdatePasswordMeParams}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersUpdatePasswordMe>>, TError,{data: UpdatedPassword;params: UsersUpdatePasswordMeParams}, TContext> => {
 
-        return usersUpdatePasswordMe(data, params);
-    };
+const mutationKey = ['usersUpdatePasswordMe'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return {mutationFn, ...mutationOptions};
-};
+      
 
-export type UsersUpdatePasswordMeMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersUpdatePasswordMe>>
->;
-export type UsersUpdatePasswordMeMutationBody = UpdatedPassword;
-export type UsersUpdatePasswordMeMutationError = HTTPValidationError;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersUpdatePasswordMe>>, {data: UpdatedPassword;params: UsersUpdatePasswordMeParams}> = (props) => {
+          const {data,params} = props ?? {};
+
+          return  usersUpdatePasswordMe(data,params,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersUpdatePasswordMeMutationResult = NonNullable<Awaited<ReturnType<typeof usersUpdatePasswordMe>>>
+    export type UsersUpdatePasswordMeMutationBody = UpdatedPassword
+    export type UsersUpdatePasswordMeMutationError = HTTPValidationError
+
+    /**
  * @summary Update Password Me
  */
-export const useUsersUpdatePasswordMe = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersUpdatePasswordMe>>,
-            TError,
-            {data: UpdatedPassword; params: UsersUpdatePasswordMeParams},
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersUpdatePasswordMe>>,
-    TError,
-    {data: UpdatedPassword; params: UsersUpdatePasswordMeParams},
-    TContext
-> => {
-    const mutationOptions = getUsersUpdatePasswordMeMutationOptions(options);
+export const useUsersUpdatePasswordMe = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdatePasswordMe>>, TError,{data: UpdatedPassword;params: UsersUpdatePasswordMeParams}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof usersUpdatePasswordMe>>,
+        TError,
+        {data: UpdatedPassword;params: UsersUpdatePasswordMeParams},
+        TContext
+      > => {
 
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      const mutationOptions = getUsersUpdatePasswordMeMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * delete by himself
  * @summary Delete Me
  */
-export const usersDeleteMe = () => {
-    return customAxios<Message>({
-        url: `/api/v0.1/unit/user/me`,
-        method: "DELETE",
-    });
-};
+export const usersDeleteMe = (
+    
+ ) => {
+      
+      
+      return customAxios<Message>(
+      {url: `/api/v0.1/unit/user/me`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-export const getUsersDeleteMeMutationOptions = <
-    TError = unknown,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
+
+export const getUsersDeleteMeMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersDeleteMe>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersDeleteMe>>, TError,void, TContext> => {
+
+const mutationKey = ['usersDeleteMe'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersDeleteMe>>, void> = () => {
+          
+
+          return  usersDeleteMe()
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersDeleteMeMutationResult = NonNullable<Awaited<ReturnType<typeof usersDeleteMe>>>
+    
+    export type UsersDeleteMeMutationError = unknown
+
+    /**
+ * @summary Delete Me
+ */
+export const useUsersDeleteMe = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersDeleteMe>>, TError,void, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof usersDeleteMe>>,
         TError,
         void,
         TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersDeleteMe>>,
-    TError,
-    void,
-    TContext
-> => {
-    const mutationKey = ["usersDeleteMe"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersDeleteMe>>,
-        void
-    > = () => {
-        return usersDeleteMe();
-    };
+      const mutationOptions = getUsersDeleteMeMutationOptions(options);
 
-    return {mutationFn, ...mutationOptions};
-};
-
-export type UsersDeleteMeMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersDeleteMe>>
->;
-
-export type UsersDeleteMeMutationError = unknown;
-
-/**
- * @summary Delete Me
- */
-export const useUsersDeleteMe = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersDeleteMe>>,
-            TError,
-            void,
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersDeleteMe>>,
-    TError,
-    void,
-    TContext
-> => {
-    const mutationOptions = getUsersDeleteMeMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * @summary Read By Email
  */
 export const usersReadByEmail = (
-    areaId: number,
+    areaId: string,
     email: string,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
-    return customAxios<UserPublic>({
-        url: `/api/v0.1/unit/user/${areaId}/${email}`,
-        method: "GET",
-        signal,
-    });
-};
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/user/${areaId}/${email}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-export const getUsersReadByEmailQueryKey = (
-    areaId?: number,
-    email?: string
-) => {
+export const getUsersReadByEmailQueryKey = (areaId?: string,
+    email?: string,) => {
     return [`/api/v0.1/unit/user/${areaId}/${email}`] as const;
-};
-
-export const getUsersReadByEmailInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        >;
     }
+
+    
+export const getUsersReadByEmailInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>, TError = HTTPValidationError>(areaId: string,
+    email: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersReadByEmailQueryKey(areaId, email);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof usersReadByEmail>>
-    > = ({signal}) => usersReadByEmail(areaId, email, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersReadByEmailQueryKey(areaId,email);
 
-    return {
-        queryKey,
-        queryFn,
-        enabled: !!(areaId && email),
-        ...queryOptions,
-    } as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersReadByEmail>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersReadByEmailInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersReadByEmail>>
->;
-export type UsersReadByEmailInfiniteQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersReadByEmail>>> = ({ signal }) => usersReadByEmail(areaId,email, signal);
 
-export function useUsersReadByEmailInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadByEmail>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadByEmail>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadByEmailInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadByEmail>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadByEmail>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadByEmailInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(areaId && email), ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersReadByEmailInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersReadByEmail>>>
+export type UsersReadByEmailInfiniteQueryError = HTTPValidationError
+
+
+export function useUsersReadByEmailInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadByEmail>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadByEmail>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadByEmailInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadByEmail>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadByEmail>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadByEmailInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Read By Email
  */
 
-export function useUsersReadByEmailInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersReadByEmailInfiniteQueryOptions(
-        areaId,
-        email,
-        options
-    );
+export function useUsersReadByEmailInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersReadByEmail>>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersReadByEmailInfiniteQueryOptions(areaId,email,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersReadByEmailQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersReadByEmail>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        >;
-    }
+
+
+export const getUsersReadByEmailQueryOptions = <TData = Awaited<ReturnType<typeof usersReadByEmail>>, TError = HTTPValidationError>(areaId: string,
+    email: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersReadByEmailQueryKey(areaId, email);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof usersReadByEmail>>
-    > = ({signal}) => usersReadByEmail(areaId, email, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersReadByEmailQueryKey(areaId,email);
 
-    return {
-        queryKey,
-        queryFn,
-        enabled: !!(areaId && email),
-        ...queryOptions,
-    } as UseQueryOptions<
-        Awaited<ReturnType<typeof usersReadByEmail>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersReadByEmailQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersReadByEmail>>
->;
-export type UsersReadByEmailQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersReadByEmail>>> = ({ signal }) => usersReadByEmail(areaId,email, signal);
 
-export function useUsersReadByEmail<
-    TData = Awaited<ReturnType<typeof usersReadByEmail>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadByEmail>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadByEmail>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersReadByEmail<
-    TData = Awaited<ReturnType<typeof usersReadByEmail>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersReadByEmail>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersReadByEmail>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersReadByEmail<
-    TData = Awaited<ReturnType<typeof usersReadByEmail>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(areaId && email), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersReadByEmailQueryResult = NonNullable<Awaited<ReturnType<typeof usersReadByEmail>>>
+export type UsersReadByEmailQueryError = HTTPValidationError
+
+
+export function useUsersReadByEmail<TData = Awaited<ReturnType<typeof usersReadByEmail>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadByEmail>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadByEmail>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadByEmail<TData = Awaited<ReturnType<typeof usersReadByEmail>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersReadByEmail>>,
+          TError,
+          Awaited<ReturnType<typeof usersReadByEmail>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersReadByEmail<TData = Awaited<ReturnType<typeof usersReadByEmail>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Read By Email
  */
 
-export function useUsersReadByEmail<
-    TData = Awaited<ReturnType<typeof usersReadByEmail>>,
-    TError = HTTPValidationError,
->(
-    areaId: number,
-    email: string,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersReadByEmail>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersReadByEmailQueryOptions(
-        areaId,
-        email,
-        options
-    );
+export function useUsersReadByEmail<TData = Awaited<ReturnType<typeof usersReadByEmail>>, TError = HTTPValidationError>(
+ areaId: string,
+    email: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersReadByEmail>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersReadByEmailQueryOptions(areaId,email,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
 
 /**
  * Create new user without the need to be logged in.
@@ -2377,384 +1404,347 @@ export function useUsersReadByEmail<
  */
 export const usersRegister = (
     userRegister: UserRegister,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
-    return customAxios<UserPublic>({
-        url: `/api/v0.1/unit/signup`,
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: userRegister,
-        signal,
-    });
-};
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/signup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userRegister, signal
+    },
+      );
+    }
+  
 
-export const getUsersRegisterMutationOptions = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(options?: {
-    mutation?: UseMutationOptions<
+
+export const getUsersRegisterMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersRegister>>, TError,{data: UserRegister}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersRegister>>, TError,{data: UserRegister}, TContext> => {
+
+const mutationKey = ['usersRegister'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersRegister>>, {data: UserRegister}> = (props) => {
+          const {data} = props ?? {};
+
+          return  usersRegister(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersRegisterMutationResult = NonNullable<Awaited<ReturnType<typeof usersRegister>>>
+    export type UsersRegisterMutationBody = UserRegister
+    export type UsersRegisterMutationError = HTTPValidationError
+
+    /**
+ * @summary Register
+ */
+export const useUsersRegister = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersRegister>>, TError,{data: UserRegister}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof usersRegister>>,
         TError,
         {data: UserRegister},
         TContext
-    >;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof usersRegister>>,
-    TError,
-    {data: UserRegister},
-    TContext
-> => {
-    const mutationKey = ["usersRegister"];
-    const {mutation: mutationOptions} = options
-        ? options.mutation &&
-          "mutationKey" in options.mutation &&
-          options.mutation.mutationKey
-            ? options
-            : {...options, mutation: {...options.mutation, mutationKey}}
-        : {mutation: {mutationKey}};
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof usersRegister>>,
-        {data: UserRegister}
-    > = (props) => {
-        const {data} = props ?? {};
+      const mutationOptions = getUsersRegisterMutationOptions(options);
 
-        return usersRegister(data);
-    };
-
-    return {mutationFn, ...mutationOptions};
-};
-
-export type UsersRegisterMutationResult = NonNullable<
-    Awaited<ReturnType<typeof usersRegister>>
->;
-export type UsersRegisterMutationBody = UserRegister;
-export type UsersRegisterMutationError = HTTPValidationError;
-
-/**
- * @summary Register
- */
-export const useUsersRegister = <
-    TError = HTTPValidationError,
-    TContext = unknown,
->(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof usersRegister>>,
-            TError,
-            {data: UserRegister},
-            TContext
-        >;
-    },
-    queryClient?: QueryClient
-): UseMutationResult<
-    Awaited<ReturnType<typeof usersRegister>>,
-    TError,
-    {data: UserRegister},
-    TContext
-> => {
-    const mutationOptions = getUsersRegisterMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-/**
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
  * Get all owners
 List of all owner
  * @summary Ownerslist
  */
 export const usersOwnersList = (
     params?: UsersOwnersListParams,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
-    return customAxios<OwnersRead>({
-        url: `/api/v0.1/unit/owners-list`,
-        method: "GET",
-        params,
-        signal,
-    });
-};
-
-export const getUsersOwnersListQueryKey = (params?: UsersOwnersListParams) => {
-    return [`/api/v0.1/unit/owners-list`, ...(params ? [params] : [])] as const;
-};
-
-export const getUsersOwnersListInfiniteQueryOptions = <
-    TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        >;
+      
+      
+      return customAxios<OwnersRead>(
+      {url: `/api/v0.1/unit/owners/list`, method: 'GET',
+        params, signal
+    },
+      );
     }
+  
+
+export const getUsersOwnersListQueryKey = (params?: UsersOwnersListParams,) => {
+    return [`/api/v0.1/unit/owners/list`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getUsersOwnersListInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>, TError = HTTPValidationError>(params?: UsersOwnersListParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersOwnersListQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof usersOwnersList>>
-    > = ({signal}) => usersOwnersList(params, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersOwnersListQueryKey(params);
 
-    return {queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof usersOwnersList>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersOwnersListInfiniteQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersOwnersList>>
->;
-export type UsersOwnersListInfiniteQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersOwnersList>>> = ({ signal }) => usersOwnersList(params, signal);
 
-export function useUsersOwnersListInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>,
-    TError = HTTPValidationError,
->(
-    params: undefined | UsersOwnersListParams,
-    options: {
-        query: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersOwnersList>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersOwnersList>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersOwnersListInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersOwnersList>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersOwnersList>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersOwnersListInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersOwnersListInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof usersOwnersList>>>
+export type UsersOwnersListInfiniteQueryError = HTTPValidationError
+
+
+export function useUsersOwnersListInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>, TError = HTTPValidationError>(
+ params: undefined |  UsersOwnersListParams, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersOwnersList>>,
+          TError,
+          Awaited<ReturnType<typeof usersOwnersList>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersOwnersListInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>, TError = HTTPValidationError>(
+ params?: UsersOwnersListParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersOwnersList>>,
+          TError,
+          Awaited<ReturnType<typeof usersOwnersList>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersOwnersListInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>, TError = HTTPValidationError>(
+ params?: UsersOwnersListParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Ownerslist
  */
 
-export function useUsersOwnersListInfinite<
-    TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseInfiniteQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseInfiniteQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersOwnersListInfiniteQueryOptions(
-        params,
-        options
-    );
+export function useUsersOwnersListInfinite<TData = InfiniteData<Awaited<ReturnType<typeof usersOwnersList>>>, TError = HTTPValidationError>(
+ params?: UsersOwnersListParams, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useInfiniteQuery(
-        queryOptions,
-        queryClient
-    ) as UseInfiniteQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
+  const queryOptions = getUsersOwnersListInfiniteQueryOptions(params,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useInfiniteQuery(queryOptions , queryClient) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getUsersOwnersListQueryOptions = <
-    TData = Awaited<ReturnType<typeof usersOwnersList>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        >;
-    }
+
+
+export const getUsersOwnersListQueryOptions = <TData = Awaited<ReturnType<typeof usersOwnersList>>, TError = HTTPValidationError>(params?: UsersOwnersListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>>, }
 ) => {
-    const {query: queryOptions} = options ?? {};
 
-    const queryKey =
-        queryOptions?.queryKey ?? getUsersOwnersListQueryKey(params);
+const {query: queryOptions} = options ?? {};
 
-    const queryFn: QueryFunction<
-        Awaited<ReturnType<typeof usersOwnersList>>
-    > = ({signal}) => usersOwnersList(params, signal);
+  const queryKey =  queryOptions?.queryKey ?? getUsersOwnersListQueryKey(params);
 
-    return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-        Awaited<ReturnType<typeof usersOwnersList>>,
-        TError,
-        TData
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
-};
+  
 
-export type UsersOwnersListQueryResult = NonNullable<
-    Awaited<ReturnType<typeof usersOwnersList>>
->;
-export type UsersOwnersListQueryError = HTTPValidationError;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersOwnersList>>> = ({ signal }) => usersOwnersList(params, signal);
 
-export function useUsersOwnersList<
-    TData = Awaited<ReturnType<typeof usersOwnersList>>,
-    TError = HTTPValidationError,
->(
-    params: undefined | UsersOwnersListParams,
-    options: {
-        query: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersOwnersList>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersOwnersList>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): DefinedUseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useUsersOwnersList<
-    TData = Awaited<ReturnType<typeof usersOwnersList>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        > &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof usersOwnersList>>,
-                    TError,
-                    Awaited<ReturnType<typeof usersOwnersList>>
-                >,
-                "initialData"
-            >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
-export function useUsersOwnersList<
-    TData = Awaited<ReturnType<typeof usersOwnersList>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {queryKey: DataTag<QueryKey, TData, TError>};
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type UsersOwnersListQueryResult = NonNullable<Awaited<ReturnType<typeof usersOwnersList>>>
+export type UsersOwnersListQueryError = HTTPValidationError
+
+
+export function useUsersOwnersList<TData = Awaited<ReturnType<typeof usersOwnersList>>, TError = HTTPValidationError>(
+ params: undefined |  UsersOwnersListParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersOwnersList>>,
+          TError,
+          Awaited<ReturnType<typeof usersOwnersList>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersOwnersList<TData = Awaited<ReturnType<typeof usersOwnersList>>, TError = HTTPValidationError>(
+ params?: UsersOwnersListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof usersOwnersList>>,
+          TError,
+          Awaited<ReturnType<typeof usersOwnersList>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useUsersOwnersList<TData = Awaited<ReturnType<typeof usersOwnersList>>, TError = HTTPValidationError>(
+ params?: UsersOwnersListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Ownerslist
  */
 
-export function useUsersOwnersList<
-    TData = Awaited<ReturnType<typeof usersOwnersList>>,
-    TError = HTTPValidationError,
->(
-    params?: UsersOwnersListParams,
-    options?: {
-        query?: Partial<
-            UseQueryOptions<
-                Awaited<ReturnType<typeof usersOwnersList>>,
-                TError,
-                TData
-            >
-        >;
-    },
-    queryClient?: QueryClient
-): UseQueryResult<TData, TError> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-} {
-    const queryOptions = getUsersOwnersListQueryOptions(params, options);
+export function useUsersOwnersList<TData = Awaited<ReturnType<typeof usersOwnersList>>, TError = HTTPValidationError>(
+ params?: UsersOwnersListParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersOwnersList>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-        TData,
-        TError
-    > & {queryKey: DataTag<QueryKey, TData, TError>};
+  const queryOptions = getUsersOwnersListQueryOptions(params,options)
 
-    query.queryKey = queryOptions.queryKey;
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-    return query;
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
+
+/**
+ * @summary Createuserbysuperuser
+ */
+export const usersCreateUserBySuperUser = (
+    userCreate: UserCreate,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/new-user`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userCreate, signal
+    },
+      );
+    }
+  
+
+
+export const getUsersCreateUserBySuperUserMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersCreateUserBySuperUser>>, TError,{data: UserCreate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersCreateUserBySuperUser>>, TError,{data: UserCreate}, TContext> => {
+
+const mutationKey = ['usersCreateUserBySuperUser'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersCreateUserBySuperUser>>, {data: UserCreate}> = (props) => {
+          const {data} = props ?? {};
+
+          return  usersCreateUserBySuperUser(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersCreateUserBySuperUserMutationResult = NonNullable<Awaited<ReturnType<typeof usersCreateUserBySuperUser>>>
+    export type UsersCreateUserBySuperUserMutationBody = UserCreate
+    export type UsersCreateUserBySuperUserMutationError = HTTPValidationError
+
+    /**
+ * @summary Createuserbysuperuser
+ */
+export const useUsersCreateUserBySuperUser = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersCreateUserBySuperUser>>, TError,{data: UserCreate}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof usersCreateUserBySuperUser>>,
+        TError,
+        {data: UserCreate},
+        TContext
+      > => {
+
+      const mutationOptions = getUsersCreateUserBySuperUserMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    /**
+ * @summary Updatedbyadmin
+ */
+export const usersUpdatedByAdmin = (
+    userId: string,
+    userUpdate: UserUpdate,
+ ) => {
+      
+      
+      return customAxios<UserPublic>(
+      {url: `/api/v0.1/unit/user/updated-by-admin/${userId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdate
+    },
+      );
+    }
+  
+
+
+export const getUsersUpdatedByAdminMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdatedByAdmin>>, TError,{userId: string;data: UserUpdate}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof usersUpdatedByAdmin>>, TError,{userId: string;data: UserUpdate}, TContext> => {
+
+const mutationKey = ['usersUpdatedByAdmin'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersUpdatedByAdmin>>, {userId: string;data: UserUpdate}> = (props) => {
+          const {userId,data} = props ?? {};
+
+          return  usersUpdatedByAdmin(userId,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UsersUpdatedByAdminMutationResult = NonNullable<Awaited<ReturnType<typeof usersUpdatedByAdmin>>>
+    export type UsersUpdatedByAdminMutationBody = UserUpdate
+    export type UsersUpdatedByAdminMutationError = HTTPValidationError
+
+    /**
+ * @summary Updatedbyadmin
+ */
+export const useUsersUpdatedByAdmin = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersUpdatedByAdmin>>, TError,{userId: string;data: UserUpdate}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof usersUpdatedByAdmin>>,
+        TError,
+        {userId: string;data: UserUpdate},
+        TContext
+      > => {
+
+      const mutationOptions = getUsersUpdatedByAdminMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
