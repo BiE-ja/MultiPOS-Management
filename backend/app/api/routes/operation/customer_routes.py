@@ -1,0 +1,4 @@
+from fastapi import APIRouter
+
+
+router = APIRouter(prefix="/customer", tags=["Customer management"])

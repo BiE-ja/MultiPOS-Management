@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1"
   }
 }

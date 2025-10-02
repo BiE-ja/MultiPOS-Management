@@ -1,0 +1,35 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.6.1/schema.json",
+    "name": "Multi-Point of sale Management",
+    "version": "0.1.0",
+    "files":{
+        "ignore":[
+            "node_modules/",
+            "dist/",
+            "build",
+            ".next/",
+            "coverage/",
+            ".turbo/"
+            ]
+        },
+    "formatter":{
+        "enable": true,
+        "indentStyle":"space",
+        "identWidth": 4,
+        "lineWidth":80,
+        "quoteStyle":"double",
+        "trailingComma": "all",
+        "semicolons": "asNeeded"
+    },
+    "linter":{
+        "enable": true,
+        "rules":{
+            "recommended":true
+        }
+    },
+    "organizeImports":{
+        "enable": true
+    }
+
+
+}

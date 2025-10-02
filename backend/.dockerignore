@@ -1,10 +1,11 @@
 # Environnements virtuels
 env/
 .venv/
+venv/
 
 # Fichiers de config utilisateur
-*.env
-*.env.*
+#*.env : dans ce projet j'utilise des info venant de .env
+#*.env.*
 
 # Caches et fichiers temporaires
 __pycache__/
@@ -13,6 +14,10 @@ __pycache__/
 *.pyd
 *.log
 *.sqlite3
+
+app.egg-info
+.coverage
+htmlcov
 
 # Dossiers inutiles
 .git/
