@@ -15,10 +15,9 @@ export function Welcome() {
                 </Text>
             </Title>
             <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
-                Raha hijery tolotra hafa inoana fa hanamora ny fiainanao +
-                Tsidiho{" "}
+                Hitanao amin'ito rohy manaraka ito ireo{" "}
                 <Anchor href="https://zita-products-list.mg/" size="lg">
-                    Tolotra novokarin'i Zita
+                    Tolotra vokarin'i Zita Company
                 </Anchor>
                 . Vonona hatrany izahay hanome fahafaham-po anao.
             </Text>

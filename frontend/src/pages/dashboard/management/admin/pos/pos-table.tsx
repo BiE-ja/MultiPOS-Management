@@ -88,7 +88,7 @@ export function PosTable({owner}: PosTableProps) {
             {
                 accessor: "number",
                 title: "Numéro",
-                width: 156,
+                width: 120,
                 render: (_pos, index) => (
                     <LinkChip
                         href={paths.dashboard.admin.management.owners.pos.view(
@@ -122,7 +122,7 @@ export function PosTable({owner}: PosTableProps) {
             },
             {
                 accessor: "employee",
-                title: "Nombre d'employés'",
+                title: "Nombre d'employés",
                 width: 180,
                 //sortable: true,
                 render: (pos) => pos.employee_count ?? 0,
@@ -130,14 +130,14 @@ export function PosTable({owner}: PosTableProps) {
             {
                 accessor: "users",
                 title: "Nombre d'utilisateur",
-                width: 120,
+                width: 180,
                 render: (pos) => pos.user_count ?? 0,
             },
             {
-                accessor: "createdAt",
+                accessor: "created_at",
                 title: "Créé le",
                 noWrap: true,
-                width: 140,
+                width: 130,
                 sortable: true,
                 sortAccessor: "created_at",
                 render: (pos) =>

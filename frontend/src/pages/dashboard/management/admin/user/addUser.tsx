@@ -1,4 +1,14 @@
-import type {UserCreate, UserRead} from "@client/schemas";
+import type {
+    UserCreate,
+    UserRead,
+    UserUpdate,
+    UserUpdateEmail,
+    UserUpdateIsActive,
+    UserUpdateIsOwner,
+    UserUpdateIsSuperuser,
+    UserUpdateLastName,
+    UserUpdateName,
+} from "@client/schemas";
 import {
     usersCreateUserBySuperUser as addUser,
     usersUpdatedByAdmin as updateUser,
@@ -13,6 +23,7 @@ import {HandleError} from "utilities/handleError";
 type OwnerFormProps = {
     opened: boolean;
     onClose: () => void;
+    onSuccess?: () => void;
     owner?: Partial<UserRead>; // pour l'édition
 };
 
@@ -34,7 +45,7 @@ function verify(value: string) {
     return false;
 }
 
-export function AddUser({opened, onClose, owner}: OwnerFormProps) {
+export function AddUser({opened, onClose, onSuccess, owner}: OwnerFormProps) {
     const form = useForm<UserCreate>({
         initialValues: {
             name: owner?.name ?? "",
@@ -57,8 +68,22 @@ export function AddUser({opened, onClose, owner}: OwnerFormProps) {
 
     const handleSubmit = form.onSubmit(async (user: UserCreate) => {
         try {
-            if (owner) await updateUser(owner.id as string, user);
-            else await addUser(user);
+            // si "owner" a été défini au préalable, il s'agit d'une mise à jour
+            if (owner != undefined) {
+                // Pour éviter de mettre à jour les champs non concerné par la mise à jour
+                // (mot de passe, date de création,...), on crée une nouvelle objet.
+                // A noter que ces champs ont été initialisé dans "initialValues" de la "form"
+                const user_update = () => ({
+                    name: user.name as UserUpdateName,
+                    last_name: user.last_name as UserUpdateLastName,
+                    email: user.email as UserUpdateEmail,
+                    is_active: user.is_active as UserUpdateIsActive,
+                    is_owner: user.is_owner as UserUpdateIsOwner,
+                    is_superuser: user.is_superuser as UserUpdateIsSuperuser,
+                });
+                await updateUser(owner.id as string, user_update as UserUpdate);
+            } else await addUser(user);
+            onSuccess?.();
             onClose();
             //if(user_added)
             notifications.show({
@@ -84,11 +109,12 @@ export function AddUser({opened, onClose, owner}: OwnerFormProps) {
                     <Flex direction={"column"} gap={4}>
                         <TextInput
                             label="Nom"
-                            {...form.getInputProps("name")}
+                            {...form.getInputProps("last_name")}
                         />
+
                         <TextInput
                             label="Prénom"
-                            {...form.getInputProps("last_name")}
+                            {...form.getInputProps("name")}
                         />
                     </Flex>
                     <TextInput label="Email" {...form.getInputProps("email")} />

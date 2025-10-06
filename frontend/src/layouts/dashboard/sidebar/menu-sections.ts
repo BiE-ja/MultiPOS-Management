@@ -49,7 +49,7 @@ export const menu: MenuItem[] = [
         header: "Apps",
         section: [
             {
-                name: "Kanban",
+                name: "Tantana Software Suite",
                 href: paths.dashboard.apps.kanban,
                 icon: PiKanbanDuotone,
             },

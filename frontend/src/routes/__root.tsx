@@ -1,5 +1,5 @@
-import {NothingFoundBackground as NotFound} from "@components/404/NotFoundBackground";
 import {Outlet, createRootRoute} from "@tanstack/react-router";
+import {LazyPage} from "layouts/lazy-page";
 
 import React, {Suspense} from "react";
 
@@ -23,6 +23,8 @@ const TanStackDevtools =
         ? () => null
         : React.lazy(loadDevtools);
 
+const NotFound = LazyPage(() => import("pages/dashboard/notFound"));
+
 export const Route = createRootRoute({
     component: () => (
         <>
@@ -32,5 +34,5 @@ export const Route = createRootRoute({
             </Suspense>
         </>
     ),
-    //notFoundComponent: () => <NotFound />,
+    notFoundComponent: () => NotFound,
 });

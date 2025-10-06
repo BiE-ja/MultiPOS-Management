@@ -1,5 +1,5 @@
 import {NothingFoundBackground} from "@components/404/NotFoundBackground";
-import classes from "./home.module.css";
+import classes from "./home/home.module.css";
 import {Page} from "components/page";
 
 export default function NotFoundPage() {

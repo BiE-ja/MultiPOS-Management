@@ -8,7 +8,11 @@ import {
 } from "@client/schemas";
 
 import {useAuthLogin} from "@client/services/auth";
-import {usersAuth, usersReadMe} from "@client/services/users";
+import {
+    getUsersAuthQueryKey,
+    usersAuth,
+    usersReadMe,
+} from "@client/services/users";
 import {HandleError} from "utilities/handleError";
 import {CustomNotifications} from "@components/customNotification";
 import {useAuthContext} from "./useAuthContext";
@@ -67,7 +71,9 @@ const useAuth = () => {
                 children: "You have successfully logged in",
             });
 
-            await queryClient.invalidateQueries({queryKey: ["users"]});
+            await queryClient.invalidateQueries({
+                queryKey: getUsersAuthQueryKey(),
+            });
         } catch (err) {
             HandleError(err);
             throw err;

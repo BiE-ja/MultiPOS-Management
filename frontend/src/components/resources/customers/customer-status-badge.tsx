@@ -13,15 +13,21 @@ export function UserStatusBadge({
     ...props
 }: UserStatusBadgeProps) {
     const color = match(
-        [(status = true), "teal"],
-        [(status = false), "orange"]
+        [status === true, "teal"],
+        [status === false, "orange"]
         //[status === "archived", "red"],
         //[true, "gray"]
+    );
+    const statusLabel = match(
+        [status === true, "Active"],
+        [status === false, "Inactive"]
+        //[status === "archived", "Archived"],
+        //[true, "Unknown"]
     );
 
     return (
         <Badge color={color} variant={variant} {...props}>
-            {status}
+            {statusLabel}
         </Badge>
     );
 }

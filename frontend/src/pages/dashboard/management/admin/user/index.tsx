@@ -9,7 +9,10 @@ import {OwnersTable} from "./owner-table";
 const breadcrumbs = [
     {label: "Dashboard", href: paths.dashboard.root},
     {label: "Management", href: paths.dashboard.admin.management.root},
-    {label: "Owners", href: paths.dashboard.admin.management.owners.root},
+    {
+        label: "Manage Owners",
+        href: paths.dashboard.admin.management.owners.root,
+    },
     {label: "List"},
 ];
 
