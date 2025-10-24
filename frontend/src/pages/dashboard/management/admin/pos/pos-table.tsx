@@ -1,16 +1,20 @@
 // src/pages/dashboard/management/admin/owner-table.tsx
 
 import {type AreaDetails as Pos, type UserRead} from "@client/schemas/";
-import {useZoneListAllByAdmin as usePosList} from "@client/services/zone";
+import {
+    getZoneListAllByAdminQueryKey,
+    useZoneListAllByAdmin as usePosList,
+} from "@client/services/zone";
 import {DataTable} from "@components/data-table";
-import {LinkChip} from "@components/link-chip";
+
 import {Box, Group, Loader, Text} from "@mantine/core";
-import {paths} from "config/paths";
+
 import type {DataTableColumn} from "mantine-datatable";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {AddButton} from "@components/add-button";
 import {formatDate} from "utilities/date";
 import {AddPos} from "./add-pos";
+import {useQueryClient} from "@tanstack/react-query";
 
 type SortableFields = Pick<Pos, "created_at" | "name" | "location">;
 
@@ -32,47 +36,78 @@ function usePagination(params?: PaginationParams) {
 }
 
 export type PosTableProps = {
-    owner: UserRead;
+    owner?: UserRead;
 };
 
 export function PosTable({owner}: PosTableProps) {
-    const {data, isLoading} = usePosList(owner.id);
+    // pour mettre à jour de la page si le nombre total de propriétaires change
+    const queryClient = useQueryClient();
+    //  pour gérer l'ouverture du modal
+    const [modalOpened, setModalOpened] = useState(false);
+    const [selectedPos, setSelectedPos] = useState<Pos | undefined>();
+    // pagination
     const {page, limit, setLimit, setPage} = usePagination();
+
     const {tabs, filters, sort} = DataTable.useDataTable<SortableFields>({
         sortConfig: {
             direction: "asc",
             column: "name",
         },
-        tabsConfig: {
-            tabs: [
-                {
-                    value: "*",
-                    label: "All",
-                    counter: data?.length,
-                    rightSection: <Loader size="xs" />,
-                },
-                {
-                    value: "active",
-                    label: "Active",
-                    color: "teal",
-                    //counter: metrics?.filter((pos) => pos.is_active).length,
-                    rightSection: <Loader size="xs" color="teal" />,
-                },
-
-                {
-                    value: "inactive",
-                    label: "Inactive",
-                    color: "red",
-                    //counter: metrics
-                    rightSection: <Loader size="xs" color="teal" />,
-                },
-            ],
-        },
     });
 
-    const [modalOpened, setModalOpened] = useState(false);
-    const [selectedPos, setSelectedPos] = useState<Pos | undefined>();
+    // Définition des paramètres de la requête
+    const params = useMemo(() => {
+        return owner?.id;
+    }, [owner?.id]);
 
+    // Récupération des données avec les nouveaux paramètres
+    const {data: listPos, isLoading} = usePosList(params as string);
+
+    const filteredPos = useMemo(() => {
+        if (!listPos?.data) return [];
+
+        switch (tabs.value) {
+            case "inactive":
+                return listPos.data.filter((pos) => pos.state === "inactive");
+            case "active":
+                return listPos.data.filter((pos) => pos.state === "active");
+            case "archived":
+                return listPos.data.filter((pos) => pos.state === "archived");
+            default:
+                return listPos.data;
+        }
+    }, [listPos, tabs.value]);
+
+    // renvoie à la 1ère page en cas de changement de valeur du tabs
+    useEffect(() => {
+        setPage(1);
+    }, [tabs.value, setPage]);
+
+    const sortedPos = useMemo(() => {
+        if (!filteredPos.length) return [];
+
+        const {columnAccessor, direction} = sort.status;
+        if (!columnAccessor) return filteredPos;
+
+        const sorted = [...filteredPos].sort((a, b) => {
+            const aValue = a[columnAccessor as keyof Pos];
+            const bValue = b[columnAccessor as keyof Pos];
+
+            if (aValue == null) return 1;
+            if (bValue == null) return -1;
+
+            if (typeof aValue === "string" && typeof bValue === "string") {
+                return direction === "asc"
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            }
+            return 0;
+        });
+
+        return sorted;
+    }, [filteredPos, sort.status]);
+
+    // gestion ouverture/fermeture modal
     const openCreateModal = () => {
         setSelectedPos(undefined);
         setModalOpened(true);
@@ -83,21 +118,37 @@ export function PosTable({owner}: PosTableProps) {
         setModalOpened(true);
     };
 
+    const tabsDefinitions = [
+        {
+            value: "*",
+            label: "All",
+            counter: listPos?.data.length,
+            rightSection: <Loader size="xs" />,
+        },
+        {
+            value: "active",
+            label: "Active",
+            color: "teal",
+            counter: 0,
+            rightSection: <Loader size="xs" color="teal" />,
+        },
+
+        {
+            value: "inactive",
+            label: "Inactive",
+            color: "red",
+            counter: 0,
+            rightSection: <Loader size="xs" color="teal" />,
+        },
+    ];
+
     const columns: DataTableColumn<Pos>[] = useMemo(
         () => [
             {
                 accessor: "number",
                 title: "Numéro",
                 width: 120,
-                render: (_pos, index) => (
-                    <LinkChip
-                        href={paths.dashboard.admin.management.owners.pos.view(
-                            "" + _pos.owner_id + "",
-                            "" + _pos.id + ""
-                        )}>
-                        {(page - 1) * limit + index + 1}
-                    </LinkChip>
-                ),
+                render: (_pos, index) => (page - 1) * limit + index + 1,
             },
             {
                 accessor: "name",
@@ -108,7 +159,6 @@ export function PosTable({owner}: PosTableProps) {
                     <Group wrap="nowrap">
                         <Box w="16rem">
                             <Text truncate="end">{pos.name} </Text>
-                            <Text size="sm" c="dimmed" truncate="end"></Text>
                         </Box>
                     </Group>
                 ),
@@ -118,7 +168,11 @@ export function PosTable({owner}: PosTableProps) {
                 title: "Localisation",
                 noWrap: true,
                 width: 160,
-                render: (pos) => pos.location,
+                render: (pos) => (
+                    <Text aria-multiline={true} truncate="end">
+                        {pos.location}
+                    </Text>
+                ),
             },
             {
                 accessor: "employee",
@@ -164,20 +218,26 @@ export function PosTable({owner}: PosTableProps) {
         <>
             <DataTable.Container>
                 <DataTable.Title
-                    title={`Point de vente pour ${owner.last_name}`}
+                    title={
+                        owner ? `Point de vente pour ${owner.last_name}` : ""
+                    }
                     description={
-                        "Vous verrez dans le tableau ci-dessous, tous les points de vente appartenant à l'utilisateur "
+                        owner
+                            ? "Vous verrez dans le tableau ci-dessous, tous les points de vente appartenant à l'utilisateur "
+                            : "Veuillez sélectionner un propriétaire!"
                     }
                     actions={
-                        <AddButton
-                            variant="default"
-                            size="xs"
-                            onClick={openCreateModal}>
-                            Add new pos
-                        </AddButton>
+                        owner && (
+                            <AddButton
+                                variant="default"
+                                size="xs"
+                                onClick={openCreateModal}>
+                                Add new pos
+                            </AddButton>
+                        )
                     }
                 />
-                <DataTable.Tabs tabs={tabs.tabs} onChange={tabs.change} />
+                <DataTable.Tabs tabs={tabsDefinitions} onChange={tabs.change} />
                 <DataTable.Filters
                     filters={filters.filters}
                     onClear={filters.clear}
@@ -191,11 +251,11 @@ export function PosTable({owner}: PosTableProps) {
                         )}
                         paginationText={DataTable.paginationText("pos")}
                         page={page}
-                        records={data ?? []}
+                        records={sortedPos}
                         fetching={isLoading}
                         onPageChange={setPage}
                         recordsPerPage={limit}
-                        totalRecords={data?.length ?? 0}
+                        totalRecords={sortedPos.length}
                         onRecordsPerPageChange={setLimit}
                         recordsPerPageOptions={[5, 15, 30, 40]}
                         sortStatus={sort.status}
@@ -207,9 +267,17 @@ export function PosTable({owner}: PosTableProps) {
 
             <AddPos
                 opened={modalOpened}
-                onClose={() => setModalOpened(false)}
+                onClose={() => {
+                    setModalOpened(false);
+                    setSelectedPos(undefined);
+                }}
                 pos={selectedPos}
-                ownerId={owner.id}
+                ownerId={owner?.id}
+                onSuccess={() =>
+                    queryClient.invalidateQueries({
+                        queryKey: getZoneListAllByAdminQueryKey(),
+                    })
+                }
             />
         </>
     );

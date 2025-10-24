@@ -5,6 +5,14 @@ function CustomNavLink({to, label}: {to: string; label: string}) {
     const matchRoute = useMatchRoute();
     const isActive = !!matchRoute({to, fuzzy: true});
 
-    return <NavLink component={Link} to={to} active={isActive} label={label} />;
+    return (
+        <NavLink
+            component={Link}
+            to={to}
+            active={isActive}
+            label={label}
+            replace={true}
+        />
+    );
 }
 export default CustomNavLink;

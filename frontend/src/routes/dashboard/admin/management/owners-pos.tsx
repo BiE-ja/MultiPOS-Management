@@ -7,7 +7,7 @@ const Pos = LazyPage(() => import("pages/dashboard/management/admin/pos"));
 export const Route = createFileRoute(
     paths.dashboard.admin.management.owners.pos.root
 )({
-    component: RouteComponent,
+    component: () => Pos,
 });
 
 function RouteComponent() {

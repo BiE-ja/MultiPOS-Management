@@ -1,31 +1,30 @@
-import type {
-    UserCreate,
-    UserRead,
-    UserUpdate,
-    UserUpdateEmail,
-    UserUpdateIsActive,
-    UserUpdateIsOwner,
-    UserUpdateIsSuperuser,
-    UserUpdateLastName,
-    UserUpdateName,
-} from "@client/schemas";
+import type {UserCreate, UserRead, UserUpdate} from "@client/schemas";
 import {
     usersCreateUserBySuperUser as addUser,
     usersUpdatedByAdmin as updateUser,
 } from "@client/services/users";
 import {Select} from "@components/forms";
 import {FormProvider} from "@components/forms/form-provider";
-import {Modal, TextInput, Button, Stack, Flex} from "@mantine/core";
+import {
+    Modal,
+    TextInput,
+    Button,
+    Stack,
+    Group,
+    type StackProps,
+} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {notifications} from "@mantine/notifications";
+import {useEffect, useState} from "react";
 import {HandleError} from "utilities/handleError";
 
-type OwnerFormProps = {
+interface UserFormProps extends Omit<StackProps, "children"> {
     opened: boolean;
+    view?: boolean;
     onClose: () => void;
     onSuccess?: () => void;
-    owner?: Partial<UserRead>; // pour l'édition
-};
+    user?: Partial<UserRead>; // pour l'édition
+}
 
 /*const Role = [
     {value: "manager", label: "Manager"},
@@ -33,10 +32,7 @@ type OwnerFormProps = {
     {value: "stock-keeper", label: "Magasiner"},
 ];*/
 
-const isTrue = [
-    {value: "true", label: "Oui"},
-    {value: "false", label: "Non"},
-];
+const isTrue = ["true", "false"];
 
 function verify(value: string) {
     if (value == "true") {
@@ -45,18 +41,25 @@ function verify(value: string) {
     return false;
 }
 
-export function AddUser({opened, onClose, onSuccess, owner}: OwnerFormProps) {
+export function AddUser({
+    opened,
+    view,
+    onClose,
+    onSuccess,
+    user,
+    ...props
+}: UserFormProps) {
     const form = useForm<UserCreate>({
         initialValues: {
-            name: owner?.name ?? "",
-            last_name: owner?.last_name ?? "",
-            email: owner?.email ?? "",
-            phone: owner?.phone ?? "",
+            name: "",
+            last_name: "",
+            email: "",
+            phone: "",
             password: "",
-            created_at: owner?.created_at,
-            is_active: owner?.is_active ?? true,
-            is_owner: owner?.is_owner ?? true,
-            is_superuser: owner?.is_superuser ?? false,
+            created_at: undefined,
+            is_active: true,
+            is_owner: true,
+            is_superuser: false,
         },
         transformValues: (values) => ({
             ...values,
@@ -66,30 +69,70 @@ export function AddUser({opened, onClose, onSuccess, owner}: OwnerFormProps) {
         }),
     });
 
-    const handleSubmit = form.onSubmit(async (user: UserCreate) => {
+    const [formInitialized, setFormInitialized] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
+
+    const enableEdition = () => {
+        setIsDisabled(false);
+    };
+
+    // Si "owner" est défini,
+    // on initialise les valeurs du formulaire avec les données de l'utilisateur à modifier
+
+    useEffect(() => {
+        if (!opened) {
+            if (formInitialized) {
+                form.reset();
+                setFormInitialized(false);
+            }
+        } else {
+            if (!formInitialized) {
+                if (user) {
+                    form.setValues({
+                        name: user?.name ?? "",
+                        last_name: user?.last_name ?? "",
+                        email: user?.email ?? "",
+                        phone: user?.phone ?? "",
+                        created_at: user?.created_at,
+                        is_active: user?.is_active ?? true,
+                        is_owner: user?.is_owner ?? true,
+                        is_superuser: user?.is_superuser ?? false,
+                    });
+                }
+                setFormInitialized(true);
+                setIsDisabled(view ? view : false);
+            }
+            //setIsDisabled(view ? !view : false);
+        }
+    }, [opened, formInitialized, setFormInitialized, user, view, form]);
+
+    const handleSubmit = form.onSubmit(async (user_form: UserCreate) => {
         try {
             // si "owner" a été défini au préalable, il s'agit d'une mise à jour
-            if (owner != undefined) {
+            if (user) {
                 // Pour éviter de mettre à jour les champs non concerné par la mise à jour
                 // (mot de passe, date de création,...), on crée une nouvelle objet.
                 // A noter que ces champs ont été initialisé dans "initialValues" de la "form"
-                const user_update = () => ({
-                    name: user.name as UserUpdateName,
-                    last_name: user.last_name as UserUpdateLastName,
-                    email: user.email as UserUpdateEmail,
-                    is_active: user.is_active as UserUpdateIsActive,
-                    is_owner: user.is_owner as UserUpdateIsOwner,
-                    is_superuser: user.is_superuser as UserUpdateIsSuperuser,
-                });
-                await updateUser(owner.id as string, user_update as UserUpdate);
-            } else await addUser(user);
+                const user_update: UserUpdate = {
+                    name: user_form.name,
+                    last_name: user_form.last_name,
+                    email: user_form.email,
+                    is_active: user_form.is_active,
+                    is_owner: user_form.is_owner,
+                    is_superuser: user_form.is_superuser,
+                };
+                await updateUser(user_update);
+            } else {
+                // sinon création
+                await addUser(user_form);
+            }
             onSuccess?.();
             onClose();
             //if(user_added)
             notifications.show({
                 title: "Succès",
                 message: `L'utilisateur a été ${
-                    owner ? "modifié" : "créé"
+                    user ? "modifié" : "créé"
                 } avec succès`,
                 color: "green",
             });
@@ -103,53 +146,72 @@ export function AddUser({opened, onClose, onSuccess, owner}: OwnerFormProps) {
         <Modal
             opened={opened}
             onClose={onClose}
-            title={owner ? "Edit Owner" : "Create Owner"}>
+            title={user ? "Edit Owner" : "Create Owner"}
+            size={{base: "xs", md: "md"}}>
+            {view && (
+                <Button variant="default" size="xs" onClick={enableEdition}>
+                    Edit...
+                </Button>
+            )}
             <FormProvider form={form} onSubmit={handleSubmit}>
-                <Stack>
-                    <Flex direction={"column"} gap={4}>
+                <Stack {...props}>
+                    <Group>
                         <TextInput
-                            label="Nom"
+                            label="Last Name"
                             {...form.getInputProps("last_name")}
+                            disabled={isDisabled}
                         />
 
                         <TextInput
-                            label="Prénom"
+                            label="First Name"
                             {...form.getInputProps("name")}
+                            disabled={isDisabled}
                         />
-                    </Flex>
-                    <TextInput label="Email" {...form.getInputProps("email")} />
+                    </Group>
                     <TextInput
-                        label="Téléphone"
+                        label="Email"
+                        {...form.getInputProps("email")}
+                        disabled={isDisabled}
+                    />
+                    <TextInput
+                        label="Phone number"
                         {...form.getInputProps("phone")}
+                        disabled={isDisabled}
                     />
                     <Select
                         label="Super utilisateur"
                         name="is_superuser"
                         data={isTrue}
-                        defaultValue="Non"
                         clearable
                         {...form.getInputProps("is_superuser")}
+                        disabled={isDisabled}
                     />
                     <Select
-                        label="Propriétaire"
+                        label="Owner"
                         name="is_owner"
                         data={isTrue}
-                        defaultValue="Oui"
                         clearable
                         {...form.getInputProps("is_owner")}
+                        disabled={isDisabled}
                     />
                     <Select
                         label="Actif"
                         name="is_active"
                         data={isTrue}
-                        defaultValue="Oui"
                         clearable
                         {...form.getInputProps("is_active")}
+                        disabled={isDisabled}
                     />
-
-                    <Button type="submit">
-                        {owner ? "Modifier" : "Créer"}
-                    </Button>
+                    {!user && (
+                        <TextInput
+                            label="Temporary password"
+                            {...form.getInputProps("password")}
+                            disabled={isDisabled}
+                        />
+                    )}
+                    {!isDisabled && (
+                        <Button type="submit">{user ? "Edit" : "Add"}</Button>
+                    )}
                 </Stack>
             </FormProvider>
         </Modal>

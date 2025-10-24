@@ -37,13 +37,14 @@ async def fetchAll(
     """Get all users from area id
     List of all user for the area
     """
-    verify_area_access(area_id, current_user)
+    if not current_user.is_superuser:
+        verify_area_access(area_id, current_user)
     data = await POS_Manager(session).get_area_users_list(area_id, skip, limit)
     data_list = list(map(UserPublic.model_validate, data))
     return UsersPublic(data=data_list, count=len(data_list))
 
 
-@router.get("/users/list/admin", response_model=UsersPublic)
+@router.get("/users/list-by-admin", response_model=UsersPublic)
 async def fetchAllByAdmin(session: SessionDep, current_user: CurrentUserDep, skip: int = 0, limit: int = 10):
     """Get all users
     "List of all user for the area
@@ -53,6 +54,13 @@ async def fetchAllByAdmin(session: SessionDep, current_user: CurrentUserDep, ski
     data = await POS_Manager(session).get_all_user(skip, limit)
     data_list = list(map(UserPublic.model_validate, data))
     return UsersPublic(data=data_list, count=len(data_list))
+
+
+@router.get("/owner/{user_id}", response_model=UserRead)
+async def readById(user_id: uuid.UUID, session: SessionDep, current_user: CurrentUserDep):
+    if not current_user.is_superuser:
+        return current_user
+    return await POS_Manager(session).getUser(user_id)
 
 
 @router.get("/user/{area_id}/{user_id}", dependencies=[Depends(require_superuser_or_owner)], response_model=UserPublic)
@@ -75,6 +83,11 @@ async def readMe(session: SessionDep, owner: CurrentUserDep, current_user: Curre
     return current_user
 
 
+@router.get("/user/ownerMe}", dependencies=[Depends(require_superuser_or_owner)], response_model=UserRead)
+async def readOwnerMe(session: SessionDep, owner: CurrentUserDep):
+    return owner
+
+
 @router.post(
     "/user/{area_id}",
     dependencies=[Depends(require_superuser_or_owner)],
@@ -94,7 +107,7 @@ async def update(
     if not user.is_superuser:
         verify_area_access(area_id, user)
     try:
-        return await POS_Manager(session).updateUser(user_id, user_update)
+        return await POS_Manager(session).updateUser(user_update)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -129,8 +142,9 @@ async def update_me(user: UserUpdateMe, session: SessionDep, current_user: Curre
 
 @router.patch("/user/me/password", response_model=Message)
 async def update_password_me(pwd: UpdatedPassword, user_id: uuid.UUID, session: SessionDep, user: CurrentUserDep):
-    if user_id != user.id:
-        raise HTTPException(status_code=400, detail="Access Denied. Not enough privilege to do this action")
+    if not user.is_superuser:
+        if user_id != user.id:
+            raise HTTPException(status_code=400, detail="Access Denied. Not enough privilege to do this action")
     manager = POS_Manager(session)
     updated_user = await manager.getUser(user.id)
     await manager.update_password_me(updated_user, pwd)
@@ -216,8 +230,8 @@ async def ownersList(
                 total_pos += len(owner.owned_areas)
         return OwnersRead(data=data_list, total=len(data_list), total_active=total_active, total_pos=total_pos)
     except Exception as e:
-        # raise HTTPException(status_code=500, detail=str(e))
-        raise Exception(e)
+        raise HTTPException(status_code=500, detail=str(e))
+        # raise Exception(e)
 
 
 @router.post(
@@ -231,9 +245,11 @@ async def createUserBySuperUser(user_new: UserCreate, session: SessionDep, curre
     return await POS_Manager(session).createUser(user_new)
 
 
-@router.put("/user/updated-by-admin/{user_id}", dependencies=[Depends(require_superuser)], response_model=UserPublic)
-async def updatedByAdmin(user_id: uuid.UUID, user_update: UserUpdate, session: SessionDep, user: CurrentUserDep):
+@router.put("/user/updated-by-admin", dependencies=[Depends(require_superuser)], response_model=UserPublic)
+async def updatedByAdmin(user_update: UserUpdate, session: SessionDep, user: CurrentUserDep):
+    if not user.is_superuser:
+        raise HTTPException(status_code=403, detail="Access Denied.")
     try:
-        return await POS_Manager(session).updateUser(user_id, user_update)
+        return await POS_Manager(session).updateUser(user_update)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))

@@ -30,11 +30,11 @@ import type {
 
 import type {
   AreaCreate,
-  AreaDetails,
   AreaRead,
   AreaUpdate,
   HTTPValidationError,
   Message,
+  UsersListArea,
   UsersPublic
 } from '../schemas';
 
@@ -395,7 +395,7 @@ export const zoneListAll = (
 ) => {
       
       
-      return customAxios<AreaDetails[]>(
+      return customAxios<UsersListArea>(
       {url: `/api/v0.1/unit/list`, method: 'GET', signal
     },
       );
@@ -548,7 +548,7 @@ export const zoneListAllByAdmin = (
 ) => {
       
       
-      return customAxios<AreaDetails[]>(
+      return customAxios<UsersListArea>(
       {url: `/api/v0.1/unit/admin/list-pos-of/${userId}`, method: 'GET', signal
     },
       );

@@ -30,14 +30,19 @@ class POS_Manager:
 
         self.db.add(db_area)
         try:
+            # on commit pour obtenir l'id de la nouvelle area
+            await self.db.commit()
+            # on refresh pour obtenir les données à jour (l'id généré)
+            await self.db.refresh(db_area)
+            # mise à jour de la jointure
+            stmt = insert(area_owners).values(user_id=area.owner_id, area_id=db_area.id)
+            await self.db.execute(stmt)
             await self.db.commit()
         except InterruptedError:
             await self.db.rollback()
             raise ValueError("Point of sale with this id already exist!")
         await self.db.refresh(db_area)
-        # mise à jour de la jointure
-        stmt = insert(area_owners).values(user_id=area.owner_id, area_id=db_area.id)
-        await self.db.execute(stmt)
+
         return db_area
 
     async def get_Area(self, area_id: uuid.UUID):
@@ -68,9 +73,9 @@ class POS_Manager:
 
         stmt = (
             select(
-                Area.id,
-                Area.name,
-                Area.location,
+                (Area.id).label("area_id"),
+                (Area.name).label("name"),
+                (Area.location).label("location"),
                 func.count(Employee.id.distinct()).label("employee_count"),
                 func.count(employee_user.id.distinct()).label("user_count"),
             )
@@ -86,9 +91,9 @@ class POS_Manager:
             .offset(skip)
             .limit(limit)
         )
-        # stmt = select(Area).where(Area.owners == owner_id).offset(skip).limit(limit)
         result = await self.db.execute(stmt)
-        return result.scalars().all()
+        # puisqu'on selectionne des colonnes spécifiques, et utilise des label et alias, on utilise mappings()
+        return result.mappings().all()
 
     # async def count_pos(self, owner_id: uuid.UUID):
     #    stmt = select(area_owners).where(area_owners. == owner_id)
@@ -185,8 +190,10 @@ class POS_Manager:
             raise ValueError("User not found")
         return result.unique().scalar_one_or_none()
 
-    async def updateUser(self, user_id: uuid.UUID, user_updated: UserUpdate):
-        db_user = await self.getUser(user_id)
+    async def updateUser(self, user_updated: UserUpdate):
+        if not user_updated.email:
+            raise ValueError("Email required")
+        db_user = await self.get_user_by_email(user_updated.email)
         if db_user:
             user_data = user_updated.model_dump(exclude_unset=True)
             for var, value in user_data.items():
@@ -251,7 +258,7 @@ class POS_Manager:
     async def get_all_user(self, skip: int, limit: int):
         statement = select(User).offset(skip).limit(limit)
         resultat = await self.db.execute(statement)
-        return resultat.scalars().all()
+        return resultat.unique().scalars().all()
 
     # owner management
     async def getAllOwners(

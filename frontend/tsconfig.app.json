@@ -29,7 +29,9 @@
       "@components/*": ["components/*"],
       "@client/*":["client/*"],
       "@/*": ["/*"],
-    }
+    },
+       "ignoreDeprecations": "6.0",
+       "forceConsistentCasingInFileNames": true,
   },
   "include": ["src"],
 

@@ -3,31 +3,28 @@ import {Page} from "components/page";
 import {PageHeader} from "components/page-header";
 
 import {paths} from "config/paths";
-import {OwnerMetrics} from "./owners-metrics";
-import {OwnersTable} from "./owner-table";
+import {UsersTable} from "./user-table";
 
 const breadcrumbs = [
     {label: "Dashboard", href: paths.dashboard.root},
     {label: "Management", href: paths.dashboard.admin.management.root},
     {
-        label: "Manage Owners",
-        href: paths.dashboard.admin.management.owners.root,
+        label: "Manage Users",
+        href: paths.dashboard.admin.management.users,
     },
     {label: "List"},
 ];
 
-export default function ListOwnersPage() {
+export default function ListUsersPage() {
     return (
-        <Page title="List owners">
-            <PageHeader title="List owners" breadcrumbs={breadcrumbs} />
+        <Page title="List Users">
+            <PageHeader title="List users" breadcrumbs={breadcrumbs} />
 
             <Grid>
-                <Grid.Col span={12}>
-                    <OwnerMetrics />
-                </Grid.Col>
+                <Grid.Col span={12}>{/*<OwnerMetrics />*/}</Grid.Col>
 
                 <Grid.Col span={12}>
-                    <OwnersTable />
+                    <UsersTable />
                 </Grid.Col>
             </Grid>
         </Page>

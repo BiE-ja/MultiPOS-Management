@@ -4,15 +4,13 @@
  * Tantana - Boutik
  * OpenAPI spec version: 0.1.0
  */
-import type { AreaDetailsLocation } from './areaDetailsLocation';
-import type { AreaDetailsOwnerId } from './areaDetailsOwnerId';
 import type { AreaDetailsCreatedAt } from './areaDetailsCreatedAt';
 
 export interface AreaDetails {
-  name: string;
-  location?: AreaDetailsLocation;
-  owner_id?: AreaDetailsOwnerId;
   id: string;
+  name: string;
+  location: string;
+  state: string;
   employee_count?: number;
   user_count?: number;
   created_at?: AreaDetailsCreatedAt;

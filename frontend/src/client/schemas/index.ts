@@ -139,6 +139,7 @@ export * from './userUpdatePhone';
 export * from './userUpdateRoles';
 export * from './usersFetchAllByAdminParams';
 export * from './usersFetchAllParams';
+export * from './usersListArea';
 export * from './usersOwnersListOrder';
 export * from './usersOwnersListParams';
 export * from './usersOwnersListSortBy';

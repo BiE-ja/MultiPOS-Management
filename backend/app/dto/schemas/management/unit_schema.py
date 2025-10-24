@@ -26,11 +26,19 @@ class AreaRead(AreaBase):
     model_config = {"from_attributes": True}
 
 
-class AreaDetails(AreaBase):
+class AreaDetails(BaseModel):
     id: uuid.UUID
+    name: str
+    location: str
+    state: str
     employee_count: int = 0
     user_count: int = 0
     created_at: datetime | None = None
+    model_config = {"from_attributes": True}
+
+
+class UsersListArea(BaseModel):
+    data: List[AreaDetails]
     model_config = {"from_attributes": True}
 
 

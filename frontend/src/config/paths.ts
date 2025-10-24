@@ -39,53 +39,21 @@ export const paths = {
             home: "/dashboard/admin/home" as keyof FileRoutesByPath,
             management: {
                 root: "dashboard/admin/management" as keyof FileRoutesByPath,
+                users: "/dashboard/admin/management/users-list" as keyof FileRoutesByPath,
                 owners: {
-                    root: "/dashboard/admin/management/owners" as keyof FileRoutesByPath,
-                    list: "/dashboard/admin/management/owners-list" as keyof FileRoutesByPath,
+                    root: "/dashboard/admin/management/owners-list" as keyof FileRoutesByPath,
+                    withParam:
+                        "/dashboard/admin/management/owners/$ownerId" as keyof FileRoutesByPath,
+                    //list: "/dashboard/admin/management/owners-list" as keyof FileRoutesByPath,
                     create: "/dashboard/admin/management/owners/create" as keyof FileRoutesByPath,
-                    edit: (ownerId: string) =>
-                        `/dashboard/admin/management/owners/${ownerId}/edit` as keyof FileRoutesByPath,
-                    view: (ownerId: string) =>
-                        `/dashboard/admin/management/owners/${ownerId}` as keyof FileRoutesByPath,
-                    delete: (ownerId: string) =>
-                        `/dashboard/admin/management/owners/${ownerId}/delete` as keyof FileRoutesByPath,
+                    edit: "/dashboard/admin/management/owners/$ownerId/edit" as keyof FileRoutesByPath,
+                    delete: "/dashboard/admin/management/owners/$ownerId/delete" as keyof FileRoutesByPath,
                     pos: {
                         root: "/dashboard/admin/management/owners-pos" as keyof FileRoutesByPath,
-                        list: (ownerId: string) =>
-                            `/dashboard/admin/management/owners-pos/:${ownerId}` as keyof FileRoutesByPath,
-                        create: (ownerId: string) =>
-                            `/dashboard/admin/management/owners/${ownerId}/pos/create` as keyof FileRoutesByPath,
-                        edit: (ownerId: string, posId: string) =>
-                            `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/edit` as keyof FileRoutesByPath,
-                        view: (ownerId: string, posId: string) =>
-                            `/dashboard/admin/management/owners/${ownerId}/pos/${posId}` as keyof FileRoutesByPath,
-                        delete: (ownerId: string, posId: string) =>
-                            `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/delete` as keyof FileRoutesByPath,
+                        withParam:
+                            "dashboard/admin/management/owners/pos/$ownerId" as keyof FileRoutesByPath,
                         users: {
-                            root: (ownerId: string, posId: string) =>
-                                `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users` as keyof FileRoutesByPath,
-                            list: (ownerId: string, posId: string) =>
-                                `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users/list` as keyof FileRoutesByPath,
-                            create: (ownerId: string, posId: string) =>
-                                `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users/create` as keyof FileRoutesByPath,
-                            edit: (
-                                ownerId: string,
-                                posId: string,
-                                userId: string
-                            ) =>
-                                `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users/${userId}/edit` as keyof FileRoutesByPath,
-                            view: (
-                                ownerId: string,
-                                posId: string,
-                                userId: string
-                            ) =>
-                                `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users/${userId}` as keyof FileRoutesByPath,
-                            delete: (
-                                ownerId: string,
-                                posId: string,
-                                userId: string
-                            ) =>
-                                `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users/${userId}/delete` as keyof FileRoutesByPath,
+                            list: "/dashboard/admin/management/owners/$ownerId/pos/$posId/users" as keyof FileRoutesByPath,
                         },
                     },
                 },
@@ -118,6 +86,12 @@ export const paths = {
             },
         },
 
+        stock: {
+            root: "/dashboard/stock/product" as keyof FileRoutesByPath,
+            movement: "/dashboard/stock/movement" as keyof FileRoutesByPath,
+            invotory: "/dashboard/stock/inventory" as keyof FileRoutesByPath,
+        },
+
         apps: {
             root: "/dashboard/apps" as keyof FileRoutesByPath,
             kanban: "/dashboard/apps/kanban" as keyof FileRoutesByPath,
@@ -129,4 +103,19 @@ export const paths = {
             tables: "/dashboard/widgets/tables" as keyof FileRoutesByPath,
         },
     },
+};
+
+export const buildPaths = {
+    editOwner: (ownerId: string) =>
+        `/dashboard/admin/management/owners/${ownerId}/edit`,
+    viewOwner: (ownerId: string) =>
+        `/dashboard/admin/management/owners/${ownerId}`,
+    deleteOwner: (ownerId: string) =>
+        `/dashboard/admin/management/owners/${ownerId}/delete`,
+    posList: (ownerId: string) =>
+        `/dashboard/admin/management/owners/pos/${ownerId}`,
+    posUserList: (ownerId: string, posId: string) =>
+        `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/users`,
+    viewPos: (ownerId: string, posId: string) =>
+        `/dashboard/admin/management/owners/${ownerId}/pos/${posId}/`,
 };

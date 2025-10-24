@@ -1,17 +1,20 @@
 import {paths} from "config/paths";
 import type {ElementType} from "react";
 import {
+    PiArrowsInDuotone,
     PiChartLineUpDuotone,
     PiChatCenteredDotsDuotone,
-    PiFilesDuotone,
-    PiKanbanDuotone,
+    PiLayoutDuotone,
     PiLockKeyDuotone,
+    PiPackageDuotone,
     PiShieldCheckDuotone,
     PiSquaresFourDuotone,
     PiStarDuotone,
+    PiStorefrontDuotone,
     PiTableDuotone,
     PiUserPlusDuotone,
     PiUsersDuotone,
+    PiWarehouseDuotone,
 } from "react-icons/pi";
 
 interface MenuItem {
@@ -38,41 +41,56 @@ export const menu: MenuItem[] = [
                 icon: PiStarDuotone,
             },
             {
-                name: "Documentation",
-                href: paths.docs.root,
-                icon: PiFilesDuotone,
+                name: "Dashboard",
+                href: paths.dashboard.root,
+                icon: PiLayoutDuotone,
             },
         ],
     },
 
     {
-        header: "Apps",
+        header: "Stock",
         section: [
             {
-                name: "Tantana Software Suite",
+                name: "Products",
+                href: paths.dashboard.stock.root,
+                icon: PiPackageDuotone,
+            },
+            {
+                name: "Stock Movement",
                 href: paths.dashboard.apps.kanban,
-                icon: PiKanbanDuotone,
+                icon: PiArrowsInDuotone,
+            },
+            {
+                name: "Invotory",
+                href: paths.dashboard.apps.kanban,
+                icon: PiWarehouseDuotone,
             },
         ],
     },
 
     {
-        header: "Management",
+        header: "General Administration",
         section: [
             {
-                name: "Owners",
+                name: "Users Management",
                 icon: PiUsersDuotone,
                 href: paths.dashboard.admin.management.owners.root,
                 dropdownItems: [
                     {
-                        name: "List",
-                        href: paths.dashboard.admin.management.owners.list,
+                        name: "Owners Management",
+                        href: paths.dashboard.admin.management.owners.root,
                     },
                     {
-                        name: "Point of sale",
-                        href: paths.dashboard.admin.management.owners.pos.root,
+                        name: "User & Roles",
+                        href: paths.dashboard.admin.management.users,
                     },
                 ],
+            },
+            {
+                name: "Point of Sales",
+                href: paths.dashboard.admin.management.owners.pos.root,
+                icon: PiStorefrontDuotone,
             },
         ],
     },

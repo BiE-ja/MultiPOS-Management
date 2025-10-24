@@ -74,18 +74,19 @@ export const zoneUpdateResponse = zod.object({
 /**
  * @summary List All
  */
-export const zoneListAllResponseEmployeeCountDefault = 0;export const zoneListAllResponseUserCountDefault = 0;
+export const zoneListAllResponseDataItemEmployeeCountDefault = 0;export const zoneListAllResponseDataItemUserCountDefault = 0;
 
-export const zoneListAllResponseItem = zod.object({
-  "name": zod.string(),
-  "location": zod.union([zod.string(),zod.null()]).optional(),
-  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+export const zoneListAllResponse = zod.object({
+  "data": zod.array(zod.object({
   "id": zod.uuid(),
+  "name": zod.string(),
+  "location": zod.string(),
+  "state": zod.string(),
   "employee_count": zod.number().optional(),
   "user_count": zod.number().optional(),
   "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional()
+}))
 })
-export const zoneListAllResponse = zod.array(zoneListAllResponseItem)
 
 /**
  * @summary List All By Admin
@@ -94,16 +95,17 @@ export const zoneListAllByAdminParams = zod.object({
   "user_id": zod.uuid()
 })
 
-export const zoneListAllByAdminResponseEmployeeCountDefault = 0;export const zoneListAllByAdminResponseUserCountDefault = 0;
+export const zoneListAllByAdminResponseDataItemEmployeeCountDefault = 0;export const zoneListAllByAdminResponseDataItemUserCountDefault = 0;
 
-export const zoneListAllByAdminResponseItem = zod.object({
-  "name": zod.string(),
-  "location": zod.union([zod.string(),zod.null()]).optional(),
-  "owner_id": zod.union([zod.uuid(),zod.null()]).optional(),
+export const zoneListAllByAdminResponse = zod.object({
+  "data": zod.array(zod.object({
   "id": zod.uuid(),
+  "name": zod.string(),
+  "location": zod.string(),
+  "state": zod.string(),
   "employee_count": zod.number().optional(),
   "user_count": zod.number().optional(),
   "created_at": zod.union([zod.iso.datetime({}),zod.null()]).optional()
+}))
 })
-export const zoneListAllByAdminResponse = zod.array(zoneListAllByAdminResponseItem)
 

@@ -10,6 +10,9 @@
       "@theme/*": ["theme/*"],
       "@components/*": ["components/*"],
       "@/*": ["src/*"],
-    }
+    },
+    "ignoreDeprecations": "6.0",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
   }
 }

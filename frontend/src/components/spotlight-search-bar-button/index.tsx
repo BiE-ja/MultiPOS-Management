@@ -60,7 +60,7 @@ export function SpotlightSearchBarButton({
                         variant="filled"
                         size="compact-md"
                         leftSection={<CommandIcon size="1rem" />}>
-                        O
+                        K
                     </Button>
                 }
             />

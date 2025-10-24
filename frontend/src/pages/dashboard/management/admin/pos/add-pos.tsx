@@ -6,27 +6,52 @@ import {HandleError} from "utilities/handleError";
 import {Modal, TextInput, Button, Stack} from "@mantine/core";
 import {FormProvider} from "@components/forms/form-provider";
 import {type AreaUpdate} from "client/schemas/areaUpdate";
+import {useEffect, useState} from "react";
 
 type PosFormProps = {
     opened: boolean;
     onClose: () => void;
+    onSuccess?: () => void;
     pos?: Partial<AreaDetails>; // pour l'édition
     ownerId?: string;
 };
 
-export function AddPos({opened, onClose, pos, ownerId}: PosFormProps) {
+export function AddPos({
+    opened,
+    onClose,
+    onSuccess,
+    pos,
+    ownerId,
+}: PosFormProps) {
     const form = useForm<AreaDetails>({
         initialValues: {
-            id: pos?.id ?? "",
-            name: pos?.name ?? "",
-            location: pos?.location ?? "",
-            created_at: pos?.created_at,
-            owner_id: pos?.owner_id ?? ownerId ?? "",
+            id: "",
+            name: "",
+            location: "",
+            state: "active",
+            created_at: undefined,
         },
     });
 
+    const [formInitialized, setFormInitialized] = useState(false);
+    // remplir le formulaire si "pos" est défini (édition)
+    // Réinitialiser le formulaire lorsque la modale est fermée
+    useEffect(() => {
+        if (!opened) {
+            if (formInitialized) setFormInitialized(false);
+        } else {
+            if (!formInitialized) {
+                if (pos) form.setValues({...pos});
+                setFormInitialized(true);
+            }
+        }
+    }, [opened, formInitialized, pos, setFormInitialized, form]);
+
+    // gestion de la soumission du formulaire
+
     const handleSubmit = form.onSubmit(async (pos_form: AreaCreate) => {
         try {
+            // si "pos" a été défini au préalable, il s'agit d'une mise à jour
             if (pos) {
                 const pos_updated: AreaUpdate = {
                     location: pos_form.location as string,
@@ -34,8 +59,12 @@ export function AddPos({opened, onClose, pos, ownerId}: PosFormProps) {
                 };
 
                 await zoneUpdate(pos.id as string, pos_updated);
-            } else await zoneCreate(pos_form);
-
+            } else {
+                // sinon création
+                pos_form.owner_id = ownerId;
+                await zoneCreate(pos_form);
+            }
+            onSuccess?.();
             onClose();
 
             notifications.show({
@@ -59,7 +88,8 @@ export function AddPos({opened, onClose, pos, ownerId}: PosFormProps) {
                 pos
                     ? "Modification d'un point de vente"
                     : "Création d'un point de vente"
-            }>
+            }
+            size="md">
             <FormProvider form={form} onSubmit={handleSubmit}>
                 <Stack>
                     <TextInput

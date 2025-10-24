@@ -1,8 +1,14 @@
-from typing import List
 import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.dto.schemas.management.unit_schema import AreaCreate, AreaDetails, AreaRead, AreaUpdate, UsersPublic
+from app.dto.schemas.management.unit_schema import (
+    AreaCreate,
+    AreaDetails,
+    AreaRead,
+    AreaUpdate,
+    UsersListArea,
+    UsersPublic,
+)
 from app.api.dependencies import (
     SessionDep,
     CurrentUserDep,
@@ -58,17 +64,45 @@ async def update(area_id: uuid.UUID, area: AreaUpdate, session: SessionDep, owne
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.get("/list", dependencies=[Depends(require_superuser_or_owner)], response_model=List[AreaDetails])
+@router.get("/list", dependencies=[Depends(require_superuser_or_owner)], response_model=UsersListArea)
 async def list_all(session: SessionDep, user: CurrentUserDep):
     if user.is_superuser:
         raise HTTPException(
             status_code=403, detail="Please, select one owner for see his list of point of sale managed"
         )
     data = await POS_Manager(session).list_managed_area(user.id)
-    return list(map(AreaRead.model_validate, data))
+    return UsersListArea(
+        data=[
+            AreaDetails(
+                id=row["area_id"],
+                name=row["name"],
+                location=row["location"],
+                state="active",
+                employee_count=row["employee_count"],
+                user_count=row["user_count"],
+            )
+            for row in data
+        ]
+    )
 
 
-@router.get("/admin/list-pos-of/{user_id}", dependencies=[Depends(require_superuser)], response_model=List[AreaDetails])
+@router.get(
+    "/admin/list-pos-of/{user_id}",
+    dependencies=[Depends(require_superuser)],
+    response_model=UsersListArea,
+)
 async def list_all_by_admin(session: SessionDep, user_id: uuid.UUID):
     data = await POS_Manager(session).list_managed_area(user_id)
-    return list(map(AreaDetails.model_validate, data))
+    return UsersListArea(
+        data=[
+            AreaDetails(
+                id=row["area_id"],
+                name=row["name"],
+                location=row["location"],
+                state="active",
+                employee_count=row["employee_count"],
+                user_count=row["user_count"],
+            )
+            for row in data
+        ]
+    )

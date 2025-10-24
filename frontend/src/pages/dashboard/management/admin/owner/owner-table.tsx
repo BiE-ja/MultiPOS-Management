@@ -4,7 +4,7 @@ import {UsersOwnersListSortBy, type UserRead as Owner} from "@client/schemas/";
 import {useUsersOwnersList} from "@client/services/users";
 import {DataTable} from "@components/data-table";
 import {Box, Group, Loader, Text} from "@mantine/core";
-import {paths} from "config/paths";
+import {buildPaths} from "config/paths";
 import type {DataTableColumn} from "mantine-datatable";
 import {useEffect, useMemo, useState} from "react";
 import {formatPhoneNumber} from "utilities/phone-number";
@@ -13,8 +13,7 @@ import {UserStatusBadge} from "@components/resources/customers";
 
 import {AddButton} from "@components/add-button";
 import {formatDate} from "utilities/date";
-import {AddUser} from "./addUser";
-import {Navigate} from "@tanstack/react-router";
+import {AddUser} from "../user/addUser";
 import {getUsersOwnersListQueryKey} from "client/services/users";
 import {useQueryClient} from "@tanstack/react-query";
 import CustomNavLink from "@components/CustomNavLink";
@@ -43,7 +42,8 @@ export function OwnersTable() {
     const queryClient = useQueryClient();
     //  pour gérer l'ouverture du modal
     const [modalOpened, setModalOpened] = useState(false);
-    const [selectedOwner, setSelectedOwner] = useState<Owner | undefined>();
+    const [selectedOwner, setSelectedOwner] = useState<Partial<Owner>>();
+    const [viewOwner, setViewOwner] = useState<boolean | undefined>(undefined);
 
     const {page, limit, setLimit, setPage} = usePagination();
 
@@ -58,28 +58,75 @@ export function OwnersTable() {
         const base = {
             limit,
             skip: (page - 1) * limit,
-            sort_by: sort.status.columnAccessor as UsersOwnersListSortBy,
-            order: sort.status.direction,
+            /*
+             * Pour trie côté serveur - Désactivé pour le moment
+             *sort_by: sort.status.columnAccessor as UsersOwnersListSortBy,
+            order: sort.status.direction,*/
         };
         return base;
-    }, [limit, page, sort.status]);
+    }, [limit, page /*sort.status*/]);
+
+    // récupération des owners avec les nouveaux paramètres
+    const {data: owners, isLoading} = useUsersOwnersList(params);
+    // === Nouveau : filtrage local selon onglet sélectionné === //
+    const filteredOwners = useMemo(() => {
+        if (!owners?.data) return [];
+
+        switch (tabs.value) {
+            case "active":
+                return owners.data.filter((o) => o.is_active);
+            case "inactive":
+                return owners.data.filter((o) => !o.is_active);
+            default:
+                return owners.data;
+        }
+    }, [owners, tabs.value]);
 
     // renvoie à la 1ère page en cas de changement de valeur du tabs
     useEffect(() => {
         setPage(1);
     }, [tabs.value, setPage]);
 
-    // récupération des owners avec les nouveaux paramètres
-    const {data, isLoading} = useUsersOwnersList(params);
+    // tri local
+    const sortedOwners = useMemo(() => {
+        if (!filteredOwners.length) return [];
+
+        const {columnAccessor, direction} = sort.status;
+        if (!columnAccessor) return filteredOwners;
+
+        const sorted = [...filteredOwners].sort((a, b) => {
+            const aValue = a[columnAccessor as keyof Owner];
+            const bValue = b[columnAccessor as keyof Owner];
+
+            if (aValue == null) return 1;
+            if (bValue == null) return -1;
+
+            if (typeof aValue === "string" && typeof bValue === "string") {
+                return direction === "asc"
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            }
+            return 0;
+        });
+        return sorted;
+    }, [filteredOwners, sort.status]);
 
     // gestion fenêtre modal
     const openCreateModal = () => {
         setSelectedOwner(undefined);
+        setViewOwner(undefined);
         setModalOpened(true);
     };
 
     const openEditModal = (owner: Owner) => {
         setSelectedOwner(owner);
+        setViewOwner(undefined);
+        setModalOpened(true);
+    };
+
+    const openViewModal = (owner: Owner) => {
+        setSelectedOwner(owner);
+        setViewOwner(true);
         setModalOpened(true);
     };
 
@@ -124,10 +171,8 @@ export function OwnersTable() {
                 //sortable: true,
                 render: (owner) => (
                     <CustomNavLink
-                        to={paths.dashboard.admin.management.owners.pos.list(
-                            owner.id
-                        )}
-                        label={owner.owned_areas?.length}
+                        to={buildPaths.posList(owner.id)}
+                        label={owner.owned_areas?.length.toString() ?? "0"}
                     />
                 ),
             },
@@ -156,13 +201,7 @@ export function OwnersTable() {
                 width: 100,
                 render: (owner) => (
                     <DataTable.Actions
-                        onView={() => (
-                            <Navigate
-                                to={paths.dashboard.admin.management.owners.pos.list(
-                                    owner.id
-                                )}
-                            />
-                        )}
+                        onView={() => openViewModal(owner)}
                         onEdit={() => openEditModal(owner)}
                         onDelete={() => console.log(owner.name)}
                     />
@@ -176,14 +215,14 @@ export function OwnersTable() {
         {
             value: "*",
             label: "All",
-            counter: data?.total,
+            counter: owners?.total,
             rightSection: <Loader size="xs" />,
         },
         {
             value: "active",
             label: "Active",
             color: "teal",
-            counter: data?.total_active,
+            counter: owners?.total_active,
             rightSection: <Loader size="xs" color="teal" />,
         },
 
@@ -191,7 +230,7 @@ export function OwnersTable() {
             value: "inactive",
             label: "Inactive",
             color: "red",
-            counter: data ? data.total - data.total_active : undefined,
+            counter: owners ? owners.total - owners.total_active : undefined,
             rightSection: <Loader size="xs" color="teal" />,
         },
     ];
@@ -225,11 +264,11 @@ export function OwnersTable() {
                         )}
                         paginationText={DataTable.paginationText("owners")}
                         page={page}
-                        records={data?.data ?? []}
+                        records={sortedOwners}
                         fetching={isLoading}
                         onPageChange={setPage}
                         recordsPerPage={limit}
-                        totalRecords={data?.total ?? 0}
+                        totalRecords={sortedOwners.length}
                         onRecordsPerPageChange={setLimit}
                         recordsPerPageOptions={[5, 15, 30, 40]}
                         sortStatus={sort.status}
@@ -244,8 +283,10 @@ export function OwnersTable() {
                 onClose={() => {
                     setModalOpened(false);
                     setSelectedOwner(undefined);
+                    setViewOwner(false);
                 }}
-                owner={selectedOwner}
+                view={viewOwner}
+                user={selectedOwner}
                 onSuccess={() =>
                     queryClient.invalidateQueries({
                         queryKey: getUsersOwnersListQueryKey(),

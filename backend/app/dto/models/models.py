@@ -14,6 +14,9 @@ class Area(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     name = Column(String(50), index=True)
     location = Column(String(255))
+    state: Mapped[pyEnum] = mapped_column(
+        sqlEnum("active", "inactive", "archived", name="area_state"), default="active"
+    )
 
     owners = relationship("User", secondary="area_owners", back_populates="owned_areas")
     employee = relationship("Employee", back_populates="area", cascade="all, delete-orphan")
